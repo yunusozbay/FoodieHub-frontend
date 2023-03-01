@@ -4,12 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import SessionContextProvider from "./contexts/SessionContext";
 import "./index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <SessionContextProvider>
-          <App />
+        <App />
       </SessionContextProvider>
     </BrowserRouter>
   </React.StrictMode>
