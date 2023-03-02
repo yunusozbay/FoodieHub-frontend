@@ -1,6 +1,8 @@
 const AuthForm = ({
+    username,
     email,
     password,
+    setUsername,
     setEmail,
     setPassword,
     handleSubmit,
@@ -17,10 +19,19 @@ const AuthForm = ({
           Username
           <input
             type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </label>
+        {isLogin ? "" : 
+        <label>
+          Email
+          <input
+            type="text"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-        </label>
+        </label> }
         <label>
           Password
           <input

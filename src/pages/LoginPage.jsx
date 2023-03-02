@@ -7,7 +7,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { setToken } = useContext(SessionContext);
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
@@ -16,7 +16,7 @@ const LoginPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
     });
     const parsed = await response.json();
     setToken(parsed.token);
@@ -27,8 +27,8 @@ const LoginPage = () => {
     <>
       <h1>Login</h1>
       <AuthForm
-        email={email}
-        setEmail={setEmail}
+        username={username}
+        setUsername={setUsername}
         password={password}
         setPassword={setPassword}
         handleSubmit={handleSubmit}
