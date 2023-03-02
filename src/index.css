@@ -119,3 +119,7 @@ button:focus-visible {
 .card-body-sm a {
   font-size: .7rem;
 }
+.result-links {
+  display: flex;
+  justify-content: space-between;
+}

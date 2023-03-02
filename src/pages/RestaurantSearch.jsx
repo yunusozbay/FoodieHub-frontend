@@ -66,7 +66,7 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
             Search
           </Button>
         </Form>
-        <div>
+        <div className="result-links">
           <Link>Sort by</Link>
           <Link>Map view</Link>
         </div>
