@@ -81,3 +81,45 @@ button:focus-visible {
   text-align: center;
   font-size: 2rem;
 }
+
+.restaurant-card {
+  height: 15rem;
+}
+
+.card-img {
+  width: 100%;
+  height: 15rem;
+  object-fit: cover
+}
+.card-img-sm {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover
+}
+
+.card-title-sm {
+  font-size: .9rem;
+}
+
+.card-ratings-sm {
+  font-size: .7rem;
+}
+.card-ratings-sm {
+  font-size: .7rem;
+}
+.card-address-sm {
+  display: none;
+}
+.card-phone-sm {
+  display: none;
+}
+.card-price-sm {
+  display: none;
+}
+.card-body-sm a {
+  font-size: .7rem;
+}
+.result-links {
+  display: flex;
+  justify-content: space-between;
+}
