@@ -123,3 +123,25 @@ button:focus-visible {
   display: flex;
   justify-content: space-between;
 }
+.restaurant-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-img {
+  width: 80vw;
+  height: 15rem;
+  object-fit: cover;
+  padding: 1rem 0;
+}
+.small-img {
+  width: 30vw;
+  height: 5rem;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+.detail-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
