@@ -26,6 +26,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  justify-content: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -66,4 +67,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+.restaurant-search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
+.restaurant-search-form div {
+  width: 100%;
+}
+.title {
+  text-align: center;
+  font-size: 2rem;
 }
