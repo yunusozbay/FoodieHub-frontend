@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EventForm from "./EventForm";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
@@ -14,6 +14,7 @@ function RestaurantCard({ restaurant, listView }) {
     });
     console.log(userData);
   }
+  const navigate = useNavigate();
   return (
     <div>
       <Card className="mt-3 restaurant-card">
@@ -64,7 +65,7 @@ function RestaurantCard({ restaurant, listView }) {
           </Button>
           <Button
             variant="secondary"
-            onClick={() => Navigate(`/restaurants/${restaurant.id}`)}
+            onClick={() => navigate(`/restaurants/${restaurant.id}`)}
             className="details-btn"
           >
             See details
