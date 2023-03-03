@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Button from 'react-bootstrap/Button';
+import axios from "axios";
+import { SessionContext } from "../contexts/SessionContext";
 
-function RestaurantCard({ restaurant, listView }) {
-  console.log(listView);
+
+function RestaurantCard({ restaurant, listView  }) {
+  const { userData } = useContext(SessionContext);
+  async function handlePost() {
+    await axios.post('http://localhost:5005/api/add', {
+      userData
+    })
+    console.log(userData)
+    
+  }
   return (
     <Card className="mt-3 restaurant-card">
       <Card.Img
@@ -38,8 +49,9 @@ function RestaurantCard({ restaurant, listView }) {
             : "closed now"
           : null}
       </ListGroup>
+
       <Card.Body className={listView ? "card-body-sm" : "card-body"}>
-        <Card.Link href="#">Add to list</Card.Link>
+        <Button onClick={handlePost} variant="primary">Add to list</Button>
         <Card.Link href="#">Create event</Card.Link>
         <Card.Link href="#">See details</Card.Link>
       </Card.Body>
