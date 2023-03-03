@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
+import NavbarComp from './components/NavbarComp'
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -50,6 +51,7 @@ function App() {
 
   return (
     <div>
+      <NavbarComp />
       <Routes>
         <Route
           path="/"
