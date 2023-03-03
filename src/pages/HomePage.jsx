@@ -11,6 +11,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [city, setCity] = useState("");
   const [food, setFood] = useState("");
   const [newPlace, setNewPlace] = useState(false);
+  const [listView, setListView] = useState(false);
 
   const submitCallback = (event) => {
     event.preventDefault();

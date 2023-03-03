@@ -7,6 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
 import RestaurantSearch from "./pages/RestaurantSearch";
+import RestaurantDetails from "./pages/RestaurantDetails";
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -65,7 +66,17 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/restaurants"
-          element={<RestaurantSearch restaurants={rest} />}
+          element={
+            <RestaurantSearch
+              restaurants={rest}
+              handleSubmit={handleSubmit}
+              isLoading={isLoading}
+            />
+          }
+        />
+        <Route
+          path="/restaurants/:id"
+          element={<RestaurantDetails restaurants={rest} />}
         />
         <Route
           path="/profile"
