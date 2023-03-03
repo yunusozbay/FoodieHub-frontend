@@ -2,9 +2,24 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import axios from "axios";
 
-function EventForm({ restaurant }) {
+function EventForm({ restaurant, userData }) {
   const [show, setShow] = useState(true);
+  const [title, setTitle] = useState(
+    `Dinner at restaurant "${restaurant.name}"`
+  );
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [invitedUsers, setInvitedUsers] = useState("");
+
+  async function handleSubmit() {
+    await axios.post("http://localhost:5005/events/new", {
+      userData,
+      restaurant,
+      newEvent: { title, date, time, invitedUsers },
+    });
+  }
 
   const handleClose = () => setShow(false);
 
@@ -15,22 +30,47 @@ function EventForm({ restaurant }) {
           <Modal.Title>Create an event</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                autoFocus
-                value={`Dinner at restaurant "${restaurant.name}"`}
-              />
-              <Form.Label>Date</Form.Label>
-              <Form.Control type="date" autoFocus />
-              <Form.Label>Time</Form.Label>
-              <Form.Control type="time" autoFocus />
-              <Form.Label>Invite</Form.Label>
-              <Form.Select id="cars" name="cars">
-                <option value="friend-name">Friend1</option>
-              </Form.Select>
+              <Form.Label>
+                Title
+                <Form.Control
+                  type="text"
+                  autoFocus
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                />
+              </Form.Label>
+              <Form.Label>
+                Date
+                <Form.Control
+                  type="date"
+                  value={date}
+                  onChange={(event) => setDate(event.target.value)}
+                />
+              </Form.Label>
+              <Form.Label>
+                Time
+                <Form.Control
+                  type="time"
+                  value={time}
+                  onChange={(event) => setTime(event.target.value)}
+                />
+              </Form.Label>
+              <Form.Label>
+                Invite
+                <Form.Select
+                  id="invited_users"
+                  name="invited_users"
+                  value={invitedUsers}
+                  onChange={(event) => setInvitedUsers(event.target.value)}
+                >
+                  <option value="user">Friend1</option>
+                  <option value="user">Friend2</option>
+                  <option value="user">Friend3</option>
+                </Form.Select>
+              </Form.Label>
+              <Button type="submit">Save</Button>
             </Form.Group>
           </Form>
         </Modal.Body>

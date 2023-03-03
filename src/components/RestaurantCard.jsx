@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button, Card, ListGroup } from "react-bootstrap";
+import { Link, Navigate } from "react-router-dom";
 import EventForm from "./EventForm";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
@@ -16,11 +17,13 @@ function RestaurantCard({ restaurant, listView }) {
   return (
     <div>
       <Card className="mt-3 restaurant-card">
-        <Card.Img
-          variant="top"
-          src={restaurant.image_url}
-          className={listView ? "card-img-sm" : "card-img"}
-        />
+        <Link to={`/restaurants/${restaurant.id}`}>
+          <Card.Img
+            variant="top"
+            src={restaurant.image_url}
+            className={listView ? "card-img-sm" : "card-img"}
+          />
+        </Link>
         <Card.Body className={listView ? "card-body-sm" : "card-body"}>
           <Card.Title>
             <h2 className={listView ? "card-title-sm" : "card-title"}>
@@ -48,17 +51,29 @@ function RestaurantCard({ restaurant, listView }) {
               : "closed now"
             : null}
         </ListGroup>
-        <Card.Body className={listView ? "card-body-sm" : "card-body"}>
-          <Button onClick={handlePost} variant="primary">
+        <Card.Body className={listView ? "card-btns-sm" : "card-btns"}>
+          <Button onClick={handlePost} variant="primary" className="list-btn">
             Add to list
           </Button>
-          <Button onClick={() => setIsCreatingEvent(true)}>Create event</Button>
-          <Card.Link href={`/restaurants/${restaurant.id}`}>
+          <Button
+            variant="warning"
+            onClick={() => setIsCreatingEvent(true)}
+            className="event-btn"
+          >
+            Create event
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => Navigate(`/restaurants/${restaurant.id}`)}
+            className="details-btn"
+          >
             See details
-          </Card.Link>
+          </Button>
         </Card.Body>
       </Card>
-      {isCreatingEvent ? <EventForm restaurant={restaurant} /> : null}
+      {isCreatingEvent ? (
+        <EventForm restaurant={restaurant} userData={userData} />
+      ) : null}
     </div>
   );
 }
