@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
+import React, { useContext, useState } from "react";
+import { Button, Card, ListGroup } from "react-bootstrap";
 import EventForm from "./EventForm";
+import axios from "axios";
+import { SessionContext } from "../contexts/SessionContext";
 
 function RestaurantCard({ restaurant, listView }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
-
+  const { userData } = useContext(SessionContext);
+  async function handlePost() {
+    await axios.post("http://localhost:5005/api/add", {
+      userData,
+    });
+    console.log(userData);
+  }
   return (
     <div>
       <Card className="mt-3 restaurant-card">
@@ -43,7 +49,9 @@ function RestaurantCard({ restaurant, listView }) {
             : null}
         </ListGroup>
         <Card.Body className={listView ? "card-body-sm" : "card-body"}>
-          <Card.Link href="#">Add to list</Card.Link>
+          <Button onClick={handlePost} variant="primary">
+            Add to list
+          </Button>
           <Button onClick={() => setIsCreatingEvent(true)}>Create event</Button>
           <Card.Link href={`/restaurants/${restaurant.id}`}>
             See details
