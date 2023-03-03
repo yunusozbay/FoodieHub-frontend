@@ -6,12 +6,15 @@ import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 
 function RestaurantCard({ restaurant, listView }) {
+  const [hidden, setHidden] = useState(false);
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const { userData } = useContext(SessionContext);
   async function handlePost() {
     await axios.post("http://localhost:5005/api/add", {
       userData,
+      restaurant,
     });
+    setHidden(true);
     console.log(userData);
   }
   const navigate = useNavigate();
@@ -53,9 +56,11 @@ function RestaurantCard({ restaurant, listView }) {
             : null}
         </ListGroup>
         <Card.Body className={listView ? "card-btns-sm" : "card-btns"}>
-          <Button onClick={handlePost} variant="primary" className="list-btn">
-            Add to list
-          </Button>
+          {!hidden && (
+            <Button onClick={handlePost} variant="primary" className="list-btn">
+              Add to list
+            </Button>
+          )}
           <Button
             variant="warning"
             onClick={() => setIsCreatingEvent(true)}
