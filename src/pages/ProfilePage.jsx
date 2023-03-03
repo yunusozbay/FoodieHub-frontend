@@ -16,10 +16,14 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdb-react-ui-kit";
+
 function ProfilePage() {
   return (
     <section style={{ backgroundColor: "#eee" }}>
-      <MDBContainer className="py-5" style={{Width: "2000px", display:"block"}}>
+      <MDBContainer
+        className="py-5"
+        style={{ Width: "2000px", display: "block" }}
+      >
         {/* <MDBRow>
           <MDBCol>
             <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
@@ -61,39 +65,7 @@ function ProfilePage() {
                 <MDBListGroup flush className="rounded-3">
                   <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                     <MDBIcon fas icon="globe fa-lg text-warning" />
-                    <MDBCardText>Email address</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon
-                      fab
-                      icon="github fa-lg"
-                      style={{ color: "#333333" }}
-                    />
-                    <MDBCardText>handle</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon
-                      fab
-                      icon="twitter fa-lg"
-                      style={{ color: "#55acee" }}
-                    />
-                    <MDBCardText>@mdbootstrap</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon
-                      fab
-                      icon="instagram fa-lg"
-                      style={{ color: "#ac2bac" }}
-                    />
-                    <MDBCardText>mdbootstrap</MDBCardText>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon
-                      fab
-                      icon="facebook fa-lg"
-                      style={{ color: "#3b5998" }}
-                    />
-                    <MDBCardText>mdbootstrap</MDBCardText>
+                    <MDBCardText>@Userhandle</MDBCardText>
                   </MDBListGroupItem>
                 </MDBListGroup>
               </MDBCardBody>
@@ -165,59 +137,27 @@ function ProfilePage() {
                   <MDBCardBody>
                     <MDBCardText className="mb-4">
                       <span className="text-primary font-italic me-1">
-                        assigment
-                      </span>{" "}
-                      Project Status
+                        Friends
+                      </span>
                     </MDBCardText>
                     <MDBCardText
                       className="mb-1"
                       style={{ fontSize: ".77rem" }}
                     >
-                      Web Design
+                      Friends
                     </MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={80} valuemin={0} valuemax={100} />
-                    </MDBProgress>
 
+                    <MDBCardText className="mb-4 mt-4">
+                      <span className="text-primary font-italic me-1">
+                        Events
+                      </span>
+                    </MDBCardText>
                     <MDBCardText
-                      className="mt-4 mb-1"
+                      className="mb-1"
                       style={{ fontSize: ".77rem" }}
                     >
-                      Website Markup
+                      Events
                     </MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={72} valuemin={0} valuemax={100} />
-                    </MDBProgress>
-
-                    <MDBCardText
-                      className="mt-4 mb-1"
-                      style={{ fontSize: ".77rem" }}
-                    >
-                      One Page
-                    </MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={89} valuemin={0} valuemax={100} />
-                    </MDBProgress>
-
-                    <MDBCardText
-                      className="mt-4 mb-1"
-                      style={{ fontSize: ".77rem" }}
-                    >
-                      Mobile Template
-                    </MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={55} valuemin={0} valuemax={100} />
-                    </MDBProgress>
-
-                    <MDBCardText
-                      className="mt-4 mb-1"
-                      style={{ fontSize: ".77rem" }}
-                    >
-                      Backend API
-                    </MDBCardText>
-                    <MDBProgress className="rounded">
-                      <MDBProgressBar width={66} valuemin={0} valuemax={100} />
-                    </MDBProgress>
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
