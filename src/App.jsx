@@ -76,7 +76,7 @@ function App() {
           }
         />
         <Route
-          path="/restaurants/:id"
+          path="/restaurants/:alias"
           element={<RestaurantDetails restaurants={rest} />}
         />
         <Route path="/events/:id" element={<EventCard />} />

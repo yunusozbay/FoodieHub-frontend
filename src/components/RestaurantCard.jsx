@@ -70,7 +70,7 @@ function RestaurantCard({ restaurant, listView }) {
           </Button>
           <Button
             variant="secondary"
-            onClick={() => navigate(`/restaurants/${restaurant.id}`)}
+            onClick={() => navigate(`/restaurants/${restaurant.alias}`)}
             className="details-btn"
           >
             See details
@@ -78,7 +78,12 @@ function RestaurantCard({ restaurant, listView }) {
         </Card.Body>
       </Card>
       {isCreatingEvent ? (
-        <EventForm restaurant={restaurant} userData={userData} />
+        <EventForm
+          restaurant={restaurant}
+          userData={userData}
+          isCreatingEvent={isCreatingEvent}
+          setIsCreatingEvent={setIsCreatingEvent}
+        />
       ) : null}
     </div>
   );

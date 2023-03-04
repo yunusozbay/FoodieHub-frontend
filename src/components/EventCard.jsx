@@ -56,7 +56,12 @@ function EventCard() {
             <Card.Text>{event.restaurant.address.display_address}</Card.Text>
           </ListGroup>
           <Card.Body className="card-btns">
-            <Button variant="secondary">Restaurant details</Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate(`/restaurants/${event.restaurant.alias}`)}
+            >
+              Restaurant details
+            </Button>
             <Button variant="secondary" onClick={() => setIsEditingEvent(true)}>
               Edit
             </Button>

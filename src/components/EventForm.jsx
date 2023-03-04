@@ -10,6 +10,8 @@ function EventForm({
   event,
   isEditingEvent,
   setIsEditingEvent,
+  isCreatingEvent,
+  setIsCreatingEvent,
 }) {
   const [show, setShow] = useState(true);
   const [title, setTitle] = useState("");
@@ -42,7 +44,8 @@ function EventForm({
   }
 
   const handleClose = () => {
-    setIsEditingEvent(false);
+    isEditingEvent ? setIsEditingEvent(false) : null;
+    isCreatingEvent ? setIsCreatingEvent(false) : null;
     setShow(false);
   };
 
