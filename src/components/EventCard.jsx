@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Container, Card, ListGroup } from "react-bootstrap";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import EventForm from "./EventForm";
 
 function EventCard() {
@@ -9,6 +9,8 @@ function EventCard() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditingEvent, setIsEditingEvent] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const fetchEvent = async () => {
     try {
       const response = await axios.get(`http://localhost:5005/events/${id}`);
@@ -23,6 +25,11 @@ function EventCard() {
   useEffect(() => {
     fetchEvent();
   }, []);
+
+  const handleDelete = async () => {
+    await axios.post(`http://localhost:5005/events/${event._id}/delete`);
+    navigate("/profile");
+  };
 
   return (
     <Container>
@@ -49,9 +56,12 @@ function EventCard() {
             <Card.Text>{event.restaurant.address.display_address}</Card.Text>
           </ListGroup>
           <Card.Body className="card-btns">
-            <Button variant="secondary">See restaurant details</Button>
-            <Button variant="warning" onClick={() => setIsEditingEvent(true)}>
-              Edit event
+            <Button variant="secondary">Restaurant details</Button>
+            <Button variant="secondary" onClick={() => setIsEditingEvent(true)}>
+              Edit
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Delete
             </Button>
           </Card.Body>
         </Card>

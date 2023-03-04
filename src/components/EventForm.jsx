@@ -13,8 +13,6 @@ function EventForm({
 }) {
   const [show, setShow] = useState(true);
   const [title, setTitle] = useState("");
-  // `Dinner at restaurant "${restaurant.name}"`
-  //   );
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [invitedUsers, setInvitedUsers] = useState("");
@@ -87,8 +85,6 @@ function EventForm({
               <Form.Label>
                 Invite
                 <Form.Select
-                  id="invited_users"
-                  name="invited_users"
                   value={invitedUsers}
                   onChange={(event) => setInvitedUsers(event.target.value)}
                 >
