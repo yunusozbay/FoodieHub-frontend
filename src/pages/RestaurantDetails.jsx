@@ -1,23 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button, Container } from "react-bootstrap";
 import { useParams } from "react-router";
+import EventForm from "../components/EventForm";
+import { SessionContext } from "../contexts/SessionContext";
 
-function RestaurantDetails({ restaurants }) {
+function RestaurantDetails() {
   const [oneRestaurant, setOneRestaurant] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreatingEvent, setIsCreatingEvent] = useState(false);
 
-  let restaurant;
-
-  const { id } = useParams();
-  //   restaurants.map(())
+  const { userData } = useContext(SessionContext);
+  const { alias } = useParams();
 
   const YELP_TOKEN = import.meta.env.VITE_YELP_TOKEN;
   const BASE_URL =
     "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses";
 
   const fetchData = async () => {
-    const response = await axios.get(`${BASE_URL}/${id}`, {
+    const response = await axios.get(`${BASE_URL}/${alias}`, {
       headers: {
         Authorization: `Bearer ${YELP_TOKEN}`,
         withCredentials: true,
@@ -40,7 +41,12 @@ function RestaurantDetails({ restaurants }) {
         <>
           <div className="detail-btns">
             <Button variant="warning">Add to my list</Button>
-            <Button variant="secondary">Create an event</Button>
+            <Button
+              variant="secondary"
+              onClick={() => setIsCreatingEvent(true)}
+            >
+              Create an event
+            </Button>
           </div>
           <article className="restaurant-details">
             <h1 className="mt-3">{oneRestaurant.name}</h1>
@@ -85,6 +91,14 @@ function RestaurantDetails({ restaurants }) {
           </article>
         </>
       )}
+      {isCreatingEvent ? (
+        <EventForm
+          restaurant={oneRestaurant}
+          userData={userData}
+          isCreatingEvent={isCreatingEvent}
+          setIsCreatingEvent={setIsCreatingEvent}
+        />
+      ) : null}
     </Container>
   );
 }
