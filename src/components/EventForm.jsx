@@ -1,19 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 
-function EventForm({ restaurant, userData }) {
+function EventForm({
+  restaurant,
+  userData,
+  event,
+  isEditingEvent,
+  setIsEditingEvent,
+}) {
   const [show, setShow] = useState(true);
-  const [title, setTitle] = useState(
-    `Dinner at restaurant "${restaurant.name}"`
-  );
+  const [title, setTitle] = useState("");
+  // `Dinner at restaurant "${restaurant.name}"`
+  //   );
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [invitedUsers, setInvitedUsers] = useState("");
 
+  useEffect(() => {
+    if (isEditingEvent) {
+      setTitle(event.title);
+      setDate(event.date.slice(0, 10));
+      setTime(event.time);
+    }
+  }, []);
+
   async function handleSubmit() {
+    if (isEditingEvent) {
+      await axios.post(`http://localhost:5005/events/${event._id}/edit`, {
+        title,
+        date,
+        time,
+        invitedUsers,
+      });
+    }
     await axios.post("http://localhost:5005/events/new", {
       userData,
       restaurant,
@@ -21,13 +43,18 @@ function EventForm({ restaurant, userData }) {
     });
   }
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setIsEditingEvent(false);
+    setShow(false);
+  };
 
   return (
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Create an event</Modal.Title>
+          <Modal.Title>
+            {isEditingEvent ? "Edit your event" : "Create an event"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -70,22 +97,15 @@ function EventForm({ restaurant, userData }) {
                   <option value="user">Friend3</option>
                 </Form.Select>
               </Form.Label>
+            </Form.Group>
+            <Form.Group>
               <Button type="submit">Save</Button>
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="warning" onClick={handleClose}>
-            Save Event
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );
 }
 
-// render(<Example />);
 export default EventForm;

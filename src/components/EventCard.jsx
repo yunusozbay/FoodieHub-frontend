@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Container, Card, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router";
+import EventForm from "./EventForm";
 
 function EventCard() {
   const [event, setEvent] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isEditingEvent, setIsEditingEvent] = useState(false);
   const { id } = useParams();
   const fetchEvent = async () => {
     try {
@@ -39,18 +41,28 @@ function EventCard() {
               <h2 className="card-title">{event.title}</h2>
             </Card.Title>
             <h4>with {event.invited_users}</h4>
-            <h6>Date: {event.date}</h6>
+            <h6>Date: {event.date.slice(0, 10)}</h6>
             <h6>Time: {event.time}</h6>
             <Card.Text>{event.restaurant.name}</Card.Text>
           </Card.Body>
-          <ListGroup className="list-group-flush">
+          <ListGroup>
             <Card.Text>{event.restaurant.address.display_address}</Card.Text>
           </ListGroup>
           <Card.Body className="card-btns">
             <Button variant="secondary">See restaurant details</Button>
+            <Button variant="warning" onClick={() => setIsEditingEvent(true)}>
+              Edit event
+            </Button>
           </Card.Body>
         </Card>
       )}
+      {isEditingEvent ? (
+        <EventForm
+          event={event}
+          isEditingEvent={isEditingEvent}
+          setIsEditingEvent={setIsEditingEvent}
+        />
+      ) : null}
     </Container>
   );
 }
