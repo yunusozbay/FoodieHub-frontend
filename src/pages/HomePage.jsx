@@ -39,8 +39,8 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
       {allUsers.map((user) =>
         searchTerm &&
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ? (
-          <Link to={`/users/${user._id}`}>
-            <div key={user._id}>{user.username}</div>
+          <Link key={user._id} to={`/users/${user._id}`}>
+            <div>{user.username}</div>
           </Link>
         ) : null
       )}
