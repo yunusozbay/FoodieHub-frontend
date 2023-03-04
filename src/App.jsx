@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
+import EventCard from "./components/EventCard";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
 
@@ -78,6 +79,7 @@ function App() {
           path="/restaurants/:id"
           element={<RestaurantDetails restaurants={rest} />}
         />
+        <Route path="/events/:id" element={<EventCard />} />
         <Route
           path="/profile"
           element={
