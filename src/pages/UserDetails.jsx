@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 import { Button } from "react-bootstrap";
+import Notifications from "../components/Notifications";
 
 function UserDetails() {
   const [oneUser, setOneUser] = useState({});
@@ -37,6 +38,7 @@ function UserDetails() {
         <h2>Loading...</h2>
       ) : (
         <>
+          <Notifications userData={userData} />
           <h1>{oneUser.username}</h1>
           {!isFriend ? <Button onClick={sendRequest}>Add Friend</Button> : null}
         </>
