@@ -47,7 +47,11 @@ function EventCard() {
             <Card.Title>
               <h2 className="card-title">{event.title}</h2>
             </Card.Title>
-            <h4>with {event.invited_users}</h4>
+            with{" "}
+            {event.invited_users.map((friend) => (
+              <span>{friend.username}</span>
+            ))}
+            <h4>Created by: {event.created_by.username}</h4>
             <h6>Date: {event.date.slice(0, 10)}</h6>
             <h6>Time: {event.time}</h6>
             <Card.Text>{event.restaurant.name}</Card.Text>

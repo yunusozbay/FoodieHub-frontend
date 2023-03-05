@@ -6,6 +6,7 @@ import bell from "../assets/bell.png";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Notifications() {
   const { userData } = useContext(SessionContext);
@@ -13,6 +14,8 @@ function Notifications() {
     userData.friend_requests
   );
   const [friends, setFriends] = useState(userData.friends);
+
+  const navigate = useNavigate();
 
   const sendResponse = async () => {
     const updatedUser = await axios.post(
@@ -64,6 +67,19 @@ function Notifications() {
                   onClick={() => handleDeleteRequest(request._id)}
                 >
                   Delete
+                </Button>
+              </div>
+            </li>
+          ))}
+          {userData.invitations.map((event) => (
+            <li key={event._id}>
+              You've been invited to "{event.title}"
+              <div>
+                <Button
+                  variant="primary"
+                  onClick={() => navigate(`/events/${event._id}`)}
+                >
+                  See details
                 </Button>
               </div>
             </li>

@@ -85,17 +85,19 @@ function EventForm({
                   onChange={(event) => setTime(event.target.value)}
                 />
               </Form.Label>
-              <Form.Label>
-                Invite
-                <Form.Select
-                  value={invited_users}
-                  onChange={(event) => setInvited_users(event.target.value)}
-                >
-                  <option value="user">Friend1</option>
-                  <option value="user">Friend2</option>
-                  <option value="user">Friend3</option>
-                </Form.Select>
-              </Form.Label>
+              {userData.friends.length ? (
+                <Form.Label>
+                  Invite
+                  <Form.Select
+                    //   value={invited_users}
+                    onChange={(event) => setInvited_users(event.target.value)}
+                  >
+                    {userData.friends.map((friend) => (
+                      <option value={friend._id}>{friend.username}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Label>
+              ) : null}
             </Form.Group>
             <Form.Group>
               <Button type="submit">Save</Button>
