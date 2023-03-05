@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Button, Container, Card, ListGroup } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router";
 import EventForm from "./EventForm";
+import { SessionContext } from "../contexts/SessionContext";
 
 function EventCard() {
   const [event, setEvent] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isEditingEvent, setIsEditingEvent] = useState(false);
+
+  const { userData } = useContext(SessionContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
   const fetchEvent = async () => {
     try {
       const response = await axios.get(`http://localhost:5005/events/${id}`);
-      console.log(response);
       setEvent(response.data.foundEvent);
       setIsLoading(false);
     } catch (error) {
@@ -66,12 +68,19 @@ function EventCard() {
             >
               Restaurant details
             </Button>
-            <Button variant="secondary" onClick={() => setIsEditingEvent(true)}>
-              Edit
-            </Button>
-            <Button variant="danger" onClick={handleDelete}>
-              Delete
-            </Button>
+            {event.created_by._id === userData.id && (
+              <Button
+                variant="secondary"
+                onClick={() => setIsEditingEvent(true)}
+              >
+                Edit
+              </Button>
+            )}
+            {event.created_by._id === userData.id && (
+              <Button variant="danger" onClick={handleDelete}>
+                Delete
+              </Button>
+            )}
           </Card.Body>
         </Card>
       )}

@@ -23,6 +23,7 @@ function App() {
     "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses";
 
   const fetchRandom = async (result) => {
+    setIsLoading(true);
     const random = Math.floor(Math.random() * result.length);
     const randomId = result[random].id;
     const response = await axios.get(`${BASE_URL}/${randomId}`, {
@@ -32,6 +33,7 @@ function App() {
       },
     });
     setRandomRest(response.data);
+    setIsLoading(false);
     setIsShowingRandom(true);
   };
 
@@ -73,6 +75,7 @@ function App() {
               restaurants={rest}
               handleSubmit={handleSubmit}
               isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
           }
         />

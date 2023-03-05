@@ -17,7 +17,7 @@ function Notifications() {
 
   const navigate = useNavigate();
 
-  const sendResponse = async () => {
+  const sendResponse = async (request) => {
     const updatedUser = await axios.post(
       `http://localhost:5005/users/${userData.id}/update`,
       {
@@ -25,26 +25,40 @@ function Notifications() {
         friends: friends,
       }
     );
+    const updatedFriend = await axios.post(
+      `http://localhost:5005/users/${request._id}/update`,
+      {
+        friends: [userData.id, ...request.friends],
+      }
+    );
   };
 
-  const handleDeleteRequest = (id) => {
+  const handleDeleteRequest = (request) => {
     const newArr = JSON.parse(JSON.stringify(friendRequests));
-    const index = newArr.indexOf(id);
+    const index = newArr.indexOf(request._id);
     newArr.splice(index, 1);
     let requestIds = [];
-    newArr.map((request) => {
-      requestIds.push(request._id);
+    newArr.map((req) => {
+      requestIds.push(req._id);
     });
     setFriendRequests(requestIds);
-    sendResponse();
+    sendResponse(request);
   };
 
-  const handleAccept = (id) => {
+  const handleAccept = (request) => {
     let newFriendsArr = [...friends];
-    newFriendsArr.unshift(id);
+    newFriendsArr.unshift(request._id);
     setFriends(newFriendsArr);
-    handleDeleteRequest(id);
-    sendResponse();
+    const newArr = JSON.parse(JSON.stringify(friendRequests));
+    const index = newArr.indexOf(request._id);
+    newArr.splice(index, 1);
+    let requestIds = [];
+    newArr.map((req) => {
+      requestIds.push(req._id);
+    });
+    setFriendRequests(requestIds);
+    // handleDeleteRequest(request);
+    sendResponse(request);
   };
 
   const popover = (
@@ -56,15 +70,12 @@ function Notifications() {
             <li key={request._id}>
               {request.username} has sent you a friend request
               <div>
-                <Button
-                  variant="primary"
-                  onClick={() => handleAccept(request._id)}
-                >
+                <Button variant="primary" onClick={() => handleAccept(request)}>
                   Accept
                 </Button>
                 <Button
                   variant="secondary"
-                  onClick={() => handleDeleteRequest(request._id)}
+                  onClick={() => handleDeleteRequest(request)}
                 >
                   Delete
                 </Button>
@@ -94,9 +105,11 @@ function Notifications() {
       <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
         <Button variant="secondary">
           <img style={{ width: "1.5rem" }} src={bell} />
-          <Badge bg="danger">
-            {userData.friend_requests.length + userData.invitations.length}
-          </Badge>
+          {userData.friend_requests.length || userData.invitations.length ? (
+            <Badge bg="danger">
+              {userData.friend_requests.length + userData.invitations.length}
+            </Badge>
+          ) : null}
           <span className="visually-hidden">unread messages</span>
         </Button>
       </OverlayTrigger>

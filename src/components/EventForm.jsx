@@ -87,9 +87,8 @@ function EventForm({
               </Form.Label>
               {userData.friends.length ? (
                 <Form.Label>
-                  Invite
+                  Invite a Foodie Friend
                   <Form.Select
-                    //   value={invited_users}
                     onChange={(event) => setInvited_users(event.target.value)}
                   >
                     {userData.friends.map((friend) => (
