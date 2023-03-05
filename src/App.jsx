@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import EventCard from "./components/EventCard";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
+import UserDetails from "./pages/UserDetails";
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -79,6 +80,7 @@ function App() {
           path="/restaurants/:alias"
           element={<RestaurantDetails restaurants={rest} />}
         />
+        <Route path="/users/:id" element={<UserDetails />} />
         <Route path="/events/:id" element={<EventCard />} />
         <Route
           path="/profile"
