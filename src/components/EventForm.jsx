@@ -17,7 +17,7 @@ function EventForm({
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [invitedUsers, setInvitedUsers] = useState("");
+  const [invited_users, setInvited_users] = useState("");
 
   useEffect(() => {
     if (isEditingEvent) {
@@ -33,13 +33,13 @@ function EventForm({
         title,
         date,
         time,
-        invitedUsers,
+        invited_users,
       });
     }
     await axios.post("http://localhost:5005/events/new", {
       userData,
       restaurant,
-      newEvent: { title, date, time, invitedUsers },
+      newEvent: { title, date, time, invited_users },
     });
   }
 
@@ -88,8 +88,8 @@ function EventForm({
               <Form.Label>
                 Invite
                 <Form.Select
-                  value={invitedUsers}
-                  onChange={(event) => setInvitedUsers(event.target.value)}
+                  value={invited_users}
+                  onChange={(event) => setInvited_users(event.target.value)}
                 >
                   <option value="user">Friend1</option>
                   <option value="user">Friend2</option>
