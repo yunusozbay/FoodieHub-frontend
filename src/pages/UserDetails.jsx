@@ -16,8 +16,9 @@ function UserDetails() {
     const response = await axios.get(`http://localhost:5005/users/${id}`);
     setOneUser(response.data.oneUser);
     setIsLoading(false);
+
     if (!isLoading) {
-      oneUser.friends.includes(userData._id) ? setIsFriend(true) : null;
+      oneUser.friends.includes(userData.id) ? setIsFriend(true) : null;
     }
   };
 

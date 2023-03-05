@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Button, Container, Card, ListGroup } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router";
 import EventForm from "./EventForm";
+import { SessionContext } from "../contexts/SessionContext";
 
 function EventCard() {
   const [event, setEvent] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isEditingEvent, setIsEditingEvent] = useState(false);
+
+  const { userData } = useContext(SessionContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
   const fetchEvent = async () => {
     try {
       const response = await axios.get(`http://localhost:5005/events/${id}`);
-      console.log(response);
       setEvent(response.data.foundEvent);
       setIsLoading(false);
     } catch (error) {
@@ -47,7 +49,11 @@ function EventCard() {
             <Card.Title>
               <h2 className="card-title">{event.title}</h2>
             </Card.Title>
-            <h4>with {event.invited_users}</h4>
+            with{" "}
+            {event.invited_users.map((friend) => (
+              <span>{friend.username}</span>
+            ))}
+            <h4>Created by: {event.created_by.username}</h4>
             <h6>Date: {event.date.slice(0, 10)}</h6>
             <h6>Time: {event.time}</h6>
             <Card.Text>{event.restaurant.name}</Card.Text>
@@ -62,12 +68,19 @@ function EventCard() {
             >
               Restaurant details
             </Button>
-            <Button variant="secondary" onClick={() => setIsEditingEvent(true)}>
-              Edit
-            </Button>
-            <Button variant="danger" onClick={handleDelete}>
-              Delete
-            </Button>
+            {event.created_by._id === userData.id && (
+              <Button
+                variant="secondary"
+                onClick={() => setIsEditingEvent(true)}
+              >
+                Edit
+              </Button>
+            )}
+            {event.created_by._id === userData.id && (
+              <Button variant="danger" onClick={handleDelete}>
+                Delete
+              </Button>
+            )}
           </Card.Body>
         </Card>
       )}
