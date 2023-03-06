@@ -47,14 +47,14 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
           </Link>
         ) : null
       )}
-      {/* <h2 className="text-center mt-3">
+      <h2 className="text-center mt-3">
         Hello,{" "}
-        {userData.username !== undefined ? (
+        {userData && userData.username !== undefined ? (
           <span>{userData.username}!</span>
         ) : (
           "Foodie!"
         )}
-      </h2> */}
+      </h2>
       <h1 className="title">Looking for a new restaurant to try?</h1>
       <Form className="restaurant-search-form" onSubmit={submitCallback}>
         <h6 className="text-center">Tell us your criterias:</h6>

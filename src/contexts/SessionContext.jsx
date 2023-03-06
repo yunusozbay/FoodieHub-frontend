@@ -16,17 +16,23 @@ const SessionContextProvider = ({ children }) => {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      const data = await fetchData.json()
-      setUserData(data)
-      setToken(jwt);
-      setIsAuthenticated(true);
-      setIsLoading(false);
+      const data = await fetchData.json();
+      if (data && data.username !== undefined) {
+        setUserData(data);
+        setToken(jwt);
+        setIsAuthenticated(true);
+        setIsLoading(false);
+      } else {
+        console.log(data);
+        setIsLoading(false);
+        console.log("userData not found");
+      }
     } catch (error) {
       console.log(error);
       window.localStorage.removeItem("authToken");
     }
   };
-  console.log(userData)
+  console.log(userData);
   useEffect(() => {
     const localToken = window.localStorage.getItem("authToken");
     verifyToken(localToken);
@@ -35,14 +41,14 @@ const SessionContextProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       window.localStorage.setItem("authToken", token);
-    }
-    if (!isAuthenticated) {
-      setIsAuthenticated(true);
+      verifyToken(token);
     }
   }, [token]);
 
   return (
-    <SessionContext.Provider value={{ setToken, isAuthenticated, isLoading, userData}}>
+    <SessionContext.Provider
+      value={{ setToken, isAuthenticated, isLoading, userData }}
+    >
       {children}
     </SessionContext.Provider>
   );
