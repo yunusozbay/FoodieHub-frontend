@@ -44,6 +44,7 @@ function NavBarComp() {
       </Container>
     </Navbar>
   );
+  
 }
 
 export default NavBarComp;
