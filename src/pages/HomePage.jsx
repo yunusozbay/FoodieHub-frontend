@@ -16,7 +16,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [newPlace, setNewPlace] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-
+  const [hidden, setHidden] = useState(false);
   const { userData } = useContext(SessionContext);
 
   const fetchData = async () => {
@@ -88,12 +88,12 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
             onChange={checkHandler}
           />
         </Form.Group>
-        <Button variant="outline-warning" type="submit">
+        <Button variant="outline-warning" type="submit" onClick={() => setHidden(false)}>
           Show me a restaurant
         </Button>
       </Form>
       {isLoading ? <SpinnerComponent /> : null}
-      {isShowingRandom ? <RestaurantCard restaurant={randomRest} /> : null}
+      {isShowingRandom ? <RestaurantCard hidden={hidden} setHidden={setHidden} restaurant={randomRest} /> : null}
       <h4>Would you like to see all your options?</h4>
       <Link to="/restaurants">Browse all restaurants</Link>
     </Container>
