@@ -1,7 +1,6 @@
-import React from 'react'
-import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap'
-
-
+import React from "react";
+import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 function NavBarComp() {
   return (
@@ -12,10 +11,26 @@ function NavBarComp() {
         <Navbar.Collapse id="navbarScroll">
           <Nav
             className="ms-auto justify-content-center align-items-center"
-            style={{ maxHeight: '100px' }}
+            style={{ maxHeight: "100px" }}
             navbarScroll
           >
-          <Form className="d-flex flex-grow-1">
+            <Form className="d-flex flex-grow-1">
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+
+            <Nav.Link as={Link} to='/'>Home</Nav.Link>
+            <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
+
+            <Nav.Link as={Link} to='/login'>Login</Nav.Link>
+
+            <Nav.Link as={Link} to='/logout'>Logout</Nav.Link>
+          </Nav><Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -24,29 +39,11 @@ function NavBarComp() {
             />
             <Button variant="outline-success">Search</Button>
           </Form>
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Profile</Nav.Link>
-            <Nav.Link href="#action2">Login</Nav.Link>
-            <Nav.Link href="#action2">Logout</Nav.Link>
-            {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown> */}
-            {/* <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link> */}
-          </Nav>
-          
+
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  )
+  );
 }
 
-export default NavBarComp
+export default NavBarComp;
