@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 import "../styles/ProfilePage.css";
+import {Card, Button} from "react-bootstrap"
 
 function ProfilePage() {
   const { userData, isAuthenticated } = useContext(SessionContext);
@@ -22,6 +23,11 @@ function ProfilePage() {
       fetchData();
     }
   }, [userData]);
+  
+  const handleDelete = async (id) => {
+    await axios.post(`http://localhost:5005/restaurants/delete`, {id})
+    fetchData()
+  }
 
   return (
     <div className="container">
@@ -30,6 +36,22 @@ function ProfilePage() {
       ) : (
         <>
           <h1>{profileData.username}</h1>
+          {profileData.restaurants.map((restaurant) => (
+          <Card style={{ width: "18rem" }} key={restaurant._id}>
+            <Card.Img variant="top" src={restaurant.image_url} />
+            <Card.Body>
+              <Card.Title>{restaurant.name}</Card.Title>
+              <Card.Text>
+                Phone: {restaurant.phone}
+              </Card.Text>
+              <Card.Text>
+                Price: {restaurant.price} Rating: {restaurant.rating} Reviews: {restaurant.review_count}
+              </Card.Text>
+              <Button variant="outline-warning">Show details</Button>
+              <Button variant="outline-warning" onClick={() => handleDelete(restaurant._id)}>Delete</Button>
+            </Card.Body>
+          </Card>
+          ))}
           {/* <div className="row -spacing-a">
             <div className="col-md-12">
               <h1>MY PROFILE</h1>
