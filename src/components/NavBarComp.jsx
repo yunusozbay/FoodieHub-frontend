@@ -15,10 +15,12 @@ function NavBarComp() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            
-
             <Nav.Link as={Link} to="/">
               Home
+            </Nav.Link>
+
+            <Nav.Link as={Link} to="/signup">
+              Signup
             </Nav.Link>
             <Nav.Link as={Link} to="/profile">
               Profile
@@ -30,6 +32,7 @@ function NavBarComp() {
 
             <Button
               onClick={() => {
+                console.log("clicked")
                 window.localStorage.removeItem("authToken");
               }}
             >
