@@ -89,23 +89,23 @@ button:focus-visible {
 .card-img {
   width: 100%;
   height: 15rem;
-  object-fit: cover
+  object-fit: cover;
 }
 .card-img-sm {
   width: 100%;
   height: 10rem;
-  object-fit: cover
+  object-fit: cover;
 }
 
 .card-title-sm {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .card-ratings-sm {
-  font-size: .7rem;
+  font-size: 0.7rem;
 }
 .card-ratings-sm {
-  font-size: .7rem;
+  font-size: 0.7rem;
 }
 .card-address-sm {
   display: none;
@@ -120,7 +120,7 @@ button:focus-visible {
   height: 8rem;
 }
 .card-body-sm a {
-  font-size: .7rem;
+  font-size: 0.7rem;
 }
 .result-links {
   display: flex;
