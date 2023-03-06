@@ -75,9 +75,9 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
         <Row xs={2} md={3} lg={5} className="g-4">
           {restaurants.map((restaurant) => (
             <Col className="card-col">
-              <Link to={`/restaurants/${restaurant.id}`}>
-                <RestaurantCard restaurant={restaurant} listView={listView} />
-              </Link>
+              {/* <Link to={`/restaurants/${restaurant.id}`}> */}
+              <RestaurantCard restaurant={restaurant} listView={listView} />
+              {/* </Link> */}
             </Col>
           ))}
         </Row>

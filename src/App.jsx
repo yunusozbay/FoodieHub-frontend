@@ -6,9 +6,11 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import PrivateRoute from "./components/PrivateRoute";
+import EventCard from "./components/EventCard";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
 import NavbarComp from './components/NavbarComp'
+import UserDetails from "./pages/UserDetails";
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -22,6 +24,7 @@ function App() {
     "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses";
 
   const fetchRandom = async (result) => {
+    setIsLoading(true);
     const random = Math.floor(Math.random() * result.length);
     const randomId = result[random].id;
     const response = await axios.get(`${BASE_URL}/${randomId}`, {
@@ -31,6 +34,7 @@ function App() {
       },
     });
     setRandomRest(response.data);
+    setIsLoading(false);
     setIsShowingRandom(true);
   };
 
@@ -73,13 +77,16 @@ function App() {
               restaurants={rest}
               handleSubmit={handleSubmit}
               isLoading={isLoading}
+              setIsLoading={setIsLoading}
             />
           }
         />
         <Route
-          path="/restaurants/:id"
+          path="/restaurants/:alias"
           element={<RestaurantDetails restaurants={rest} />}
         />
+        <Route path="/users/:id" element={<UserDetails />} />
+        <Route path="/events/:id" element={<EventCard />} />
         <Route
           path="/profile"
           element={

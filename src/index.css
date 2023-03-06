@@ -116,6 +116,9 @@ button:focus-visible {
 .card-price-sm {
   display: none;
 }
+.card-body-sm {
+  height: 8rem;
+}
 .card-body-sm a {
   font-size: 0.7rem;
 }
@@ -145,7 +148,24 @@ button:focus-visible {
   justify-content: space-between;
   margin-top: 2rem;
 }
-
-#root {
+.card-btns-sm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem;
+}
+.card-btns-sm button {
+  font-size: .8rem;
+  padding: .3rem;
+}
+.list-btn, .event-btn {
+  width: 45%;
+}
+.details-btn {
   width: 100%;
+  flex-grow: 1;
+}
+.card-btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
