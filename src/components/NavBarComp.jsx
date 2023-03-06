@@ -32,7 +32,13 @@ function NavBarComp() {
             <Nav.Link href="#action1">Home</Nav.Link>
             <Nav.Link href="#action2">Profile</Nav.Link>
             <Nav.Link href="#action2">Login</Nav.Link>
-            <Button>Logout</Button>
+            <Button
+              onClick={() => {
+                window.localStorage.removeItem("authToken");
+              }}
+            >
+              Logout
+            </Button>
             {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
