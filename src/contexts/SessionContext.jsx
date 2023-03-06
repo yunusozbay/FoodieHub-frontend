@@ -35,9 +35,7 @@ const SessionContextProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       window.localStorage.setItem("authToken", token);
-    }
-    if (!isAuthenticated) {
-      setIsAuthenticated(true);
+      verifyToken(token)
     }
   }, [token]);
 
