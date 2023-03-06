@@ -14,6 +14,7 @@ function Notifications() {
     userData.friend_requests
   );
   const [friends, setFriends] = useState(userData.friends);
+  const [isReplySent, setIsReplySent] = useState(false);
 
   const navigate = useNavigate();
 
@@ -31,6 +32,7 @@ function Notifications() {
         friends: [userData.id, ...request.friends],
       }
     );
+    setIsReplySent(true);
   };
 
   const handleDeleteRequest = (request) => {
@@ -69,17 +71,24 @@ function Notifications() {
           {userData.friend_requests.map((request) => (
             <li key={request._id}>
               {request.username} has sent you a friend request
-              <div>
-                <Button variant="primary" onClick={() => handleAccept(request)}>
-                  Accept
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => handleDeleteRequest(request)}
-                >
-                  Delete
-                </Button>
-              </div>
+              {!isReplySent ? (
+                <div>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleAccept(request)}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleDeleteRequest(request)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ) : (
+                <div>Reply sent</div>
+              )}
             </li>
           ))}
           {userData.invitations.map((event) => (

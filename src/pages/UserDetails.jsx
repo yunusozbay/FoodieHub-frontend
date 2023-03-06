@@ -4,11 +4,13 @@ import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 import { Button } from "react-bootstrap";
 import Notifications from "../components/Notifications";
+import RestaurantCard from "../components/RestaurantCard";
 
 function UserDetails() {
   const [oneUser, setOneUser] = useState({});
   const [isFriend, setIsFriend] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRequestSent, setIsRequestSent] = useState(false);
   const { id } = useParams();
   const { userData } = useContext(SessionContext);
 
@@ -27,11 +29,14 @@ function UserDetails() {
     await axios.post(`http://localhost:5005/users/${oneUser._id}/update`, {
       friend_requests: [userData.id, ...oneUser.friend_requests],
     });
+    setIsRequestSent(true);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (userData && userData.username !== undefined) {
+      fetchData();
+    }
+  }, [userData]);
 
   return (
     <div>
@@ -41,7 +46,18 @@ function UserDetails() {
         <>
           <Notifications userData={userData} />
           <h1>{oneUser.username}</h1>
-          {!isFriend ? <Button onClick={sendRequest}>Add Friend</Button> : null}
+          {console.log(oneUser.restaurants)}
+          {!isFriend ? (
+            <Button
+              onClick={sendRequest}
+              disabled={isRequestSent ? true : false}
+            >
+              {isRequestSent ? "Request sent" : "Add Friend"}
+            </Button>
+          ) : null}
+          {oneUser.restaurants.map((rest) => (
+            <RestaurantCard restaurant={rest} />
+          ))}
         </>
       )}
     </div>

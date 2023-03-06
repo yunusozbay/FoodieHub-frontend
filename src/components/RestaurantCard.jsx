@@ -38,7 +38,7 @@ function RestaurantCard({ restaurant, listView }) {
             Rating: {restaurant.rating} ({restaurant.review_count} reviews)
           </h6>
           <Card.Text className={listView ? "card-address-sm" : "card-address"}>
-            {restaurant.location.display_address}
+            {restaurant.address.display_address}
           </Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
