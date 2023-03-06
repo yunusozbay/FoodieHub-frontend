@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+// import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 
 function NavBarComp() {
   return (
@@ -14,23 +15,28 @@ function NavBarComp() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Form className="d-flex flex-grow-1">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">Search</Button>
-            </Form>
+            
 
-            <Nav.Link as={Link} to='/'>Home</Nav.Link>
-            <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
+            <Nav.Link as={Link} to="/">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/profile">
+              Profile
+            </Nav.Link>
 
-            <Nav.Link as={Link} to='/login'>Login</Nav.Link>
+            <Nav.Link as={Link} to="/login">
+              Login
+            </Nav.Link>
 
-            <Nav.Link as={Link} to='/logout'>Logout</Nav.Link>
-          </Nav><Form className="d-flex">
+            <Button
+              onClick={() => {
+                window.localStorage.removeItem("authToken");
+              }}
+            >
+              Logout
+            </Button>
+          </Nav>
+          <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -39,12 +45,10 @@ function NavBarComp() {
             />
             <Button variant="outline-success">Search</Button>
           </Form>
-
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
-  
 }
 
 export default NavBarComp;
