@@ -29,11 +29,11 @@ function NavBarComp() {
               />
               <Button variant="outline-success">Search</Button>
             </Form>
-            <Nav.Link href="#action1">Home</Nav.Link>
+            <Nav.Link to="/">Home</Nav.Link>
             <Nav.Link href="#action2">Profile</Nav.Link>
             <Nav.Link href="#action2">Login</Nav.Link>
             <Button
-              onClick={() => {
+              onClickCapture={() => {
                 window.localStorage.removeItem("authToken");
               }}
             >
