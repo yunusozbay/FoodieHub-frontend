@@ -12,6 +12,7 @@ import RestaurantDetails from "./pages/RestaurantDetails";
 import NavbarComp from './components/NavbarComp'
 import UserDetails from "./pages/UserDetails";
 
+
 function App() {
   const [rest, setRest] = useState([]);
   const [randomRest, setRandomRest] = useState({});

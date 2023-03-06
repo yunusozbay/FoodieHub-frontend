@@ -31,8 +31,7 @@ function NavBarComp() {
             </Nav.Link>
 
             <Button
-              onClick={() => {
-                console.log("clicked")
+              onClickCapture={() => {
                 window.localStorage.removeItem("authToken");
               }}
             >

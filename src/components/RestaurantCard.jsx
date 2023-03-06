@@ -5,12 +5,11 @@ import EventForm from "./EventForm";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 
-function RestaurantCard({ restaurant, listView }) {
-  const [hidden, setHidden] = useState(false);
+function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const { userData } = useContext(SessionContext);
   async function handlePost() {
-    await axios.post("http://localhost:5005/api/add", {
+    await axios.post("http://localhost:5005/restaurants/add", {
       userData,
       restaurant,
     });

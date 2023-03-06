@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 import "../styles/ProfilePage.css";
+import { Card, Button } from "react-bootstrap";
 
 function ProfilePage() {
   const { userData, isAuthenticated } = useContext(SessionContext);
@@ -16,7 +17,6 @@ function ProfilePage() {
     setProfileData(response.data.oneUser);
     setIsLoading(false);
   };
-  
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
@@ -24,7 +24,10 @@ function ProfilePage() {
     }
   }, [userData]);
 
-  
+  const handleDelete = async (id) => {
+    await axios.post(`http://localhost:5005/restaurants/delete`, { id });
+    fetchData();
+  };
 
   return (
     <div className="container">
@@ -32,14 +35,14 @@ function ProfilePage() {
         <h2>Loading...</h2>
       ) : (
         <>
-        {console.log(profileData)}
-          <h1>{profileData.username}</h1>
+          {console.log(profileData)}
+          {/* <h1>{profileData.username}</h1> */}
 
-          <div class="user-profile py-4">
+          <div class="user-profile py-4 mb-4">
             <div class="container">
               <div class="row">
                 <div class="col-lg-4">
-                  <div class="card shadow-sm my-4">
+                  <div class="card shadow-sm ">
                     <div class="card-header bg-transparent text-center">
                       <img
                         class="profile_img"
@@ -83,7 +86,7 @@ function ProfilePage() {
                         <tr>
                           <th width="30%">Joined on</th>
                           <td width="2%">:</td>
-                          <td>{profileData.createdAt.slice(0,10)}</td>
+                          <td>{profileData.createdAt.slice(0, 10)}</td>
                         </tr>
                       </table>
                     </div>
@@ -108,6 +111,23 @@ function ProfilePage() {
               </div>
             </div>
           </div>
+
+          {profileData.restaurants.map((restaurant) => (
+          <Card style={{ width: "18rem" }} key={restaurant._id}>
+            <Card.Img variant="top" src={restaurant.image_url} />
+            <Card.Body>
+              <Card.Title>{restaurant.name}</Card.Title>
+              <Card.Text>
+                Phone: {restaurant.phone}
+              </Card.Text>
+              <Card.Text>
+                Price: {restaurant.price} Rating: {restaurant.rating} Reviews: {restaurant.review_count}
+              </Card.Text>
+              <Button variant="outline-warning">Show details</Button>
+              <Button variant="outline-warning" onClick={() => handleDelete(restaurant._id)}>Delete</Button>
+            </Card.Body>
+          </Card>
+          ))}
         </>
       )}
     </div>
