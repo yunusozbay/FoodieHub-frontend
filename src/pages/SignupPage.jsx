@@ -9,7 +9,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    // console.log({ username, email, password });
+    console.log({ username, email, password });
     const response = await fetch("http://localhost:5005/auth/signup", {
       method: "POST",
       headers: {
