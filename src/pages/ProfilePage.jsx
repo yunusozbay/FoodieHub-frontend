@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 import "../styles/ProfilePage.css";
+import { Card, Button } from "react-bootstrap";
 
 function ProfilePage() {
   const { userData, isAuthenticated } = useContext(SessionContext);
@@ -42,76 +43,110 @@ function ProfilePage() {
     }
   }, [userData]);
 
+  const handleDelete = async (id) => {
+    await axios.post(`http://localhost:5005/restaurants/delete`, { id });
+    fetchData();
+  };
+
   return (
     <div className="container">
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (
         <>
-          <h1>{profileData.username}</h1>
-          {/* <div className="row -spacing-a">
-            <div className="col-md-12">
-              <h1>MY PROFILE</h1>
+          {console.log(profileData)}
+          {/* <h1>{profileData.username}</h1> */}
+
+          <div class="user-profile py-4 mb-4">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="card shadow-sm ">
+                    <div class="card-header bg-transparent text-center">
+                      <img
+                        class="profile_img"
+                        src="https://source.unsplash.com/600x300/?student"
+                        alt="student dp"
+                      />
+                      <h3>Hello, {profileData.username}!</h3>
+                    </div>
+                    <div class="card-body">
+                      <p class="mb-0">
+                        <strong class="pr-1">Friends: </strong>3
+                      </p>
+                      <p class="mb-0">
+                        <strong class="pr-1">Favorite restaurants: </strong>4
+                      </p>
+                      <p class="mb-0">
+                        <strong class="pr-1">Events organized: </strong>2
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="card shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                      <h3 class="mb-0">
+                        <i class="far fa-clone pr-1"></i>General Information
+                      </h3>
+                    </div>
+                    <div class="card-body pt-0">
+                      <table class="table table-bordered">
+                        <tr>
+                          <th width="30%">Username</th>
+                          <td width="2%">:</td>
+                          <td>{profileData.username}</td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Email address</th>
+                          <td width="2%">:</td>
+                          <td>{profileData.email}</td>
+                        </tr>
+                        <tr>
+                          <th width="30%">Joined on</th>
+                          <td width="2%">:</td>
+                          <td>{profileData.createdAt.slice(0, 10)}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="card shadow-sm my-4">
+                    <div class="card-header bg-transparent border-0">
+                      <h3 class="mb-0">
+                        <i class="far fa-clone pr-1"></i>Other Information
+                      </h3>
+                    </div>
+                    <div class="card-body pt-0">
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="row -spacing-a">
-            <div className="col-md-4">
-              <div className="profile-image">
-                <img
-                  src="https://www.xing.com/image/0_c_3_3fce34b38_15444149_3/fabian-pecher-foto.1024x1024.jpg"
-                  className="fullwidth"
-                />
-                <div className="edit-profile-image">
-                  <span className="edit-profile-image__information">
-                    <span className="fa fa-camera"></span>
-                    <span className="edit-profile-image__label">
-                      Edit picture
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-8">
-              <h5>GENERAL INFORMATION</h5>
-              <div className="row -spacing-b">
-                <div className="col-md-3">
-                  <p className="-typo-copy">Username</p>
-                  <p className="-typo-copy">Name</p>
-                  <p className="-typo-copy">Surname</p>
-                  <p className="-typo-copy">Birthday</p>
-                  <p className="-typo-copy">E-Mail Adresse</p>
-                </div>
-                <div className="col-md-3">
-                  <p className="-typo-copy -typo-copy--blue">matmat</p>
-                  <p className="-typo-copy -typo-copy--blue">mat</p>
-                  <p className="-typo-copy -typo-copy--blue">saubin</p>
-                  <p className="-typo-copy -typo-copy--blue">01.01.1010</p>
-                  <p className="-typo-copy -typo-copy--blue">mat@dummy.com</p>
-                </div>
-                <div className="col-md-3">
-                  <p className="-typo-copy">
-                    Postal code
-                    <br />
-                    Residence
-                  </p>
-                  <p className="-typo-copy">Password</p>
 
-                  <button className="btn btn--green">
-                    <span className="btn__icon fa fa-pencil"></span>
-                    <span className="btn__label">Edit Profile</span>
-                  </button>
-                </div>
-                <div className="col-md-3">
-                  <p className="-typo-copy -typo-copy--blue">
-                    12345
-                    <br />
-                    Some city
-                  </p>
-                  <p className="-typo-copy -typo-copy--blue">******</p>
-                </div>
-              </div>
-            </div>
-          </div> */}
+          {profileData.restaurants.map((restaurant) => (
+          <Card style={{ width: "18rem" }} key={restaurant._id}>
+            <Card.Img variant="top" src={restaurant.image_url} />
+            <Card.Body>
+              <Card.Title>{restaurant.name}</Card.Title>
+              <Card.Text>
+                Phone: {restaurant.phone}
+              </Card.Text>
+              <Card.Text>
+                Price: {restaurant.price} Rating: {restaurant.rating} Reviews: {restaurant.review_count}
+              </Card.Text>
+              <Button variant="outline-warning">Show details</Button>
+              <Button variant="outline-warning" onClick={() => handleDelete(restaurant._id)}>Delete</Button>
+            </Card.Body>
+          </Card>
+          ))}
         </>
       )}
     </div>
