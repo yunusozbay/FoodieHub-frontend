@@ -21,12 +21,17 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
 
   const fetchData = async () => {
     const response = await axios.get("http://localhost:5005/users");
+    // const filteredUsers = response.data.allUsers.filter((user) => {
+    //   user._id !== userData.id;
+    // });
     setAllUsers(response.data.allUsers);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (userData && userData.username !== undefined) {
+      fetchData();
+    }
+  }, [userData]);
 
   const submitCallback = (event) => {
     event.preventDefault();
@@ -41,6 +46,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {allUsers.map((user) =>
         searchTerm &&
+        user.username !== userData.username &&
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ? (
           <Link key={user._id} to={`/users/${user._id}`}>
             <div>{user.username}</div>

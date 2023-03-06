@@ -10,20 +10,18 @@ import { useNavigate } from "react-router-dom";
 
 function Notifications() {
   const { userData } = useContext(SessionContext);
-  const [friendRequests, setFriendRequests] = useState(
-    userData.friend_requests
-  );
-  const [friends, setFriends] = useState(userData.friends);
   const [isReplySent, setIsReplySent] = useState(false);
 
   const navigate = useNavigate();
 
-  const sendResponse = async (request) => {
+  const sendAccept = async (request) => {
     const updatedUser = await axios.post(
       `http://localhost:5005/users/${userData.id}/update`,
       {
-        friend_requests: friendRequests,
-        friends: friends,
+        friend_requests: userData.friend_requests.filter(
+          (req) => req._id !== request._id
+        ),
+        friends: [request._id, ...userData.friends],
       }
     );
     const updatedFriend = await axios.post(
@@ -34,33 +32,16 @@ function Notifications() {
     );
     setIsReplySent(true);
   };
-
-  const handleDeleteRequest = (request) => {
-    const newArr = JSON.parse(JSON.stringify(friendRequests));
-    const index = newArr.indexOf(request._id);
-    newArr.splice(index, 1);
-    let requestIds = [];
-    newArr.map((req) => {
-      requestIds.push(req._id);
-    });
-    setFriendRequests(requestIds);
-    sendResponse(request);
-  };
-
-  const handleAccept = (request) => {
-    let newFriendsArr = [...friends];
-    newFriendsArr.unshift(request._id);
-    setFriends(newFriendsArr);
-    const newArr = JSON.parse(JSON.stringify(friendRequests));
-    const index = newArr.indexOf(request._id);
-    newArr.splice(index, 1);
-    let requestIds = [];
-    newArr.map((req) => {
-      requestIds.push(req._id);
-    });
-    setFriendRequests(requestIds);
-    // handleDeleteRequest(request);
-    sendResponse(request);
+  const sendDeleteRequest = async (request) => {
+    const updatedUser = await axios.post(
+      `http://localhost:5005/users/${userData.id}/update`,
+      {
+        friend_requests: userData.friend_requests.filter(
+          (req) => req._id !== request._id
+        ),
+      }
+    );
+    setIsReplySent(true);
   };
 
   const popover = (
@@ -73,15 +54,12 @@ function Notifications() {
               {request.username} has sent you a friend request
               {!isReplySent ? (
                 <div>
-                  <Button
-                    variant="primary"
-                    onClick={() => handleAccept(request)}
-                  >
+                  <Button variant="primary" onClick={() => sendAccept(request)}>
                     Accept
                   </Button>
                   <Button
                     variant="secondary"
-                    onClick={() => handleDeleteRequest(request)}
+                    onClick={() => sendDeleteRequest(request)}
                   >
                     Delete
                   </Button>
