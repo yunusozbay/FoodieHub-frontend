@@ -17,7 +17,7 @@ function EventForm({
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [invited_users, setInvited_users] = useState("");
+  const [invited_users, setInvited_users] = useState([]);
 
   useEffect(() => {
     if (isEditingEvent) {
@@ -41,12 +41,21 @@ function EventForm({
       restaurant,
       newEvent: { title, date, time, invited_users },
     });
+    console.log(invited_users);
   }
 
   const handleClose = () => {
     isEditingEvent ? setIsEditingEvent(false) : null;
     isCreatingEvent ? setIsCreatingEvent(false) : null;
     setShow(false);
+  };
+
+  const handleSelect = (event) => {
+    const values = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setInvited_users(values);
   };
 
   return (
@@ -89,7 +98,9 @@ function EventForm({
                 <Form.Label>
                   Invite a Foodie Friend
                   <Form.Select
-                    onChange={(event) => setInvited_users(event.target.value)}
+                    name="invited_users"
+                    multiple
+                    onChange={(event) => handleSelect(event)}
                   >
                     {userData.friends.map((friend) => (
                       <option value={friend._id}>{friend.username}</option>

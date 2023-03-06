@@ -10,6 +10,25 @@ function ProfilePage() {
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetch(`http://localhost:5005/profile/${userData.id}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   }).then((response) => {
+  //     if (response.status === 200) {
+  //       setProfileData(response.data);
+  //       console.log(response.data);
+  //       // return response.json();
+  //     }
+  //   });
+  //   // .then((data) => {
+  //   //   console.log(data);
+  //   //   setProfileData(data);
+  //   // });
+  // }, []);
+
   const fetchData = async () => {
     const response = await axios.get(
       `http://localhost:5005/users/${userData.id}`
