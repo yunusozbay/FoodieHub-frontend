@@ -10,7 +10,7 @@ function RestaurantCard({ restaurant, listView }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const { userData } = useContext(SessionContext);
   async function handlePost() {
-    await axios.post("http://localhost:5005/api/add", {
+    await axios.post("http://localhost:5005/restaurant/add", {
       userData,
       restaurant,
     });
