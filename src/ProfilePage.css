@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+@import url('https://fonts.googleapis.com/css?family=Oswald');
+
+:root {
+  --blue: #457b8c;
+  --gray: #f0f0f0;
+  --red: #ce4034;
+  --green: #08b8b8;
+  --primary-font-color: #798796;
+  --secondary-font-color: #595556;
+
+  --primary-font: 'PT Sans';
+  --secondary-font: 'Oswald';
+}
+
+h1 {
+  font-family: var(--secondary-font);
+  text-transform: uppercase;
+  color: var(--primary-font-color);
+  font-size: 2.5rem;
+}
+
+h5 {
+  font-family: var(--secondary-font);
+  text-transform: uppercase;
+  color: var(--primary-font-color);
+  font-size: 1.563rem;
+}
+
+.fullwidth {
+  max-width: 100%;
+  height: auto;
+}
+
+.-spacing-a {
+  margin-top: 3.125rem;
+}
+
+.-spacing-b {
+  margin-top: 1.875rem;
+}
+
+.-typo-copy {
+  margin-bottom: 1.875rem;
+  color: var(--secondary-font-color);
+  font-size: 1rem;
+  font-family: var(--primary-font);
+}
+
+.-typo-copy--blue {
+  color: var(--primary-font-color);
+}
+
+.profile-image {
+  overflow: hidden;
+}
+
+.profile-image:hover .edit-profile-image {
+  opacity: 1;
+}
+
+.edit-profile-image {
+  width: auto;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0.9375rem;
+  right: 0.9375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem;
+  cursor: pointer;
+  opacity: 0;
+  background: -moz-linear-gradient(
+    top,
+    rgba(231, 211, 116, 0.7) 0%,
+    rgba(8, 184, 184, 0.7) 100%
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(231, 211, 116, 0.7) 0%,
+    rgba(8, 184, 184, 0.7) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(231, 211, 116, 0.7) 0%,
+    rgba(8, 184, 184, 0.7) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(
+      startColorstr='#b3e7d374',
+      endColorstr='#b308b8b8',
+      GradientType=0
+    );
+  transition: all 0.2s ease-in-out;
+}
+
+.edit-profile-image:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.edit-profile-image__information {
+  color: #fff;
+  text-align: center;
+  font-size: 1rem;
+  font-family: var(--primary-font);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  line-height: 1.3;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
