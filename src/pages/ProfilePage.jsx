@@ -2,30 +2,30 @@ import React from "react";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../contexts/SessionContext";
 import { useParams } from "react-router";
-import '../ProfilePage.css'
-
+import "../styles/ProfilePage.css";
 
 function ProfilePage() {
-  const { isAuthenticated } = useContext(SessionContext);
+  const { userData, isAuthenticated } = useContext(SessionContext);
   const [profileData, setProfileData] = useState();
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:5005/profile/64049702e63f1d8bb6eb3468`, {
+    fetch(`http://localhost:5005/profile/6405c2652c66d4a2e3378d70`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        setProfileData(data);
-      });
+    }).then((response) => {
+      if (response.status === 200) {
+        setProfileData(response.data);
+        console.log(response.data);
+        // return response.json();
+      }
+    });
+    // .then((data) => {
+    //   console.log(data);
+    //   setProfileData(data);
+    // });
   }, []);
 
   if (!profileData) {

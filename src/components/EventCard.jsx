@@ -68,6 +68,9 @@ function EventCard() {
             >
               Restaurant details
             </Button>
+            {event.invited_users.map((user) => {
+              user._id === userData.id ? console.log("invited") : null;
+            })}
             {event.created_by._id === userData.id && (
               <Button
                 variant="secondary"
