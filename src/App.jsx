@@ -11,6 +11,7 @@ import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
 import UserDetails from "./pages/UserDetails";
 
+
 function App() {
   const [rest, setRest] = useState([]);
   const [randomRest, setRandomRest] = useState({});
