@@ -47,7 +47,7 @@ function UserDetails() {
           <Notifications userData={userData} />
           <h1>{oneUser.username}</h1>
           {console.log(oneUser.restaurants)}
-          {!isFriend ? (
+          {!oneUser.friends.includes(userData.id) ? (
             <Button
               onClick={sendRequest}
               disabled={isRequestSent ? true : false}
@@ -55,9 +55,11 @@ function UserDetails() {
               {isRequestSent ? "Request sent" : "Add Friend"}
             </Button>
           ) : null}
-          {oneUser.restaurants.map((rest) => (
-            <RestaurantCard restaurant={rest} />
-          ))}
+          {oneUser.friends.includes(userData.id)
+            ? oneUser.restaurants.map((rest) => (
+                <RestaurantCard restaurant={rest} />
+              ))
+            : null}
         </>
       )}
     </div>
