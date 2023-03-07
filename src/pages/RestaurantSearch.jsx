@@ -72,7 +72,7 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
         </div>
       </Container>
       <Container>
-        <Row xs={2} md={3} lg={5} className="g-4">
+        <Row xs={1} md={3} lg={4} className="g-4">
           {restaurants.map((restaurant) => (
             <Col className="card-col">
               {/* <Link to={`/restaurants/${restaurant.id}`}> */}

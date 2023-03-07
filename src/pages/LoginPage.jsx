@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SessionContext } from "../contexts/SessionContext";
 import AuthForm from "../components/AuthForm";
+import { Container } from "react-bootstrap";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const LoginPage = () => {
   };
 
   return (
-    <>
+    <Container className="form-ctn">
       <h1>Login</h1>
       <AuthForm
         username={username}
@@ -35,7 +36,7 @@ const LoginPage = () => {
         handleSubmit={handleSubmit}
         isLogin
       />
-    </>
+    </Container>
   );
 };
 

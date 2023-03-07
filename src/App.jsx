@@ -64,6 +64,7 @@ function App() {
               randomRest={randomRest}
               handleSubmit={handleSubmit}
               isShowingRandom={isShowingRandom}
+              setIsShowingRandom={setIsShowingRandom}
               isLoading={isLoading}
             />
           }

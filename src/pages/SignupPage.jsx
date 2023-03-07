@@ -1,6 +1,7 @@
 import AuthForm from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Container } from "react-bootstrap";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SignupPage = () => {
     }
   };
   return (
-    <>
+    <Container className="form-ctn">
       <h1>Signup</h1>
       <AuthForm
         username={username}
@@ -33,7 +34,7 @@ const SignupPage = () => {
         setPassword={setPassword}
         handleSubmit={handleSubmit}
       />
-    </>
+    </Container>
   );
 };
 
