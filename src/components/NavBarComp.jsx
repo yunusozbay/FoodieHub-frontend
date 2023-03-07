@@ -15,41 +15,24 @@ import SearchBar from "./SearchBar";
 import axios from "axios";
 
 function NavBarComp() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { userData } = useContext(SessionContext);
+  const { userData, handleLogout, isAuthenticated } =
+    useContext(SessionContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-
-  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await axios.get("http://localhost:5005/users");
     setAllUsers(response.data.allUsers);
   };
-  // const fetchUserData = async () => {
-  //   const response = await axios.get(
-  //     `http://localhost:5005/users/${userData.id}`
-  //   );
-  //   setUserData(response.data.oneUser);
-  // };
-
-  // useEffect(() => {
-  //   fetchUserData();
-  // }, []);
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
       fetchData();
-      setIsLoggedIn(true);
+      // setisAuthenticated(true);
     }
     setIsLoading(false);
   }, [userData]);
-
-  const handleLogout = () => {
-    window.localStorage.removeItem("authToken");
-    navigate("/");
-  };
 
   return (
     <Navbar bg="light" variant="light" sticky="top" expand="lg">
@@ -57,7 +40,6 @@ function NavBarComp() {
         <></>
       ) : (
         <Container fluid>
-          {console.log(isLoggedIn)}
           <Nav>
             <Navbar.Brand as={Link} to="/">
               FoodieHub
@@ -70,23 +52,24 @@ function NavBarComp() {
                 {/* <Nav.Link as={Link} to="/">
                   Home
                 </Nav.Link> */}
-                {!isLoggedIn ? (
-                  <Nav.Link as={Link} to="/signup">
-                    Signup
-                  </Nav.Link>
+                {!userData ? (
+                  <>
+                    <Nav.Link as={Link} to="/signup">
+                      Signup
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/login">
+                      Login
+                    </Nav.Link>
+                  </>
                 ) : (
-                  <Nav.Link as={Link} to="/profile">
-                    Profile
-                  </Nav.Link>
-                )}
-                {!isLoggedIn ? (
-                  <Nav.Link as={Link} to="/login">
-                    Login
-                  </Nav.Link>
-                ) : (
-                  <Nav.Link>
-                    <Button onClick={handleLogout}>Logout</Button>
-                  </Nav.Link>
+                  <>
+                    <Nav.Link as={Link} to="/profile">
+                      Profile
+                    </Nav.Link>
+                    <Nav.Link>
+                      <Button onClick={handleLogout}>Logout</Button>
+                    </Nav.Link>
+                  </>
                 )}
                 <SearchBar
                   searchTerm={searchTerm}
