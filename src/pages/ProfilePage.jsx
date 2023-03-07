@@ -61,7 +61,6 @@ function ProfilePage() {
         <h2>Loading...</h2>
       ) : (
         <>
-          <NavBarComp />
           <div class="user-profile py-4 mb-4">
             <div class="container">
               <div class="row">

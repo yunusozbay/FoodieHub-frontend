@@ -52,7 +52,7 @@ function NavBarComp() {
                 {/* <Nav.Link as={Link} to="/">
                   Home
                 </Nav.Link> */}
-                {!userData ? (
+                {!isAuthenticated ? (
                   <>
                     <Nav.Link as={Link} to="/signup">
                       Signup

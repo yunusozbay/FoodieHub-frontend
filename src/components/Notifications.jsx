@@ -9,9 +9,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Notifications() {
-  const { userData } = useContext(SessionContext);
+  const { userData, refreshData, verifyToken, token } =
+    useContext(SessionContext);
   const [isReplySent, setIsReplySent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState();
+  const [invitations, setInvitations] = useState([]);
 
   const navigate = useNavigate();
 
@@ -47,6 +50,8 @@ function Notifications() {
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
+      setCurrentUser(userData);
+      setInvitations(userData.invitations);
       setIsLoading(false);
     }
   }, [userData]);
