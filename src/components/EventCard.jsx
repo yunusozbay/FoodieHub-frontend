@@ -44,10 +44,13 @@ function EventCard() {
 
   const handleAccept = async () => {
     await axios.post(`http://localhost:5005/users/${userData.id}/update`, {
-      invitations: userData.invitations.filter((req) => req._id !== event._id),
+      invitations: userData.invitations.filter(
+        (invite) => invite._id !== event._id
+      ),
       events: [event._id, ...userData.events],
     });
     setIsReplySent(true);
+    navigate("/profile");
   };
   const handleDecline = async () => {
     await axios.post(`http://localhost:5005/users/${userData.id}/update`, {

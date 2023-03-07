@@ -47,7 +47,7 @@ const SessionContextProvider = ({ children }) => {
 
   return (
     <SessionContext.Provider
-      value={{ setToken, isAuthenticated, isLoading, userData }}
+      value={{ setToken, isAuthenticated, isLoading, userData, setUserData }}
     >
       {children}
     </SessionContext.Provider>

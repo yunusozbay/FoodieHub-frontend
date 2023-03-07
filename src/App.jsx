@@ -9,9 +9,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import EventCard from "./components/EventCard";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
-import NavbarComp from './components/NavbarComp'
+import NavbarComp from "./components/NavbarComp";
 import UserDetails from "./pages/UserDetails";
-
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -41,7 +40,7 @@ function App() {
 
   const handleSubmit = async (city, food) => {
     const allRest = await axios.get(
-      `${BASE_URL}/search?location=${city}&term=${food}&limit=20`,
+      `${BASE_URL}/search?location=${city}&categories=restaurants&term=${food}&limit=20`,
       {
         headers: {
           Authorization: `Bearer ${YELP_TOKEN}`,
