@@ -9,9 +9,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Notifications() {
-  const { userData } = useContext(SessionContext);
+  const { userData, refreshData, verifyToken, token } =
+    useContext(SessionContext);
   const [isReplySent, setIsReplySent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState();
+  const [invitations, setInvitations] = useState([]);
 
   const navigate = useNavigate();
 
@@ -47,6 +50,8 @@ function Notifications() {
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
+      setCurrentUser(userData);
+      setInvitations(userData.invitations);
       setIsLoading(false);
     }
   }, [userData]);
@@ -60,42 +65,44 @@ function Notifications() {
           <Popover.Header as="h3">Your pending requests</Popover.Header>
           <Popover.Body>
             <ul>
-              {userData.friend_requests.map((request) => (
-                <li key={request._id}>
-                  {request.username} has sent you a friend request
-                  {!isReplySent ? (
+              {userData &&
+                userData.friend_requests.map((request) => (
+                  <li key={request._id}>
+                    {request.username} has sent you a friend request
+                    {!isReplySent ? (
+                      <div>
+                        <Button
+                          variant="primary"
+                          onClick={() => sendAccept(request)}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          onClick={() => sendDeleteRequest(request)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>Reply sent</div>
+                    )}
+                  </li>
+                ))}
+              {userData &&
+                userData.invitations.map((event) => (
+                  <li key={event._id}>
+                    You've been invited to "{event.title}"
                     <div>
                       <Button
                         variant="primary"
-                        onClick={() => sendAccept(request)}
+                        onClick={() => navigate(`/events/${event._id}`)}
                       >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        onClick={() => sendDeleteRequest(request)}
-                      >
-                        Delete
+                        See details
                       </Button>
                     </div>
-                  ) : (
-                    <div>Reply sent</div>
-                  )}
-                </li>
-              ))}
-              {userData.invitations.map((event) => (
-                <li key={event._id}>
-                  You've been invited to "{event.title}"
-                  <div>
-                    <Button
-                      variant="primary"
-                      onClick={() => navigate(`/events/${event._id}`)}
-                    >
-                      See details
-                    </Button>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
           </Popover.Body>
         </Popover>
@@ -111,10 +118,11 @@ function Notifications() {
           <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
             <Button variant="secondary">
               <img style={{ width: "1.2rem" }} src={bell} />
-              {userData.friend_requests.length ||
-              userData.invitations.length ? (
+              {(userData && userData.friend_requests.length) ||
+              (userData && userData.invitations.length) ? (
                 <Badge bg="danger">
-                  {userData.friend_requests.length +
+                  {userData &&
+                    userData.friend_requests.length + userData &&
                     userData.invitations.length}
                 </Badge>
               ) : null}

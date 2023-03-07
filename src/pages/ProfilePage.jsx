@@ -4,11 +4,12 @@ import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 import "../styles/ProfilePage.css";
 import { Card, Button } from "react-bootstrap";
+import NavBarComp from "../components/NavBarComp";
 import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
-  const { userData, isAuthenticated } = useContext(SessionContext);
-  const [profileData, setProfileData] = useState({});
+  const { userData, token } = useContext(SessionContext);
+  const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   // useEffect(() => {
@@ -31,16 +32,22 @@ function ProfilePage() {
   // }, []);
 
   const fetchData = async () => {
-    const response = await axios.get(
-      `http://localhost:5005/users/${userData.id}`
-    );
-    setProfileData(response.data.oneUser);
+    const response = await fetch(`http://localhost:5005/users/${userData.id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    let parsed = await response.json();
+    console.log(parsed);
+    setProfileData(parsed.oneUser);
     setIsLoading(false);
   };
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
       fetchData();
+      // setIsLoading(false);
     }
   }, [userData]);
 
@@ -55,9 +62,6 @@ function ProfilePage() {
         <h2>Loading...</h2>
       ) : (
         <>
-          {console.log(profileData)}
-          {/* <h1>{profileData.username}</h1> */}
-
           <div class="user-profile py-4 mb-4">
             <div class="container">
               <div class="row">
@@ -106,7 +110,9 @@ function ProfilePage() {
                         <tr>
                           <th width="30%">Joined on</th>
                           <td width="2%">:</td>
-                          <td>{profileData.createdAt.slice(0, 10)}</td>
+                          <td>
+                            {profileData && profileData.createdAt.slice(0, 10)}
+                          </td>
                         </tr>
                       </table>
                     </div>
@@ -133,20 +139,24 @@ function ProfilePage() {
           </div>
 
           {profileData.restaurants.map((restaurant) => (
-          <Card style={{ width: "18rem" }} key={restaurant._id}>
-            <Card.Img variant="top" src={restaurant.image_url} />
-            <Card.Body>
-              <Card.Title>{restaurant.name}</Card.Title>
-              <Card.Text>
-                Phone: {restaurant.phone}
-              </Card.Text>
-              <Card.Text>
-                Price: {restaurant.price} Rating: {restaurant.rating} Reviews: {restaurant.review_count}
-              </Card.Text>
-              <Button variant="outline-warning" onClick={() => navigate(`/restaurants/profile/${restaurant._id}`)}>Show details</Button>
-              <Button variant="outline-warning" onClick={() => handleDelete(restaurant._id)}>Delete</Button>
-            </Card.Body>
-          </Card>
+            <Card style={{ width: "18rem" }} key={restaurant._id}>
+              <Card.Img variant="top" src={restaurant.image_url} />
+              <Card.Body>
+                <Card.Title>{restaurant.name}</Card.Title>
+                <Card.Text>Phone: {restaurant.phone}</Card.Text>
+                <Card.Text>
+                  Price: {restaurant.price} Rating: {restaurant.rating} Reviews:{" "}
+                  {restaurant.review_count}
+                </Card.Text>
+                <Button variant="outline-warning">Show details</Button>
+                <Button
+                  variant="outline-warning"
+                  onClick={() => handleDelete(restaurant._id)}
+                >
+                  Delete
+                </Button>
+              </Card.Body>
+            </Card>
           ))}
         </>
       )}

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SessionContext = createContext();
 
@@ -7,6 +8,8 @@ const SessionContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState();
   const [userData, setUserData] = useState();
+
+  const navigate = useNavigate();
 
   const verifyToken = async (jwt) => {
     try {
@@ -17,7 +20,7 @@ const SessionContextProvider = ({ children }) => {
         },
       });
       const data = await fetchData.json();
-      if (data && data.username !== undefined) {
+      if (data?.username) {
         setUserData(data);
         setToken(jwt);
         setIsAuthenticated(true);
@@ -25,6 +28,10 @@ const SessionContextProvider = ({ children }) => {
       } else {
         console.log(data);
         setIsLoading(false);
+        setUserData(null);
+        setIsAuthenticated(false);
+        setToken(null);
+        navigate("/");
         console.log("userData not found");
       }
     } catch (error) {
@@ -45,9 +52,40 @@ const SessionContextProvider = ({ children }) => {
     }
   }, [token]);
 
+  const handleLogout = () => {
+    window.localStorage.removeItem("authToken");
+    setIsLoading(false);
+    setUserData(null);
+    setIsAuthenticated(false);
+    setToken(null);
+    navigate("/");
+  };
+
+  const refreshData = async () => {
+    const data = await fetch("http://localhost:5005/auth/verify", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    const refreshedUserData = await data.json();
+    setUserData(refreshedUserData);
+    return refreshedUserData;
+  };
+
   return (
     <SessionContext.Provider
-      value={{ setToken, isAuthenticated, isLoading, userData, setUserData }}
+      value={{
+        setToken,
+        token,
+        isAuthenticated,
+        isLoading,
+        userData,
+        setUserData,
+        verifyToken,
+        handleLogout,
+        refreshData,
+      }}
     >
       {children}
     </SessionContext.Provider>
