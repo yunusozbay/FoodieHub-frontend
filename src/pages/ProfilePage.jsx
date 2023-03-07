@@ -148,7 +148,7 @@ function ProfilePage() {
                   Price: {restaurant.price} Rating: {restaurant.rating} Reviews:{" "}
                   {restaurant.review_count}
                 </Card.Text>
-                <Button variant="outline-warning">Show details</Button>
+                <Button variant="outline-warning" onClick={() => navigate(`/restaurants/profile/${restaurant._id}`)}>Show details</Button>
                 <Button
                   variant="outline-warning"
                   onClick={() => handleDelete(restaurant._id)}
