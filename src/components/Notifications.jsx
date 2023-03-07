@@ -110,7 +110,7 @@ function Notifications() {
         <>
           <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
             <Button variant="secondary">
-              <img style={{ width: "1.5rem" }} src={bell} />
+              <img style={{ width: "1.2rem" }} src={bell} />
               {userData.friend_requests.length ||
               userData.invitations.length ? (
                 <Badge bg="danger">

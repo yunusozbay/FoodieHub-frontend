@@ -4,17 +4,20 @@ nav {
 }
 .navItems {
     width: 100%;
+    max-height: fit-content; !important
     align-items: baseline;
     justify-content: space-between;
 }
-.navItems div {
-    display: flex;
-    height: 70%;
-    align-items: baseline;
-}
+
+
 
 @media only screen and (min-width: 768px)  {
     nav .container-fluid {
         width: 70%
     }
+    .navItems div {
+    display: flex;
+    height: 70%;
+    align-items: baseline;
+}
   }

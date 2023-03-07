@@ -81,7 +81,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem;
+  margin: 2rem 1rem;
 }
 .restaurant-search-form div {
   width: 100%;

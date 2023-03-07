@@ -19,20 +19,6 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [hidden, setHidden] = useState(false);
   const { userData } = useContext(SessionContext);
 
-  const fetchData = async () => {
-    const response = await axios.get("http://localhost:5005/users");
-    // const filteredUsers = response.data.allUsers.filter((user) => {
-    //   user._id !== userData.id;
-    // });
-    setAllUsers(response.data.allUsers);
-  };
-
-  useEffect(() => {
-    if (userData && userData.username !== undefined) {
-      fetchData();
-    }
-  }, [userData]);
-
   const submitCallback = (event) => {
     event.preventDefault();
     handleSubmit(city, food);
@@ -43,16 +29,6 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   };
   return (
     <Container className="homeCtn">
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      {allUsers.map((user) =>
-        searchTerm &&
-        user.username !== userData.username &&
-        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ? (
-          <Link key={user._id} to={`/users/${user._id}`}>
-            <div>{user.username}</div>
-          </Link>
-        ) : null
-      )}
       <h2 className="text-center mt-3">
         Hello,{" "}
         {userData && userData.username !== undefined ? (
@@ -62,14 +38,14 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
         )}
       </h2>
       <h1 className="title">Looking for a new restaurant to try?</h1>
+      <h6 className="text-center">We'll help you to find an awesome place!</h6>
       <Form className="restaurant-search-form" onSubmit={submitCallback}>
-        <h6 className="text-center">Tell us your criterias:</h6>
         <Form.Group
           className="mb-3"
           controlId="formBasicCity"
           style={{ width: "100%" }}
         >
-          <Form.Label>City</Form.Label>
+          <Form.Label>Where are you searching?</Form.Label>
           <Form.Control
             type="text"
             placeholder="e.g. Berlin"
@@ -78,10 +54,10 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicFood">
-          <Form.Label>Food</Form.Label>
+          <Form.Label>What would you like to eat?</Form.Label>
           <Form.Control
             type="text"
-            placeholder="e.g Burgers"
+            placeholder="e.g. Burgers"
             value={food}
             onChange={(event) => setFood(event.target.value)}
           />

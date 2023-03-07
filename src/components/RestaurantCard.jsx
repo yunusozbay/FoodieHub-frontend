@@ -8,15 +8,22 @@ import { SessionContext } from "../contexts/SessionContext";
 function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const { userData } = useContext(SessionContext);
+
+  const navigate = useNavigate();
+
   async function handlePost() {
-    await axios.post("http://localhost:5005/restaurants/add", {
-      userData,
-      restaurant,
-    });
+    if (!userData || userData.username === undefined) {
+      navigate("/login");
+    } else {
+      await axios.post("http://localhost:5005/restaurants/add", {
+        userData,
+        restaurant,
+      });
+    }
     setHidden(true);
     console.log(userData);
   }
-  const navigate = useNavigate();
+
   return (
     <div>
       <Card className="mt-3 restaurant-card">
@@ -76,6 +83,7 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
           </Button>
         </Card.Body>
       </Card>
+      {isCreatingEvent && userData === undefined ? navigate("/login") : null}
       {isCreatingEvent ? (
         <EventForm
           restaurant={restaurant}

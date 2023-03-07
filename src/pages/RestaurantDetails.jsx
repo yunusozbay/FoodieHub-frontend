@@ -91,6 +91,7 @@ function RestaurantDetails() {
           </article>
         </>
       )}
+      {isCreatingEvent && userData === undefined ? navigate("/login") : null}
       {isCreatingEvent ? (
         <EventForm
           restaurant={oneRestaurant}

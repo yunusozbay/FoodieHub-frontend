@@ -13,7 +13,7 @@ function SearchBar({ searchTerm, setSearchTerm }) {
         value={searchTerm}
         onChange={(event) => setSearchTerm(event.target.value)}
       />
-      <Button variant="outline-success">Search</Button>
+      {/* <Button variant="outline-success">Search</Button> */}
     </Form>
   );
 }
