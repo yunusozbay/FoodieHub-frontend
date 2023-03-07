@@ -12,7 +12,7 @@ function EventCard() {
   const [isInvited, setIsInvited] = useState(false);
   const [isReplySent, setIsReplySent] = useState(false);
 
-  const { userData } = useContext(SessionContext);
+  const { userData, refreshData } = useContext(SessionContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -50,6 +50,7 @@ function EventCard() {
       events: [event._id, ...userData.events],
     });
     setIsReplySent(true);
+    refreshData();
     navigate("/profile");
   };
   const handleDecline = async () => {

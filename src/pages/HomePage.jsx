@@ -9,6 +9,7 @@ import SearchBar from "../components/SearchBar";
 import axios from "axios";
 import Notifications from "../components/Notifications";
 import { SessionContext } from "../contexts/SessionContext";
+import NavBarComp from "../components/NavBarComp";
 
 const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [city, setCity] = useState("");
@@ -29,6 +30,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   };
   return (
     <Container className="homeCtn">
+      {/* <NavBarComp /> */}
       <h2 className="text-center mt-3">
         Hello,{" "}
         {userData && userData.username !== undefined ? (
@@ -62,14 +64,14 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
             onChange={(event) => setFood(event.target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check
             type="checkbox"
             label="Only where I haven't been yet"
             checked={newPlace}
             onChange={checkHandler}
           />
-        </Form.Group>
+        </Form.Group> */}
         <Button
           variant="outline-warning"
           type="submit"
