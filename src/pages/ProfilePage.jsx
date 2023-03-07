@@ -4,12 +4,13 @@ import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 import "../styles/ProfilePage.css";
 import { Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
   const { userData, isAuthenticated } = useContext(SessionContext);
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate();
   // useEffect(() => {
   //   fetch(`http://localhost:5005/profile/${userData.id}`, {
   //     method: "GET",
@@ -142,7 +143,7 @@ function ProfilePage() {
               <Card.Text>
                 Price: {restaurant.price} Rating: {restaurant.rating} Reviews: {restaurant.review_count}
               </Card.Text>
-              <Button variant="outline-warning">Show details</Button>
+              <Button variant="outline-warning" onClick={() => navigate(`/restaurants/profile/${restaurant._id}`)}>Show details</Button>
               <Button variant="outline-warning" onClick={() => handleDelete(restaurant._id)}>Delete</Button>
             </Card.Body>
           </Card>
