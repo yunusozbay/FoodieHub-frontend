@@ -15,6 +15,7 @@ function Notifications() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState();
   const [invitations, setInvitations] = useState([]);
+  const [updatedUserData, setUpdatedUserData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -34,8 +35,8 @@ function Notifications() {
         friends: [userData._id, ...request.friends],
       }
     );
-    refreshData(updatedUser);
     setIsReplySent(true);
+    setUpdatedUserData(updatedUser);
   };
   const sendDeleteRequest = async (request) => {
     const updatedUser = await axios.post(
@@ -46,18 +47,20 @@ function Notifications() {
         ),
       }
     );
-    refreshData(updatedUser);
-    navigate(-1);
+    // refreshData(updatedUser);
     setIsReplySent(true);
   };
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
-      //   setCurrentUser(userData);
-      //   setInvitations(userData.invitations);
       setIsLoading(false);
     }
   }, [userData]);
+  //   useEffect(() => {
+  //     if (userData && userData.username !== undefined) {
+  //       refreshData(updatedUserData);
+  //     }
+  //   }, [updatedUserData]);
 
   const popover = (
     <div>

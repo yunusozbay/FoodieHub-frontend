@@ -1,13 +1,22 @@
 import AuthForm from "../components/AuthForm";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Container } from "react-bootstrap";
+import { SessionContext } from "../contexts/SessionContext";
 
 const SignupPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { userData, isAuthenticated } = useContext(SessionContext);
+
+  useEffect(() => {
+    if (userData && userData.username !== undefined) {
+      isAuthenticated && navigate("/");
+    }
+  }, [isAuthenticated]);
 
   const handleSubmit = async () => {
     console.log({ username, email, password });
