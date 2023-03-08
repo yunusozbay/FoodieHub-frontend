@@ -18,7 +18,7 @@
 
 #root {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 
@@ -145,7 +145,10 @@ button:focus-visible {
   border-radius: 5px;
   font-size: .9rem;
 }
-.add-to-list:hover + .hide {
+.add-to-list:hover + .hide-add {
+  display: block;
+}
+.added-to-list:hover + .hide-remove {
   display: block;
 }
 .result-links {

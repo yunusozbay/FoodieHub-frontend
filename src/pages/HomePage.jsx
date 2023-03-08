@@ -11,7 +11,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [city, setCity] = useState("");
   const [food, setFood] = useState("");
   const [newPlace, setNewPlace] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  // const [hidden, setHidden] = useState(false);
   const { userData } = useContext(SessionContext);
 
   const submitCallback = (event) => {
@@ -73,7 +73,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
               className="mt-3"
               variant="warning"
               type="submit"
-              onClick={() => setHidden(false)}
+              // onClick={() => setHidden(false)}
             >
               Show me a restaurant
             </Button>
@@ -87,8 +87,8 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
             {isLoading ? <SpinnerComponent /> : null}
             {!isLoading && isShowingRandom ? (
               <RestaurantCard
-                hidden={hidden}
-                setHidden={setHidden}
+                // hidden={hidden}
+                // setHidden={setHidden}
                 restaurant={randomRest}
               />
             ) : null}

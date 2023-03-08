@@ -7,6 +7,7 @@ import { SessionContext } from "../contexts/SessionContext";
 
 function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const { userData } = useContext(SessionContext);
 
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
         restaurant,
       });
     }
-    setHidden(true);
+    setIsAdded(true);
     console.log(userData);
   }
 
@@ -33,10 +34,11 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
           className={"card-img"}
         />
         <button
-          className={!hidden ? "add-to-list" : "added-to-list"}
+          className={!isAdded ? "add-to-list" : "added-to-list"}
           onClick={handlePost}
         ></button>
-        <div class="hide">Add to my collection</div>
+        <div class="hide hide-add">Add to my collection</div>
+        <div class="hide hide-remove">Remove from my collection</div>
 
         <Card.Body className={"card-body"}>
           <Card.Title>

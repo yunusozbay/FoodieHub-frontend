@@ -47,6 +47,7 @@ function Notifications() {
       }
     );
     refreshData(updatedUser);
+    navigate(-1);
     setIsReplySent(true);
   };
 
@@ -124,8 +125,8 @@ function Notifications() {
               (userData && userData.invitations.length) ? (
                 <Badge bg="danger">
                   {userData &&
-                    userData.friend_requests.length + userData &&
-                    userData.invitations.length}
+                    userData.friend_requests.length +
+                      userData.invitations.length}
                 </Badge>
               ) : null}
               <span className="visually-hidden">unread messages</span>
