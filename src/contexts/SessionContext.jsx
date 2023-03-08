@@ -62,15 +62,7 @@ const SessionContextProvider = ({ children }) => {
   };
 
   const refreshData = async (updatedUser) => {
-    // const data = await fetch("http://localhost:5005/auth/verify", {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: `Bearer ${jwt}`,
-    //   },
-    // });
-    // const refreshedUserData = await data.json();
     setUserData(updatedUser);
-    // return refreshedUserData;
   };
 
   return (
