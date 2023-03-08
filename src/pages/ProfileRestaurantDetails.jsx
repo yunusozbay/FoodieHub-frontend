@@ -46,6 +46,7 @@ function ProfileRestaurantDetails() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
+        <>
         <Card style={{ width: "100wv", margin: "auto" }}>
           <Card.Img variant="top" src={restaurant.image_url} />
           <Card.Body>
@@ -74,6 +75,16 @@ function ProfileRestaurantDetails() {
             </Button>
           </Card.Body>
         </Card>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly"}}>
+       {restaurant.userPhotos.map((photo) => (
+            <Card style={{ width: "20rem" }}>
+              <Card.Body>
+              <Card.Img  src={photo} />
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+        </>
       )}
     </div>
   );
