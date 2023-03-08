@@ -3,7 +3,6 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 import { Button } from "react-bootstrap";
-import Notifications from "../components/Notifications";
 import RestaurantCard from "../components/RestaurantCard";
 
 function UserDetails() {
@@ -15,19 +14,21 @@ function UserDetails() {
   const { userData } = useContext(SessionContext);
 
   const fetchData = async () => {
-    const response = await axios.get(`http://localhost:5005/users/${id}`);
+    const response = await axios.get(
+      `http://localhost:5005/users/${id}/details`
+    );
     setOneUser(response.data.oneUser);
     setIsLoading(false);
 
     if (!isLoading) {
-      oneUser.friends.includes(userData.id) ? setIsFriend(true) : null;
+      oneUser.friends.includes(userData._id) ? setIsFriend(true) : null;
     }
   };
 
   const sendRequest = async () => {
     console.log(userData);
     await axios.post(`http://localhost:5005/users/${oneUser._id}/update`, {
-      friend_requests: [userData.id, ...oneUser.friend_requests],
+      friend_requests: [userData._id, ...oneUser.friend_requests],
     });
     setIsRequestSent(true);
   };
@@ -44,10 +45,9 @@ function UserDetails() {
         <h2>Loading...</h2>
       ) : (
         <>
-          <Notifications userData={userData} />
           <h1>{oneUser.username}</h1>
           {console.log(oneUser.restaurants)}
-          {!oneUser.friends.includes(userData.id) ? (
+          {!oneUser.friends.includes(userData._id) ? (
             <Button
               onClick={sendRequest}
               disabled={isRequestSent ? true : false}
@@ -55,7 +55,7 @@ function UserDetails() {
               {isRequestSent ? "Request sent" : "Add Friend"}
             </Button>
           ) : null}
-          {oneUser.friends.includes(userData.id)
+          {oneUser.friends.includes(userData._id)
             ? oneUser.restaurants.map((rest) => (
                 <RestaurantCard restaurant={rest} />
               ))

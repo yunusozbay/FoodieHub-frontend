@@ -67,7 +67,12 @@ function NavBarComp() {
                       Profile
                     </Nav.Link>
                     <Nav.Link>
-                      <Button onClick={handleLogout}>Logout</Button>
+                      <Button
+                        variant="outline-secondary"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </Button>
                     </Nav.Link>
                   </>
                 )}
