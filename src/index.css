@@ -125,9 +125,8 @@ button:focus-visible {
   background-color: white;
 }
 .removeFromList {
-  background-color: rgb(167, 5, 5);
-  color: white;
   font-size: 1.5rem;
+  font-weight: 400;
 }
 .add-to-list:hover, .added-to-list:hover, .removeFromList:hover {
   border: none;
@@ -139,7 +138,7 @@ button:focus-visible {
 }
 .removeFromList:before {
   content: "x";
-  transform: translate(0, -3px);
+  transform: translate(0, -4px);
 }
 .added-to-list {
   background-color: #eeb704;

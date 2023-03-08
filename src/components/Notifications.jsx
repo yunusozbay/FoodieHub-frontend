@@ -5,49 +5,16 @@ import { SessionContext } from "../contexts/SessionContext";
 import bell from "../assets/bell.png";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import FriendRequest from "./FriendRequest";
 
 function Notifications() {
-  const { userData, refreshData } = useContext(SessionContext);
-  const [isReplySent, setIsReplySent] = useState(false);
+  const { userData } = useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(true);
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
-  const sendAccept = async (request) => {
-    const updatedUserData = await axios.post(
-      `${BASE_URL}/users/${userData._id}/update`,
-      {
-        friend_requests: userData.friend_requests.filter(
-          (req) => req._id !== request._id
-        ),
-        friends: [request._id, ...userData.friends],
-      }
-    );
-    const updatedFriend = await axios.post(
-      `${BASE_URL}/users/${request._id}/update`,
-      {
-        friends: [userData._id, ...request.friends],
-      }
-    );
-    setIsReplySent(true);
-    refreshData(updatedUserData.data.updatedUser);
-  };
-  const sendDeleteRequest = async (request) => {
-    const updatedUserData = await axios.post(
-      `${BASE_URL}/users/${userData._id}/update`,
-      {
-        friend_requests: userData.friend_requests.filter(
-          (req) => req._id !== request._id
-        ),
-      }
-    );
-    setIsReplySent(true);
-    refreshData(updatedUserData.data.updatedUser);
-  };
-
   useEffect(() => {
+    setIsLoading(true);
     if (userData && userData.username !== undefined) {
       setIsLoading(false);
     }
@@ -65,25 +32,7 @@ function Notifications() {
               {userData &&
                 userData.friend_requests.map((request) => (
                   <li key={request._id}>
-                    {request.username} has sent you a friend request
-                    {!isReplySent ? (
-                      <div>
-                        <Button
-                          variant="primary"
-                          onClick={() => sendAccept(request)}
-                        >
-                          Accept
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          onClick={() => sendDeleteRequest(request)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    ) : (
-                      <div>Reply sent</div>
-                    )}
+                    <FriendRequest request={request} isLoading={isLoading} />
                   </li>
                 ))}
               {userData &&
