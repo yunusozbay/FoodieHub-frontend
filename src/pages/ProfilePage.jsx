@@ -3,11 +3,11 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 import "../styles/ProfilePage.css";
-import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { Card, ListGroup, Button, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RestaurantCard from "../components/RestaurantCard";
 
 function ProfilePage() {
@@ -251,28 +251,74 @@ function ProfilePage() {
                       )}
                     </div>
                   </div>
-                  <div className="card shadow-sm my-4">
-                    <div className="card-header bg-transparent border-0">
-                      <h3 className="mb-0">
-                        <FontAwesomeIcon icon={faCircleInfo} /> Other
-                        Information
-                      </h3>
-                    </div>
-                    <div className="card-body pt-0">
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                      </p>
-                    </div>
-                  </div>
+                </div>
+                <div>
+                  <ListGroup>
+                    <ListGroup.Item>
+                      <h4>My Foodie Friends</h4>
+                    </ListGroup.Item>
+                    {userData.friends.map((friend) => (
+                      <ListGroup.Item>
+                        <Link to={`/users/${friend._id}`}>
+                          <h5>{friend.username}</h5>
+                        </Link>
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                </div>
+                <div>
+                  <h4>Upcoming events</h4>
+                  {userData.events.map((event) => (
+                    <Card className="mt-3 restaurant-card">
+                      <Card.Img
+                        variant="top"
+                        src={event.restaurant.image_url}
+                        className="card-img"
+                      />
+
+                      <Card.Body className="card-body">
+                        <Card.Title>
+                          <h2 className="card-title">{event.title}</h2>
+                        </Card.Title>
+                        with{" "}
+                        {event.invited_users.map((friend) => (
+                          <span>{friend.username}</span>
+                        ))}
+                        <h4>Created by: {event.created_by.username}</h4>
+                        <h6>Date: {event.date.slice(0, 10)}</h6>
+                        <h6>Time: {event.time}</h6>
+                        <Card.Text>{event.restaurant.name}</Card.Text>
+                      </Card.Body>
+                      <ListGroup>
+                        <Card.Text>
+                          {event.restaurant.location &&
+                            event.restaurant.location.display_address}
+                        </Card.Text>
+                      </ListGroup>
+                      <Card.Body className="card-btns">
+                        <Button
+                          variant="secondary"
+                          onClick={() =>
+                            navigate(`/restaurants/${event.restaurant.alias}`)
+                          }
+                        >
+                          Restaurant details
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          onClick={() => setIsEditingEvent(true)}
+                        >
+                          Edit
+                        </Button>
+                        <Button variant="danger">Delete</Button>
+                      </Card.Body>
+                    </Card>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-
+          <h6>My favourite restaurants</h6>
           <Button
             variant="outline-warning"
             type="submit"
@@ -288,60 +334,6 @@ function ProfilePage() {
                 {profileData.restaurants.map((restaurant) => (
                   <Col key={restaurant._id}>
                     <RestaurantCard restaurant={restaurant} isOwner={true} />
-                    {/* <Card className="mt-3 restaurant-card">
-                      <Card.Img
-                        variant="top"
-                        src={restaurant.image_url}
-                        className={isShown ? "card-img-sm" : "card-img"}
-                      />
-                      <Card.Body
-                        className={
-                          isShown
-                            ? "card-body-sm d-flex flex-column justify-content-between"
-                            : "card-body d-flex flex-column justify-content-between"
-                        }
-                      >
-                        <div>
-                          <p className="mb-0">
-                            <h6 className="pr-1" style={{ fontSize: "1rem" }}>
-                              <strong>{restaurant.name}</strong>
-                            </h6>
-                          </p>
-                          <p className="mb-0" style={{ fontSize: "0.7rem" }}>
-                            <strong className="pr-1">Phone: </strong>
-                            {restaurant.phone}
-                          </p>
-                          <p className="mb-0" style={{ fontSize: "0.7rem" }}>
-                            <strong className="pr-1">Payment currency: </strong>
-                            {restaurant.price}
-                          </p>
-                          <p className="mb-0" style={{ fontSize: "0.7rem" }}>
-                            <strong className="pr-1">Rating: </strong>
-                            {restaurant.rating}
-                          </p>
-                          <p className="mb-0" style={{ fontSize: "0.7rem" }}>
-                            <strong className="pr-1">Reviews: </strong>
-                            {restaurant.reviews}
-                          </p>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                          <Button
-                            variant="outline-warning"
-                            className="mb-2 px-0 show-details-btn"
-                            style={{ padding: 0, fontSize: "0.9rem" }}
-                          >
-                            Show details
-                          </Button>
-                          <Button
-                            variant="outline-warning"
-                            onClick={() => handleDelete(restaurant._id)}
-                            style={{ fontSize: "0.7rem" }}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      </Card.Body>
-                    </Card> */}
                   </Col>
                 ))}
               </Row>

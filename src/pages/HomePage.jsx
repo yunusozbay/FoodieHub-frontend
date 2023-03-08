@@ -83,14 +83,9 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
         </div>
         {isLoading || isShowingRandom ? (
           <div className="right-ctn">
-            {/* <SpinnerComponent /> */}
             {isLoading ? <SpinnerComponent /> : null}
             {!isLoading && isShowingRandom ? (
-              <RestaurantCard
-                // hidden={hidden}
-                // setHidden={setHidden}
-                restaurant={randomRest}
-              />
+              <RestaurantCard restaurant={randomRest} />
             ) : null}
           </div>
         ) : null}

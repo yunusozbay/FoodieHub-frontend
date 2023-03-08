@@ -21,6 +21,7 @@ function NavBarComp() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await axios.get(`${BASE_URL}/users`);
@@ -30,6 +31,7 @@ function NavBarComp() {
   useEffect(() => {
     if (userData && userData.username !== undefined) {
       fetchData();
+      setSearchTerm("");
       // setisAuthenticated(true);
     }
     setIsLoading(false);
@@ -78,26 +80,32 @@ function NavBarComp() {
                   </>
                 )}
                 {isAuthenticated && (
-                  <div>
+                  <div className="search">
                     <SearchBar
                       searchTerm={searchTerm}
                       setSearchTerm={setSearchTerm}
                     />
-                    <ListGroup style={{ position: "absolute" }}>
+                    <div className="search-results">
                       {allUsers.map((user) =>
                         searchTerm &&
                         user.username !== userData.username &&
                         user.username
                           .toLowerCase()
                           .includes(searchTerm.toLowerCase()) ? (
-                          <ListGroup.Item variant="secondary">
-                            <Link key={user._id} to={`/users/${user._id}`}>
-                              <div>{user.username}</div>
-                            </Link>
-                          </ListGroup.Item>
+                          <button
+                            onClick={(event) => {
+                              setSearchTerm("");
+                              event.preventDefault();
+                              navigate(`/users/${user._id}`);
+                            }}
+                            key={user._id}
+                            // to={`/users/${user._id}`}
+                          >
+                            <div>{user.username}</div>
+                          </button>
                         ) : null
                       )}
-                    </ListGroup>
+                    </div>
                   </div>
                 )}
               </div>
