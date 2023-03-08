@@ -129,6 +129,7 @@ button:focus-visible {
 
 .add-to-list:before, .added-to-list:before {
   content: '\FF0B';
+  transform: translate(0, -2px);
 }
 .added-to-list {
   background-color: #eeb704;
@@ -147,37 +148,6 @@ button:focus-visible {
 .add-to-list:hover + .hide {
   display: block;
 }
-/* .card-img-sm {
-  width: 100%;
-  height: 10rem;
-  object-fit: cover;
-}
-
-.card-title-sm {
-  font-size: 0.9rem;
-}
-
-.card-ratings-sm {
-  font-size: 0.7rem;
-}
-.card-ratings-sm {
-  font-size: 0.7rem;
-}
-.card-address-sm {
-  display: none;
-}
-.card-phone-sm {
-  display: none;
-}
-.card-price-sm {
-  display: none;
-}
-.card-body-sm {
-  height: 8rem;
-}
-.card-body-sm a {
-  font-size: 0.7rem;
-} */
 .result-links {
   display: flex;
   justify-content: space-between;

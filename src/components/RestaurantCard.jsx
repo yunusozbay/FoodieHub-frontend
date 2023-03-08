@@ -46,11 +46,15 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
             Rating: {restaurant.rating} ({restaurant.review_count} reviews)
           </h6>
           <Card.Text className={"card-address"}>
-            {restaurant.location.display_address}
+            <strong>Address:</strong> {restaurant.location.display_address}
           </Card.Text>
 
-          <Card.Text className={"card-price"}>{restaurant.price}</Card.Text>
-          <Card.Text className={"card-phone"}>{restaurant.phone}</Card.Text>
+          <Card.Text className={"card-price"}>
+            <strong>Price:</strong> {restaurant.price}
+          </Card.Text>
+          <Card.Text className={"card-phone"}>
+            <strong>Phone:</strong> {restaurant.phone}
+          </Card.Text>
 
           {restaurant.hours
             ? restaurant.hours[0].is_open_now

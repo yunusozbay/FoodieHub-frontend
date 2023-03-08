@@ -12,7 +12,7 @@ function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
 
   // useEffect(() => {
-  //   fetch(`http://localhost:5005/profile/${userData.id}`, {
+  //   fetch(`http://localhost:5005/profile/${userData._id}`, {
   //     method: "GET",
   //     headers: {
   //       "Content-Type": "application/json",
@@ -31,12 +31,15 @@ function ProfilePage() {
   // }, []);
 
   const fetchData = async () => {
-    const response = await fetch(`http://localhost:5005/users/${userData.id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `http://localhost:5005/users/${userData._id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     let parsed = await response.json();
     console.log(parsed);
     setProfileData(parsed.oneUser);
@@ -46,7 +49,6 @@ function ProfilePage() {
   useEffect(() => {
     if (userData && userData.username !== undefined) {
       fetchData();
-      // setIsLoading(false);
     }
   }, [userData]);
 
