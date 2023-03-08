@@ -8,9 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import RestaurantCard from "../components/RestaurantCard"
 
 function ProfilePage() {
-  const { userData, token } = useContext(SessionContext);
+  const { userData, token, isAuthenticated, refreshData } = useContext(SessionContext);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isShown, setIsShown] = useState(false);
@@ -23,19 +24,20 @@ function ProfilePage() {
 
   const handleUpdate = async (username, email) => {
     try {
-      const response = await axios.put(
-        `http://localhost:5005/profile/${userData.id}`,
+      const response = await axios.post(
+        `http://localhost:5005/users/${userData._id}/update`,
         {
           username: username,
           email: email,
         }
       );
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        username: response.data.oneUser.username,
-        email: response.data.oneUser.email,
-      }));
+      // setUserData((prevUserData) => ({
+      //   ...prevUserData,
+      //   username: response.data.oneUser.username,
+      //   email: response.data.oneUser.email,
+      // }));
       setIsEditing(false);
+      refreshData(response.data.updatedUser)
     } catch (error) {
       console.log(error);
     }
@@ -286,7 +288,8 @@ function ProfilePage() {
               <Row xs={1} md={4} lg={5} className="g-4">
                 {profileData.restaurants.map((restaurant) => (
                   <Col key={restaurant._id}>
-                    <Card className="mt-3 restaurant-card">
+                    <RestaurantCard restaurant = {restaurant}/>
+                    {/* <Card className="mt-3 restaurant-card">
                       <Card.Img
                         variant="top"
                         src={restaurant.image_url}
@@ -339,7 +342,7 @@ function ProfilePage() {
                           </Button>
                         </div>
                       </Card.Body>
-                    </Card>
+                    </Card> */}
                   </Col>
                 ))}
               </Row>
