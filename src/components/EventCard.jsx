@@ -22,7 +22,7 @@ function EventCard() {
       setEvent(response.data.foundEvent);
       setIsLoading(false);
       response.data.foundEvent.invited_users.map((user) => {
-        if (user._id === userData.id) {
+        if (user._id === userData._id) {
           setIsInvited(true);
         }
       });
@@ -43,25 +43,34 @@ function EventCard() {
   };
 
   const handleAccept = async () => {
-    await axios.post(`http://localhost:5005/users/${userData.id}/update`, {
-      invitations: userData.invitations.filter(
-        (invite) => invite._id !== event._id
-      ),
-      events: [event._id, ...userData.events],
-    });
+    const response = await axios.post(
+      `http://localhost:5005/users/${userData._id}/update`,
+      {
+        invitations: userData.invitations.filter(
+          (invite) => invite._id !== event._id
+        ),
+        events: [event._id, ...userData.events],
+      }
+    );
     setIsReplySent(true);
-    refreshData();
+    refreshData(response.data.updatedUser);
     navigate("/profile");
   };
   const handleDecline = async () => {
-    await axios.post(`http://localhost:5005/users/${userData.id}/update`, {
-      invitations: userData.invitations.filter((req) => req._id !== event._id),
-    });
+    const response = await axios.post(
+      `http://localhost:5005/users/${userData._id}/update`,
+      {
+        invitations: userData.invitations.filter(
+          (req) => req._id !== event._id
+        ),
+      }
+    );
     await axios.post(`http://localhost:5005/events/${event._id}/edit`, {
       invited_users: event.invited_users.filter(
-        (req) => req._id !== userData.id
+        (req) => req._id !== userData._id
       ),
     });
+    refreshData(response.data.updatedUser);
     setIsReplySent(true);
   };
 
@@ -113,7 +122,7 @@ function EventCard() {
                 </Button>
               </div>
             ) : null}
-            {event.created_by._id === userData.id && (
+            {event.created_by._id === userData._id && (
               <Button
                 variant="secondary"
                 onClick={() => setIsEditingEvent(true)}
@@ -121,7 +130,7 @@ function EventCard() {
                 Edit
               </Button>
             )}
-            {event.created_by._id === userData.id && (
+            {event.created_by._id === userData._id && (
               <Button variant="danger" onClick={handleDelete}>
                 Delete
               </Button>

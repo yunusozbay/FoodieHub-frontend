@@ -20,7 +20,7 @@ function Notifications() {
 
   const sendAccept = async (request) => {
     const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData.id}/update`,
+      `http://localhost:5005/users/${userData._id}/update`,
       {
         friend_requests: userData.friend_requests.filter(
           (req) => req._id !== request._id
@@ -31,27 +31,29 @@ function Notifications() {
     const updatedFriend = await axios.post(
       `http://localhost:5005/users/${request._id}/update`,
       {
-        friends: [userData.id, ...request.friends],
+        friends: [userData._id, ...request.friends],
       }
     );
+    refreshData(updatedUser);
     setIsReplySent(true);
   };
   const sendDeleteRequest = async (request) => {
     const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData.id}/update`,
+      `http://localhost:5005/users/${userData._id}/update`,
       {
         friend_requests: userData.friend_requests.filter(
           (req) => req._id !== request._id
         ),
       }
     );
+    refreshData(updatedUser);
     setIsReplySent(true);
   };
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
-      setCurrentUser(userData);
-      setInvitations(userData.invitations);
+      //   setCurrentUser(userData);
+      //   setInvitations(userData.invitations);
       setIsLoading(false);
     }
   }, [userData]);
