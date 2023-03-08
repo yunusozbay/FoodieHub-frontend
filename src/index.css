@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;600;700;800;900&display=swap');
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+ 
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -13,6 +15,12 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
 
 a {
   font-weight: 500;
@@ -27,9 +35,12 @@ body {
   margin: 0;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  
+  background-color: #242424;
 }
 
 h1 {
@@ -72,7 +83,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem;
+  margin: 2rem 1rem;
 }
 .restaurant-search-form div {
   width: 100%;
@@ -84,43 +95,58 @@ button:focus-visible {
 
 .restaurant-card {
   height: 15rem;
+  margin-top: 2rem;
 }
-
+.card-body p {
+  margin: 0;
+}
+.card-btns {
+  margin-top: 1rem;
+}
 .card-img {
   width: 100%;
   height: 15rem;
   object-fit: cover;
 }
-.card-img-sm {
-  width: 100%;
-  height: 10rem;
-  object-fit: cover;
+.add-to-list, .added-to-list {
+  position: absolute;
+  right: .5rem;
+  top: .5rem;
+  border-radius: 50%;
+  font-size: 2rem;
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-weight: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.add-to-list:hover, .added-to-list:hover {
+  border: none;
 }
 
-.card-title-sm {
-  font-size: 0.9rem;
+.add-to-list:before, .added-to-list:before {
+  content: '\FF0B';
+  transform: translate(0, -2px);
 }
-
-.card-ratings-sm {
-  font-size: 0.7rem;
+.added-to-list {
+  background-color: #eeb704;
+  color: white;
 }
-.card-ratings-sm {
-  font-size: 0.7rem;
-}
-.card-address-sm {
+.hide {
   display: none;
+  position: absolute;
+  right: 4rem;
+  top: 1rem;
+  background-color: white;
+  padding: .4rem;
+  border-radius: 5px;
+  font-size: .9rem;
 }
-.card-phone-sm {
-  display: none;
-}
-.card-price-sm {
-  display: none;
-}
-.card-body-sm {
-  height: 8rem;
-}
-.card-body-sm a {
-  font-size: 0.7rem;
+.add-to-list:hover + .hide {
+  display: block;
 }
 .result-links {
   display: flex;
@@ -148,7 +174,7 @@ button:focus-visible {
   justify-content: space-between;
   margin-top: 2rem;
 }
-.card-btns-sm {
+/* .card-btns-sm {
   display: flex;
   flex-wrap: wrap;
   gap: .2rem;
@@ -156,7 +182,7 @@ button:focus-visible {
 .card-btns-sm button {
   font-size: .8rem;
   padding: .3rem;
-}
+} */
 .list-btn, .event-btn {
   width: 45%;
 }
@@ -168,4 +194,86 @@ button:focus-visible {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+}
+
+@media only screen and (min-width: 768px)  {
+  div .form-ctn {
+      width: 30%;
+  }
+  .randomGen {
+    display: flex;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    gap: 2rem;
+    border: 1px solid rgb(197, 197, 197);
+  }
+
+  .restaurant-card {
+    margin-top: 0;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .card-img {
+    height: 10rem;
+  }
+  .left-ctn {
+    flex: 1
+  }
+  .right-ctn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .restaurant-search-form {
+    margin: 0 auto;
+    max-width: 60vw;
+  }
+  .card-title {
+    font-size: 1.5rem;
+  }
+  .card-btns button {
+    font-size: .9rem;
+  }
+  .restaurant-search-form div {
+    width: 100%;
+  }
+  .result-links {
+    margin-bottom: 1rem;
+  }
+}
+
+@media only screen and (min-width: 900px)  {
+  .homeCtn {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("./assets/robin-stickel-tzl1UCXg5Es-unsplash.jpg");
+    background-size: cover;
+    background-repeat: no-repeat; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+  .randomGen {
+    width: 50vw;
+    display: flex;
+  }
+  .restaurant-search-form {
+    margin: 0 auto;
+    max-width: 30vw;
+  }
+  .title {
+    font-size: 3rem;
+  }
+  .subtitle {
+    font-size: 1.5rem;
+  } 
 }

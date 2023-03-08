@@ -8,44 +8,52 @@ import { SessionContext } from "../contexts/SessionContext";
 function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const { userData } = useContext(SessionContext);
+
+  const navigate = useNavigate();
+
   async function handlePost() {
-    await axios.post("http://localhost:5005/restaurants/add", {
-      userData,
-      restaurant,
-    });
+    if (!userData || userData.username === undefined) {
+      navigate("/login");
+    } else {
+      await axios.post("http://localhost:5005/restaurants/add", {
+        userData,
+        restaurant,
+      });
+    }
     setHidden(true);
     console.log(userData);
   }
-  const navigate = useNavigate();
+
   return (
-    <div>
-      <Card className="mt-3 restaurant-card">
-        <Link to={`/restaurants/${restaurant.id}`}>
-          <Card.Img
-            variant="top"
-            src={restaurant.image_url}
-            className={listView ? "card-img-sm" : "card-img"}
-          />
-        </Link>
-        <Card.Body className={listView ? "card-body-sm" : "card-body"}>
+    <>
+      <Card className="restaurant-card">
+        <Card.Img
+          variant="top"
+          src={restaurant.image_url}
+          className={"card-img"}
+        />
+        <button
+          className={!hidden ? "add-to-list" : "added-to-list"}
+          onClick={handlePost}
+        ></button>
+        <div class="hide">Add to my collection</div>
+
+        <Card.Body className={"card-body"}>
           <Card.Title>
-            <h2 className={listView ? "card-title-sm" : "card-title"}>
-              {restaurant.name}
-            </h2>
+            <h2 className={"card-title"}>{restaurant.name}</h2>
           </Card.Title>
-          <h6 className={listView ? "card-ratings-sm" : "card-ratings"}>
+          <h6 className={"card-ratings"}>
             Rating: {restaurant.rating} ({restaurant.review_count} reviews)
           </h6>
-          <Card.Text className={listView ? "card-address-sm" : "card-address"}>
-            {restaurant.location.display_address}
+          <Card.Text className={"card-address"}>
+            <strong>Address:</strong> {restaurant.location.display_address}
           </Card.Text>
-        </Card.Body>
-        <ListGroup className="list-group-flush">
-          <Card.Text className={listView ? "card-price-sm" : "card-price"}>
-            {restaurant.price}
+
+          <Card.Text className={"card-price"}>
+            <strong>Price:</strong> {restaurant.price}
           </Card.Text>
-          <Card.Text className={listView ? "card-phone-sm" : "card-phone"}>
-            {restaurant.phone}
+          <Card.Text className={"card-phone"}>
+            <strong>Phone:</strong> {restaurant.phone}
           </Card.Text>
 
           {restaurant.hours
@@ -53,29 +61,35 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
               ? "open now"
               : "closed now"
             : null}
-        </ListGroup>
-        <Card.Body className={listView ? "card-btns-sm" : "card-btns"}>
-          {!hidden && (
-            <Button onClick={handlePost} variant="primary" className="list-btn">
-              Add to list
+
+          <div className={"card-btns"}>
+            {/* {!hidden && (
+              <Button
+                onClick={handlePost}
+                variant="outline-secondary"
+                className="list-btn"
+              >
+                Add to list
+              </Button>
+            )} */}
+            <Button
+              variant="outline-secondary"
+              onClick={() => setIsCreatingEvent(true)}
+              className="event-btn"
+            >
+              Create event
             </Button>
-          )}
-          <Button
-            variant="warning"
-            onClick={() => setIsCreatingEvent(true)}
-            className="event-btn"
-          >
-            Create event
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => navigate(`/restaurants/${restaurant.alias}`)}
-            className="details-btn"
-          >
-            See details
-          </Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate(`/restaurants/${restaurant.alias}`)}
+              className="details-btn"
+            >
+              See details
+            </Button>
+          </div>
         </Card.Body>
       </Card>
+      {isCreatingEvent && userData === undefined ? navigate("/login") : null}
       {isCreatingEvent ? (
         <EventForm
           restaurant={restaurant}
@@ -84,7 +98,7 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
           setIsCreatingEvent={setIsCreatingEvent}
         />
       ) : null}
-    </div>
+    </>
   );
 }
 

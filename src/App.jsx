@@ -9,9 +9,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import EventCard from "./components/EventCard";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
-import NavbarComp from './components/NavbarComp'
+import NavbarComp from "./components/NavbarComp";
 import UserDetails from "./pages/UserDetails";
-
+import ProfileRestaurantDetails from "./pages/ProfileRestaurantDetails";
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -41,7 +41,7 @@ function App() {
 
   const handleSubmit = async (city, food) => {
     const allRest = await axios.get(
-      `${BASE_URL}/search?location=${city}&term=${food}&limit=20`,
+      `${BASE_URL}/search?location=${city}&categories=restaurants&term=${food}&limit=20`,
       {
         headers: {
           Authorization: `Bearer ${YELP_TOKEN}`,
@@ -65,6 +65,7 @@ function App() {
               randomRest={randomRest}
               handleSubmit={handleSubmit}
               isShowingRandom={isShowingRandom}
+              setIsShowingRandom={setIsShowingRandom}
               isLoading={isLoading}
             />
           }
@@ -93,6 +94,14 @@ function App() {
           element={
             <PrivateRoute>
               <ProfilePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/restaurants/profile/:id"
+          element={
+            <PrivateRoute>
+              <ProfileRestaurantDetails />
             </PrivateRoute>
           }
         />

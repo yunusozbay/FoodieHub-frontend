@@ -7,16 +7,18 @@ import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
-  const { userData, setUserData, isAuthenticated } = useContext(SessionContext);
-  const [profileData, setProfileData] = useState({});
+  const { userData, token } = useContext(SessionContext);
+  const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isShown, setIsShown] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   console.log("this is userdata", userData);
 
   const handleUpdate = async (username, email) => {
@@ -58,10 +60,18 @@ function ProfilePage() {
   };
 
   const fetchData = async () => {
-    const response = await axios.get(
-      `http://localhost:5005/users/${userData.id}`
+    const response = await fetch(
+      `http://localhost:5005/users/${userData._id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    setProfileData(response.data.oneUser);
+    let parsed = await response.json();
+    console.log(parsed);
+    setProfileData(parsed.oneUser);
     setIsLoading(false);
   };
 

@@ -9,8 +9,10 @@ function EventCard() {
   const [event, setEvent] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isEditingEvent, setIsEditingEvent] = useState(false);
+  const [isInvited, setIsInvited] = useState(false);
+  const [isReplySent, setIsReplySent] = useState(false);
 
-  const { userData } = useContext(SessionContext);
+  const { userData, refreshData } = useContext(SessionContext);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -19,18 +21,57 @@ function EventCard() {
       const response = await axios.get(`http://localhost:5005/events/${id}`);
       setEvent(response.data.foundEvent);
       setIsLoading(false);
+      response.data.foundEvent.invited_users.map((user) => {
+        if (user._id === userData._id) {
+          setIsInvited(true);
+        }
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchEvent();
-  }, []);
+    if (userData && userData.username !== undefined) {
+      fetchEvent();
+    }
+  }, [userData]);
 
   const handleDelete = async () => {
     await axios.post(`http://localhost:5005/events/${event._id}/delete`);
     navigate("/profile");
+  };
+
+  const handleAccept = async () => {
+    const response = await axios.post(
+      `http://localhost:5005/users/${userData._id}/update`,
+      {
+        invitations: userData.invitations.filter(
+          (invite) => invite._id !== event._id
+        ),
+        events: [event._id, ...userData.events],
+      }
+    );
+    setIsReplySent(true);
+    refreshData(response.data.updatedUser);
+    navigate("/profile");
+  };
+  const handleDecline = async () => {
+    const response = await axios.post(
+      `http://localhost:5005/users/${userData._id}/update`,
+      {
+        invitations: userData.invitations.filter(
+          (req) => req._id !== event._id
+        ),
+      }
+    );
+    await axios.post(`http://localhost:5005/events/${event._id}/edit`, {
+      invited_users: event.invited_users.filter(
+        (req) => req._id !== userData._id
+      ),
+    });
+    refreshData(response.data.updatedUser);
+    setIsReplySent(true);
   };
 
   return (
@@ -59,7 +100,10 @@ function EventCard() {
             <Card.Text>{event.restaurant.name}</Card.Text>
           </Card.Body>
           <ListGroup>
-            <Card.Text>{event.restaurant.address.display_address}</Card.Text>
+            <Card.Text>
+              {event.restaurant.location &&
+                event.restaurant.location.display_address}
+            </Card.Text>
           </ListGroup>
           <Card.Body className="card-btns">
             <Button
@@ -68,10 +112,17 @@ function EventCard() {
             >
               Restaurant details
             </Button>
-            {event.invited_users.map((user) => {
-              user._id === userData.id ? console.log("invited") : null;
-            })}
-            {event.created_by._id === userData.id && (
+            {isInvited && !isReplySent ? (
+              <div>
+                <Button variant="warning" onClick={handleAccept}>
+                  Accept
+                </Button>
+                <Button variant="secondary" onClick={handleDecline}>
+                  Decline
+                </Button>
+              </div>
+            ) : null}
+            {event.created_by._id === userData._id && (
               <Button
                 variant="secondary"
                 onClick={() => setIsEditingEvent(true)}
@@ -79,7 +130,7 @@ function EventCard() {
                 Edit
               </Button>
             )}
-            {event.created_by._id === userData.id && (
+            {event.created_by._id === userData._id && (
               <Button variant="danger" onClick={handleDelete}>
                 Delete
               </Button>

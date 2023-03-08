@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import { SessionContext } from "../contexts/SessionContext";
@@ -9,111 +9,131 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Notifications() {
-  const { userData } = useContext(SessionContext);
-  const [friendRequests, setFriendRequests] = useState(
-    userData.friend_requests
-  );
-  const [friends, setFriends] = useState(userData.friends);
+  const { userData, refreshData, verifyToken, token } =
+    useContext(SessionContext);
+  const [isReplySent, setIsReplySent] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState();
+  const [invitations, setInvitations] = useState([]);
 
   const navigate = useNavigate();
 
-  const sendResponse = async (request) => {
+  const sendAccept = async (request) => {
     const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData.id}/update`,
+      `http://localhost:5005/users/${userData._id}/update`,
       {
-        friend_requests: friendRequests,
-        friends: friends,
+        friend_requests: userData.friend_requests.filter(
+          (req) => req._id !== request._id
+        ),
+        friends: [request._id, ...userData.friends],
       }
     );
     const updatedFriend = await axios.post(
       `http://localhost:5005/users/${request._id}/update`,
       {
-        friends: [userData.id, ...request.friends],
+        friends: [userData._id, ...request.friends],
       }
     );
+    refreshData(updatedUser);
+    setIsReplySent(true);
+  };
+  const sendDeleteRequest = async (request) => {
+    const updatedUser = await axios.post(
+      `http://localhost:5005/users/${userData._id}/update`,
+      {
+        friend_requests: userData.friend_requests.filter(
+          (req) => req._id !== request._id
+        ),
+      }
+    );
+    refreshData(updatedUser);
+    setIsReplySent(true);
   };
 
-  const handleDeleteRequest = (request) => {
-    const newArr = JSON.parse(JSON.stringify(friendRequests));
-    const index = newArr.indexOf(request._id);
-    newArr.splice(index, 1);
-    let requestIds = [];
-    newArr.map((req) => {
-      requestIds.push(req._id);
-    });
-    setFriendRequests(requestIds);
-    sendResponse(request);
-  };
-
-  const handleAccept = (request) => {
-    let newFriendsArr = [...friends];
-    newFriendsArr.unshift(request._id);
-    setFriends(newFriendsArr);
-    const newArr = JSON.parse(JSON.stringify(friendRequests));
-    const index = newArr.indexOf(request._id);
-    newArr.splice(index, 1);
-    let requestIds = [];
-    newArr.map((req) => {
-      requestIds.push(req._id);
-    });
-    setFriendRequests(requestIds);
-    // handleDeleteRequest(request);
-    sendResponse(request);
-  };
+  useEffect(() => {
+    if (userData && userData.username !== undefined) {
+      //   setCurrentUser(userData);
+      //   setInvitations(userData.invitations);
+      setIsLoading(false);
+    }
+  }, [userData]);
 
   const popover = (
-    <Popover id="popover-basic">
-      <Popover.Header as="h3">Your pending requests</Popover.Header>
-      <Popover.Body>
-        <ul>
-          {userData.friend_requests.map((request) => (
-            <li key={request._id}>
-              {request.username} has sent you a friend request
-              <div>
-                <Button variant="primary" onClick={() => handleAccept(request)}>
-                  Accept
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => handleDeleteRequest(request)}
-                >
-                  Delete
-                </Button>
-              </div>
-            </li>
-          ))}
-          {userData.invitations.map((event) => (
-            <li key={event._id}>
-              You've been invited to "{event.title}"
-              <div>
-                <Button
-                  variant="primary"
-                  onClick={() => navigate(`/events/${event._id}`)}
-                >
-                  See details
-                </Button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Popover.Body>
-    </Popover>
+    <div>
+      {isLoading ? (
+        <></>
+      ) : (
+        <Popover id="popover-basic">
+          <Popover.Header as="h3">Your pending requests</Popover.Header>
+          <Popover.Body>
+            <ul>
+              {userData &&
+                userData.friend_requests.map((request) => (
+                  <li key={request._id}>
+                    {request.username} has sent you a friend request
+                    {!isReplySent ? (
+                      <div>
+                        <Button
+                          variant="primary"
+                          onClick={() => sendAccept(request)}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          onClick={() => sendDeleteRequest(request)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>Reply sent</div>
+                    )}
+                  </li>
+                ))}
+              {userData &&
+                userData.invitations.map((event) => (
+                  <li key={event._id}>
+                    You've been invited to "{event.title}"
+                    <div>
+                      <Button
+                        variant="primary"
+                        onClick={() => navigate(`/events/${event._id}`)}
+                      >
+                        See details
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </Popover.Body>
+        </Popover>
+      )}
+    </div>
   );
-  console.log(userData);
   return (
-    <>
-      <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
-        <Button variant="secondary">
-          <img style={{ width: "1.5rem" }} src={bell} />
-          {userData.friend_requests.length || userData.invitations.length ? (
-            <Badge bg="danger">
-              {userData.friend_requests.length + userData.invitations.length}
-            </Badge>
-          ) : null}
-          <span className="visually-hidden">unread messages</span>
-        </Button>
-      </OverlayTrigger>
-    </>
+    <div>
+      {isLoading ? (
+        <></>
+      ) : (
+        <>
+          <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
+            <Button variant="secondary">
+              <img style={{ width: "1.2rem" }} src={bell} />
+              {(userData && userData.friend_requests.length) ||
+              (userData && userData.invitations.length) ? (
+                <Badge bg="danger">
+                  {userData &&
+                    userData.friend_requests.length + userData &&
+                    userData.invitations.length}
+                </Badge>
+              ) : null}
+              <span className="visually-hidden">unread messages</span>
+            </Button>
+          </OverlayTrigger>
+        </>
+      )}
+    </div>
   );
 }
 
