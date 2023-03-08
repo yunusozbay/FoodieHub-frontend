@@ -8,10 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import RestaurantCard from "../components/RestaurantCard"
+import RestaurantCard from "../components/RestaurantCard";
 
 function ProfilePage() {
-  const { userData, token, isAuthenticated, refreshData } = useContext(SessionContext);
+  const { userData, token, isAuthenticated, refreshData } =
+    useContext(SessionContext);
   const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isShown, setIsShown] = useState(false);
@@ -37,7 +38,7 @@ function ProfilePage() {
       //   email: response.data.oneUser.email,
       // }));
       setIsEditing(false);
-      refreshData(response.data.updatedUser)
+      refreshData(response.data.updatedUser);
     } catch (error) {
       console.log(error);
     }
@@ -288,7 +289,7 @@ function ProfilePage() {
               <Row xs={1} md={4} lg={5} className="g-4">
                 {profileData.restaurants.map((restaurant) => (
                   <Col key={restaurant._id}>
-                    <RestaurantCard restaurant = {restaurant}/>
+                    <RestaurantCard restaurant={restaurant} isOwner={true} />
                     {/* <Card className="mt-3 restaurant-card">
                       <Card.Img
                         variant="top"
