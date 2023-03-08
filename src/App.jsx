@@ -9,7 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import EventCard from "./components/EventCard";
 import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
-import NavbarComp from "./components/NavbarComp";
+import NavBarComp from "./components/NavBarComp";
 import UserDetails from "./pages/UserDetails";
 import ProfileRestaurantDetails from "./pages/ProfileRestaurantDetails";
 
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div>
-      <NavbarComp />
+      <NavBarComp />
       <Routes>
         <Route
           path="/"
