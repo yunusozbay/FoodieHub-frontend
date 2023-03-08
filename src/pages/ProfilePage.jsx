@@ -64,15 +64,12 @@ function ProfilePage() {
   };
 
   const fetchData = async () => {
-    const response = await fetch(
-      `${BASE_URL}/users/${userData._id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${BASE_URL}/users/${userData._id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     let parsed = await response.json();
     console.log(parsed);
     setProfileData(parsed.oneUser);
@@ -85,10 +82,10 @@ function ProfilePage() {
     }
   }, [userData]);
 
-  const handleDelete = async (id) => {
-    await axios.post(`${BASE_URL}/restaurants/delete`, { id });
-    fetchData();
-  };
+  // const handleDelete = async (id) => {
+  //   await axios.post(`${BASE_URL}/restaurants/delete`, { id });
+  //   fetchData();
+  // };
 
   return (
     <div className="container">
@@ -107,7 +104,7 @@ function ProfilePage() {
                     <div className="card-header bg-transparent text-center">
                       <img
                         className="profile_img"
-                        src="https://source.unsplash.com/600x300/?student"
+                        src="https://source.unsplash.com/600x300/?food"
                         alt="student dp"
                       />
                       <h3>Hello, {profileData.username}!</h3>

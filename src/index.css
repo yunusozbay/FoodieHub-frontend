@@ -108,7 +108,8 @@ button:focus-visible {
   height: 15rem;
   object-fit: cover;
 }
-.add-to-list, .added-to-list {
+
+.add-to-list, .added-to-list, .removeFromList {
   position: absolute;
   right: .5rem;
   top: .5rem;
@@ -121,15 +122,24 @@ button:focus-visible {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  background-color: white;
 }
-.add-to-list:hover, .added-to-list:hover {
+.removeFromList {
+  background-color: rgb(167, 5, 5);
+  color: white;
+  font-size: 1.5rem;
+}
+.add-to-list:hover, .added-to-list:hover, .removeFromList:hover {
   border: none;
 }
 
 .add-to-list:before, .added-to-list:before {
   content: '\FF0B';
   transform: translate(0, -2px);
+}
+.removeFromList:before {
+  content: "x";
+  transform: translate(0, -3px);
 }
 .added-to-list {
   background-color: #eeb704;
@@ -138,8 +148,8 @@ button:focus-visible {
 .hide {
   display: none;
   position: absolute;
-  right: 4rem;
-  top: 1rem;
+  right: 3.5rem;
+  top: .7rem;
   background-color: white;
   padding: .4rem;
   border-radius: 5px;
@@ -148,9 +158,10 @@ button:focus-visible {
 .add-to-list:hover + .hide-add {
   display: block;
 }
-.added-to-list:hover + .hide-remove {
+.removeFromList:hover + .hide-remove {
   display: block;
 }
+
 .result-links {
   display: flex;
   justify-content: space-between;
@@ -177,15 +188,6 @@ button:focus-visible {
   justify-content: space-between;
   margin-top: 2rem;
 }
-/* .card-btns-sm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .2rem;
-}
-.card-btns-sm button {
-  font-size: .8rem;
-  padding: .3rem;
-} */
 .list-btn, .event-btn {
   width: 45%;
 }

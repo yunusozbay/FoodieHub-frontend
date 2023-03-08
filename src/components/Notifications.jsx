@@ -9,18 +9,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Notifications() {
-  const { userData, refreshData, verifyToken, token } =
-    useContext(SessionContext);
+  const { userData, refreshData } = useContext(SessionContext);
   const [isReplySent, setIsReplySent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState();
-  const [invitations, setInvitations] = useState([]);
-  const [updatedUserData, setUpdatedUserData] = useState(null);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const sendAccept = async (request) => {
-    const updatedUser = await axios.post(
+    const updatedUserData = await axios.post(
       `${BASE_URL}/users/${userData._id}/update`,
       {
         friend_requests: userData.friend_requests.filter(
@@ -36,10 +32,10 @@ function Notifications() {
       }
     );
     setIsReplySent(true);
-    setUpdatedUserData(updatedUser);
+    refreshData(updatedUserData.data.updatedUser);
   };
   const sendDeleteRequest = async (request) => {
-    const updatedUser = await axios.post(
+    const updatedUserData = await axios.post(
       `${BASE_URL}/users/${userData._id}/update`,
       {
         friend_requests: userData.friend_requests.filter(
@@ -47,8 +43,8 @@ function Notifications() {
         ),
       }
     );
-    // refreshData(updatedUser);
     setIsReplySent(true);
+    refreshData(updatedUserData.data.updatedUser);
   };
 
   useEffect(() => {
@@ -56,11 +52,6 @@ function Notifications() {
       setIsLoading(false);
     }
   }, [userData]);
-  //   useEffect(() => {
-  //     if (userData && userData.username !== undefined) {
-  //       refreshData(updatedUserData);
-  //     }
-  //   }, [updatedUserData]);
 
   const popover = (
     <div>

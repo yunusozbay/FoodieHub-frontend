@@ -73,6 +73,7 @@ function EventCard() {
     });
     refreshData(response.data.updatedUser);
     setIsReplySent(true);
+    navigate("/profile");
   };
 
   return (

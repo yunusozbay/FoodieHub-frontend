@@ -77,31 +77,33 @@ function NavBarComp() {
                     </Nav.Link>
                   </>
                 )}
-                <SearchBar
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                />
                 {isAuthenticated && (
-                  <ListGroup style={{ position: "absolute" }}>
-                    {allUsers.map((user) =>
-                      searchTerm &&
-                      user.username !== userData.username &&
-                      user.username
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ? (
-                        <ListGroup.Item variant="secondary">
-                          <Link key={user._id} to={`/users/${user._id}`}>
-                            <div>{user.username}</div>
-                          </Link>
-                        </ListGroup.Item>
-                      ) : null
-                    )}
-                  </ListGroup>
+                  <div>
+                    <SearchBar
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                    />
+                    <ListGroup style={{ position: "absolute" }}>
+                      {allUsers.map((user) =>
+                        searchTerm &&
+                        user.username !== userData.username &&
+                        user.username
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ? (
+                          <ListGroup.Item variant="secondary">
+                            <Link key={user._id} to={`/users/${user._id}`}>
+                              <div>{user.username}</div>
+                            </Link>
+                          </ListGroup.Item>
+                        ) : null
+                      )}
+                    </ListGroup>
+                  </div>
                 )}
               </div>
             </Nav>
           </Navbar.Collapse>
-          <Notifications />
+          {isAuthenticated && <Notifications />}
         </Container>
       )}
     </Navbar>

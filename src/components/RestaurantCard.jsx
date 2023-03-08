@@ -8,7 +8,7 @@ import { SessionContext } from "../contexts/SessionContext";
 function RestaurantCard({ restaurant, isOwner }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-  const { userData } = useContext(SessionContext);
+  const { userData, refreshData } = useContext(SessionContext);
 
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -26,6 +26,15 @@ function RestaurantCard({ restaurant, isOwner }) {
     console.log(userData);
   }
 
+  const handleDelete = async () => {
+    const response = await axios.post(
+      `${BASE_URL}/restaurants/${restaurant._id}/delete`,
+      { userId: userData._id }
+    );
+    console.log(response);
+    refreshData(response.data.updatedUser);
+  };
+
   return (
     <>
       <Card className="restaurant-card">
@@ -34,12 +43,20 @@ function RestaurantCard({ restaurant, isOwner }) {
           src={restaurant.image_url}
           className={"card-img"}
         />
-        <button
-          className={!isAdded ? "add-to-list" : "added-to-list"}
-          onClick={handlePost}
-        ></button>
-        <div class="hide hide-add">Add to my collection</div>
-        <div class="hide hide-remove">Remove from my collection</div>
+        {!isOwner ? (
+          <>
+            <button
+              className={!isAdded ? "add-to-list" : "added-to-list"}
+              onClick={handlePost}
+            ></button>
+            <div class="hide hide-add">Add to my collection</div>
+          </>
+        ) : (
+          <>
+            <button className="removeFromList" onClick={handleDelete}></button>
+            <div class="hide hide-remove">Remove from collection</div>
+          </>
+        )}
 
         <Card.Body className={"card-body"}>
           <Card.Title>
@@ -49,7 +66,8 @@ function RestaurantCard({ restaurant, isOwner }) {
             Rating: {restaurant.rating} ({restaurant.review_count} reviews)
           </h6>
           <Card.Text className={"card-address"}>
-            <strong>Address:</strong> {restaurant.location && restaurant.location.display_address}
+            <strong>Address:</strong>{" "}
+            {restaurant.location && restaurant.location.display_address}
           </Card.Text>
 
           <Card.Text className={"card-price"}>
@@ -66,15 +84,6 @@ function RestaurantCard({ restaurant, isOwner }) {
             : null}
 
           <div className={"card-btns"}>
-            {/* {!hidden && (
-              <Button
-                onClick={handlePost}
-                variant="outline-secondary"
-                className="list-btn"
-              >
-                Add to list
-              </Button>
-            )} */}
             <Button
               variant="outline-secondary"
               onClick={() => setIsCreatingEvent(true)}
