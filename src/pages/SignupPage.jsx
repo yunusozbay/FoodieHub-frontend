@@ -9,7 +9,7 @@ const SignupPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const { userData, isAuthenticated } = useContext(SessionContext);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const SignupPage = () => {
 
   const handleSubmit = async () => {
     console.log({ username, email, password });
-    const response = await fetch("http://localhost:5005/auth/signup", {
+    const response = await fetch(`${BASE_URL}/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

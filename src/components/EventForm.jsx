@@ -18,7 +18,8 @@ function EventForm({
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [invited_users, setInvited_users] = useState("");
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  
   useEffect(() => {
     if (isEditingEvent) {
       setTitle(event.title);
@@ -29,14 +30,14 @@ function EventForm({
 
   async function handleSubmit() {
     if (isEditingEvent) {
-      await axios.post(`http://localhost:5005/events/${event._id}/edit`, {
+      await axios.post(`${BASE_URL}/events/${event._id}/edit`, {
         title,
         date,
         time,
         invited_users,
       });
     }
-    await axios.post("http://localhost:5005/events/new", {
+    await axios.post(`${BASE_URL}/events/new`, {
       userData,
       restaurant,
       newEvent: { title, date, time, invited_users },

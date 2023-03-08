@@ -11,12 +11,13 @@ function RestaurantCard({ restaurant, isOwner }) {
   const { userData } = useContext(SessionContext);
 
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   async function handlePost() {
     if (!userData || userData.username === undefined) {
       navigate("/login");
     } else {
-      await axios.post("http://localhost:5005/restaurants/add", {
+      await axios.post(`${BASE_URL}/restaurants/add`, {
         userData,
         restaurant,
       });
@@ -48,7 +49,7 @@ function RestaurantCard({ restaurant, isOwner }) {
             Rating: {restaurant.rating} ({restaurant.review_count} reviews)
           </h6>
           <Card.Text className={"card-address"}>
-            <strong>Address:</strong> {restaurant.location.display_address}
+            <strong>Address:</strong> {restaurant.location && restaurant.location.display_address}
           </Card.Text>
 
           <Card.Text className={"card-price"}>

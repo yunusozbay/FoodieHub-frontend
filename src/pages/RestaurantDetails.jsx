@@ -14,11 +14,10 @@ function RestaurantDetails() {
   const { alias } = useParams();
 
   const YELP_TOKEN = import.meta.env.VITE_YELP_TOKEN;
-  const BASE_URL =
-    "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses";
-
+  const YELP_URL = import.meta.env.VITE_YELP_URL
+  
   const fetchData = async () => {
-    const response = await axios.get(`${BASE_URL}/${alias}`, {
+    const response = await axios.get(`${YELP_URL}/${alias}`, {
       headers: {
         Authorization: `Bearer ${YELP_TOKEN}`,
         withCredentials: true,

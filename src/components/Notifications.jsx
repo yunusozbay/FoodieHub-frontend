@@ -16,12 +16,12 @@ function Notifications() {
   const [currentUser, setCurrentUser] = useState();
   const [invitations, setInvitations] = useState([]);
   const [updatedUserData, setUpdatedUserData] = useState(null);
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const sendAccept = async (request) => {
     const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData._id}/update`,
+      `${BASE_URL}/users/${userData._id}/update`,
       {
         friend_requests: userData.friend_requests.filter(
           (req) => req._id !== request._id
@@ -30,7 +30,7 @@ function Notifications() {
       }
     );
     const updatedFriend = await axios.post(
-      `http://localhost:5005/users/${request._id}/update`,
+      `${BASE_URL}/users/${request._id}/update`,
       {
         friends: [userData._id, ...request.friends],
       }
@@ -40,7 +40,7 @@ function Notifications() {
   };
   const sendDeleteRequest = async (request) => {
     const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData._id}/update`,
+      `${BASE_URL}/users/${userData._id}/update`,
       {
         friend_requests: userData.friend_requests.filter(
           (req) => req._id !== request._id

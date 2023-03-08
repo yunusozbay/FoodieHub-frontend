@@ -15,10 +15,11 @@ function EventCard() {
   const { userData, refreshData } = useContext(SessionContext);
   const { id } = useParams();
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchEvent = async () => {
     try {
-      const response = await axios.get(`http://localhost:5005/events/${id}`);
+      const response = await axios.get(`${BASE_URL}/events/${id}`);
       setEvent(response.data.foundEvent);
       setIsLoading(false);
       response.data.foundEvent.invited_users.map((user) => {
@@ -38,13 +39,13 @@ function EventCard() {
   }, [userData]);
 
   const handleDelete = async () => {
-    await axios.post(`http://localhost:5005/events/${event._id}/delete`);
+    await axios.post(`${BASE_URL}/events/${event._id}/delete`);
     navigate("/profile");
   };
 
   const handleAccept = async () => {
     const response = await axios.post(
-      `http://localhost:5005/users/${userData._id}/update`,
+      `${BASE_URL}/users/${userData._id}/update`,
       {
         invitations: userData.invitations.filter(
           (invite) => invite._id !== event._id
@@ -58,14 +59,14 @@ function EventCard() {
   };
   const handleDecline = async () => {
     const response = await axios.post(
-      `http://localhost:5005/users/${userData._id}/update`,
+      `${BASE_URL}/users/${userData._id}/update`,
       {
         invitations: userData.invitations.filter(
           (req) => req._id !== event._id
         ),
       }
     );
-    await axios.post(`http://localhost:5005/events/${event._id}/edit`, {
+    await axios.post(`${BASE_URL}/events/${event._id}/edit`, {
       invited_users: event.invited_users.filter(
         (req) => req._id !== userData._id
       ),

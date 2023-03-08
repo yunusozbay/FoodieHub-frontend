@@ -20,9 +20,10 @@ function NavBarComp() {
     useContext(SessionContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5005/users");
+    const response = await axios.get(`${BASE_URL}/users`);
     setAllUsers(response.data.allUsers);
   };
 

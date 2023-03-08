@@ -7,10 +7,11 @@ function ProfileRestaurantDetails() {
   const [restaurant, setRestaurant] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   async function fetchRestaurant() {
     const response = await axios.get(
-      `http://localhost:5005/restaurants/profile/${id}`
+      `${BASE_URL}/restaurants/profile/${id}`
     );
     console.log(response.data.restaurant);
     setRestaurant(response.data.restaurant);
@@ -24,7 +25,7 @@ function ProfileRestaurantDetails() {
     formData.append("userPhotos", photo);
     try {
       const response = await axios.post(
-        `http://localhost:5005/restaurants/profile/${id}/edit`,
+        `${BASE_URL}/restaurants/profile/${id}/edit`,
         formData,
       );
       setRestaurant(response.data.updatedRestaurant);

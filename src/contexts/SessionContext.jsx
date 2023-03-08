@@ -11,9 +11,11 @@ const SessionContextProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   const verifyToken = async (jwt) => {
     try {
-      const fetchData = await fetch("http://localhost:5005/auth/verify", {
+      const fetchData = await fetch(`${BASE_URL}/auth/verify`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${jwt}`,

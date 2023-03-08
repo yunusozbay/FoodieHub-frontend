@@ -20,15 +20,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const YELP_TOKEN = import.meta.env.VITE_YELP_TOKEN;
-
-  const BASE_URL =
-    "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses";
+  const YELP_URL = import.meta.env.VITE_YELP_URL
+  
 
   const fetchRandom = async (result) => {
     setIsLoading(true);
     const random = Math.floor(Math.random() * result.length);
     const randomId = result[random].id;
-    const response = await axios.get(`${BASE_URL}/${randomId}`, {
+    const response = await axios.get(`${YELP_URL}/${randomId}`, {
       headers: {
         Authorization: `Bearer ${YELP_TOKEN}`,
         withCredentials: true,
@@ -41,7 +40,7 @@ function App() {
 
   const handleSubmit = async (city, food) => {
     const allRest = await axios.get(
-      `${BASE_URL}/search?location=${city}&categories=restaurants&term=${food}&limit=20`,
+      `${YELP_URL}/search?location=${city}&categories=restaurants&term=${food}&limit=20`,
       {
         headers: {
           Authorization: `Bearer ${YELP_TOKEN}`,

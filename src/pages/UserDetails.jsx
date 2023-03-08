@@ -12,10 +12,11 @@ function UserDetails() {
   const [isRequestSent, setIsRequestSent] = useState(false);
   const { id } = useParams();
   const { userData } = useContext(SessionContext);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchData = async () => {
     const response = await axios.get(
-      `http://localhost:5005/users/${id}/details`
+      `${BASE_URL}/users/${id}/details`
     );
     setOneUser(response.data.oneUser);
     setIsLoading(false);
@@ -27,7 +28,7 @@ function UserDetails() {
 
   const sendRequest = async () => {
     console.log(userData);
-    await axios.post(`http://localhost:5005/users/${oneUser._id}/update`, {
+    await axios.post(`${BASE_URL}/users/${oneUser._id}/update`, {
       friend_requests: [userData._id, ...oneUser.friend_requests],
     });
     setIsRequestSent(true);

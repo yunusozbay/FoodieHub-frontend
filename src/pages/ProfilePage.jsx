@@ -21,12 +21,13 @@ function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   console.log("this is userdata", userData);
 
   const handleUpdate = async (username, email) => {
     try {
       const response = await axios.post(
-        `http://localhost:5005/users/${userData._id}/update`,
+        `${BASE_URL}/users/${userData._id}/update`,
         {
           username: username,
           email: email,
@@ -64,7 +65,7 @@ function ProfilePage() {
 
   const fetchData = async () => {
     const response = await fetch(
-      `http://localhost:5005/users/${userData._id}`,
+      `${BASE_URL}/users/${userData._id}`,
       {
         method: "GET",
         headers: {
@@ -85,7 +86,7 @@ function ProfilePage() {
   }, [userData]);
 
   const handleDelete = async (id) => {
-    await axios.post(`http://localhost:5005/restaurants/delete`, { id });
+    await axios.post(`${BASE_URL}/restaurants/delete`, { id });
     fetchData();
   };
 
