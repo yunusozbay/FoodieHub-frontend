@@ -11,6 +11,7 @@ import RestaurantSearch from "./pages/RestaurantSearch";
 import RestaurantDetails from "./pages/RestaurantDetails";
 import NavbarComp from "./components/NavbarComp";
 import UserDetails from "./pages/UserDetails";
+import ProfileRestaurantDetails from "./pages/ProfileRestaurantDetails";
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -93,6 +94,14 @@ function App() {
           element={
             <PrivateRoute>
               <ProfilePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/restaurants/profile/:id"
+          element={
+            <PrivateRoute>
+              <ProfileRestaurantDetails />
             </PrivateRoute>
           }
         />
