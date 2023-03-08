@@ -13,11 +13,6 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
   const [city, setCity] = useState("");
   const [food, setFood] = useState("");
   const [newPlace, setNewPlace] = useState(false);
-  const [listView, setListView] = useState(false);
-
-  useEffect(() => {
-    setListView(true);
-  }, []);
 
   console.log(restaurants);
   const submitCallback = (event) => {
@@ -76,7 +71,7 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
           {restaurants.map((restaurant) => (
             <Col className="card-col">
               {/* <Link to={`/restaurants/${restaurant.id}`}> */}
-              <RestaurantCard restaurant={restaurant} listView={listView} />
+              <RestaurantCard restaurant={restaurant} />
               {/* </Link> */}
             </Col>
           ))}

@@ -15,6 +15,7 @@ function Notifications() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState();
   const [invitations, setInvitations] = useState([]);
+  const [updatedUserData, setUpdatedUserData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -34,8 +35,8 @@ function Notifications() {
         friends: [userData._id, ...request.friends],
       }
     );
-    refreshData(updatedUser);
     setIsReplySent(true);
+    setUpdatedUserData(updatedUser);
   };
   const sendDeleteRequest = async (request) => {
     const updatedUser = await axios.post(
@@ -46,17 +47,20 @@ function Notifications() {
         ),
       }
     );
-    refreshData(updatedUser);
+    // refreshData(updatedUser);
     setIsReplySent(true);
   };
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
-      //   setCurrentUser(userData);
-      //   setInvitations(userData.invitations);
       setIsLoading(false);
     }
   }, [userData]);
+  //   useEffect(() => {
+  //     if (userData && userData.username !== undefined) {
+  //       refreshData(updatedUserData);
+  //     }
+  //   }, [updatedUserData]);
 
   const popover = (
     <div>
@@ -124,8 +128,8 @@ function Notifications() {
               (userData && userData.invitations.length) ? (
                 <Badge bg="danger">
                   {userData &&
-                    userData.friend_requests.length + userData &&
-                    userData.invitations.length}
+                    userData.friend_requests.length +
+                      userData.invitations.length}
                 </Badge>
               ) : null}
               <span className="visually-hidden">unread messages</span>

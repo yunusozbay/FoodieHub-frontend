@@ -5,8 +5,9 @@ import EventForm from "./EventForm";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 
-function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
+function RestaurantCard({ restaurant, isOwner }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const { userData } = useContext(SessionContext);
 
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
         restaurant,
       });
     }
-    setHidden(true);
+    setIsAdded(true);
     console.log(userData);
   }
 
@@ -33,10 +34,11 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
           className={"card-img"}
         />
         <button
-          className={!hidden ? "add-to-list" : "added-to-list"}
+          className={!isAdded ? "add-to-list" : "added-to-list"}
           onClick={handlePost}
         ></button>
-        <div class="hide">Add to my collection</div>
+        <div class="hide hide-add">Add to my collection</div>
+        <div class="hide hide-remove">Remove from my collection</div>
 
         <Card.Body className={"card-body"}>
           <Card.Title>
@@ -81,7 +83,11 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
             </Button>
             <Button
               variant="secondary"
-              onClick={() => navigate(`/restaurants/${restaurant.alias}`)}
+              onClick={() =>
+                isOwner
+                  ? navigate(`/restaurants/profile/${restaurant._id}`)
+                  : navigate(`/restaurants/${restaurant.alias}`)
+              }
               className="details-btn"
             >
               See details

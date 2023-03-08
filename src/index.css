@@ -145,7 +145,10 @@ button:focus-visible {
   border-radius: 5px;
   font-size: .9rem;
 }
-.add-to-list:hover + .hide {
+.add-to-list:hover + .hide-add {
+  display: block;
+}
+.added-to-list:hover + .hide-remove {
   display: block;
 }
 .result-links {
