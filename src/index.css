@@ -124,9 +124,13 @@ button:focus-visible {
   align-items: center;
   background-color: white;
 }
+.add-to-list {
+  color: #1a1a1a;
+}
 .removeFromList {
   font-size: 1.5rem;
   font-weight: 400;
+  color: #1a1a1a;
 }
 .add-to-list:hover, .added-to-list:hover, .removeFromList:hover {
   border: none;
@@ -307,3 +311,103 @@ button:focus-visible {
     font-size: 1.5rem;
   } 
 }
+
+/* .carousel-img {
+  height: 500px;
+  width: 500px;
+  object-fit: contain;
+} */
+
+* {
+  box-sizing: border-box;
+}
+
+.restaurant-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.main-photo, .grid-photo {
+  flex-basis: calc(33.33% - 8px);
+  margin-right: 8px;
+  margin-bottom: 8px;
+
+}
+
+.main-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grid-photo img {
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 300px) {
+  .main-photo, .grid-photo {
+    flex-basis: calc(100% - 8px);
+    margin-right: 0;
+    width: 100%;
+    height: auto;
+
+  }
+}
+
+.rating {
+  display: block;
+  margin-top: 20px;
+}
+
+.categories {
+  margin-top: 10px;
+}
+
+.address {
+  margin-top: 10px;
+}
+
+.phone {
+  margin-top: 10px;
+}
+
+.open-now {
+  margin-top: 10px;
+}
+
+
+/* table {
+  width: 100%;
+}
+
+table td:first-child {
+  width: 30%;
+  font-weight: bold;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.card table {
+  margin-bottom: 10px;
+}
+
+.card td {
+  padding: 5px;
+} */
+

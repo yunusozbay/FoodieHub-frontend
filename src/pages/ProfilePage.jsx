@@ -46,7 +46,6 @@ function ProfilePage() {
     setNewUsername(userData.username);
     setNewEmail(userData.email);
     setShowModal(true);
-    // console.log(profileData.username)
   };
 
   const handleModalClose = () => {
@@ -55,7 +54,6 @@ function ProfilePage() {
 
   const handleSaveClick = (e) => {
     e.preventDefault();
-    console.log(newUsername, newEmail);
     handleUpdate(newUsername, newEmail);
     setShowModal(false);
   };
@@ -101,9 +99,6 @@ function ProfilePage() {
         <h2>Loading...</h2>
       ) : (
         <>
-          {/* {console.log(profileData)} */}
-          {/* <h1>{profileData.username}</h1> */}
-
           <div className="user-profile py-4 mb-4">
             <div className="container">
               <div className="row">
@@ -236,7 +231,6 @@ function ProfilePage() {
                         <tbody>
                           <tr>
                             <th width="30%">Username: </th>
-
                             <td>{userData.username}</td>
                           </tr>
                           <tr>
@@ -270,13 +264,13 @@ function ProfilePage() {
                 <div className="col-lg-8 profile-ctn pt-3">
                   <h4>Upcoming events</h4>
                   <div className="col-lg-4 events-ctn">
-                    <Row xs={1} md={2} lg={2} className="g-4">
+                    <Row xs={1} md={2} lg={3} className="g-4">
                       {userData.events.map((event) => (
                         <Col key={event._id}>
                           <Card className="mt-3 profile-restaurant-card">
                             <Card.Img
                               variant="top"
-                              src="https://source.unsplash.com/600x300/?food"
+                              src="https://source.unsplash.com/600x300/?restaurant"
                               className="card-img"
                             />
 
@@ -338,7 +332,7 @@ function ProfilePage() {
             </Button>
 
             {isShown ? (
-              <Container className="d-flex flex-wrap justify-content-center">
+              <Container>
                 <Row xs={1} md={4} lg={5} className="g-4">
                   {userData.restaurants.map((restaurant) => (
                     <Col key={restaurant._id}>
