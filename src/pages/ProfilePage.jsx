@@ -5,7 +5,7 @@ import axios from "axios";
 import "../styles/ProfilePage.css";
 import { Card, ListGroup, Button, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleInfo, faUserPen} from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faUserPen } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import RestaurantCard from "../components/RestaurantCard";
@@ -65,11 +65,12 @@ function ProfilePage() {
     }
   }, [userData]);
 
-  const handleEditEvent = (oneEvent) => {
+  const handleEditEvent = (curEvent) => {
+    e.preventDefault();
     setIsEditingEvent(true);
     return (
       <EventForm
-        event={event}
+        event={curEvent}
         isEditingEvent={isEditingEvent}
         setIsEditingEvent={setIsEditingEvent}
       />
@@ -103,7 +104,7 @@ function ProfilePage() {
             <div className="container">
               <div className="row">
                 <div className="col-lg-4">
-                  <div className="card shadow-sm ">              
+                  <div className="card shadow-sm ">
                     <div className="card-header bg-transparent text-center">
                       <img
                         className="profile_img"
@@ -115,35 +116,38 @@ function ProfilePage() {
                         alt="student dp"
                       />
                       <div>
-                      <Button variant="outline-warning" onClick={() => setShow(true)} >
+                        <Button
+                          variant="outline-warning"
+                          onClick={() => setShow(true)}
+                        >
                           <FontAwesomeIcon icon={faUserPen} />
-                      </Button>
-                      <Modal show={show} onHide={() => setShow(false)}>
-                        <Modal.Header closeButton>
-                          <Modal.Title>Upload image</Modal.Title>
-                        </Modal.Header>
-                        <form onSubmit={(e) => uploadPhoto(e)}>
-                        <Modal.Body>
-                            <div className="column">
-                              <input
-                                name="userPhotos"
-                                type="file"
-                                accept="image/jpeg, image/png"
-                              />
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button
-                            type="submit"
-                            variant="outline-warning"
-                            onClick={() => setShow(false)}
-                          >
-                            Save Changes
-                          </Button>
-                        </Modal.Footer>
-                        </form>
-                      </Modal>
-                    </div>
+                        </Button>
+                        <Modal show={show} onHide={() => setShow(false)}>
+                          <Modal.Header closeButton>
+                            <Modal.Title>Upload image</Modal.Title>
+                          </Modal.Header>
+                          <form onSubmit={(e) => uploadPhoto(e)}>
+                            <Modal.Body>
+                              <div className="column">
+                                <input
+                                  name="userPhotos"
+                                  type="file"
+                                  accept="image/jpeg, image/png"
+                                />
+                              </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <Button
+                                type="submit"
+                                variant="outline-warning"
+                                onClick={() => setShow(false)}
+                              >
+                                Save Changes
+                              </Button>
+                            </Modal.Footer>
+                          </form>
+                        </Modal>
+                      </div>
                       <h3>Hello, {userData.username}!</h3>
                     </div>
                     <div className="card-body">
