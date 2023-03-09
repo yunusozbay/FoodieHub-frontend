@@ -124,9 +124,13 @@ button:focus-visible {
   align-items: center;
   background-color: white;
 }
+.add-to-list {
+  color: #1a1a1a;
+}
 .removeFromList {
   font-size: 1.5rem;
   font-weight: 400;
+  color: #1a1a1a;
 }
 .add-to-list:hover, .added-to-list:hover, .removeFromList:hover {
   border: none;

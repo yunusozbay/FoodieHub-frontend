@@ -18,10 +18,6 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
     event.preventDefault();
     handleSubmit(city, food);
   };
-
-  const checkHandler = () => {
-    setNewPlace(!newPlace);
-  };
   return (
     <div>
       <Container>
@@ -46,14 +42,6 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
               placeholder="e.g Burgers"
               value={food}
               onChange={(event) => setFood(event.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check
-              type="checkbox"
-              label="Only where I haven't been yet"
-              checked={newPlace}
-              onChange={checkHandler}
             />
           </Form.Group>
           <Button variant="outline-warning" type="submit">
