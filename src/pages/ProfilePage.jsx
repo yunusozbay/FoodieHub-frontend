@@ -33,11 +33,6 @@ function ProfilePage() {
           email: email,
         }
       );
-      // setUserData((prevUserData) => ({
-      //   ...prevUserData,
-      //   username: response.data.oneUser.username,
-      //   email: response.data.oneUser.email,
-      // }));
       setIsEditing(false);
       refreshData(response.data.updatedUser);
     } catch (error) {
@@ -63,20 +58,6 @@ function ProfilePage() {
     setShowModal(false);
   };
 
-  const fetchData = async () => {
-    // const response = await fetch(`${BASE_URL}/users/${userData._id}`, {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-    // let parsed = await response.json();
-    // console.log(parsed);
-    // refreshData(response.data.oneUser);
-    // setProfileData(parsed.oneUser);
-    // setIsLoading(false);
-  };
-
   useEffect(() => {
     refreshData(userData);
     if (userData && userData.username !== undefined) {
@@ -84,10 +65,6 @@ function ProfilePage() {
     }
   }, [userData]);
 
-  // const handleDelete = async (id) => {
-  //   await axios.post(`${BASE_URL}/restaurants/delete`, { id });
-  //   fetchData();
-  // };
 
   return (
     <div className="container">
@@ -192,47 +169,7 @@ function ProfilePage() {
                       </Modal>
                     </div>
                     <div className="card-body pt-0">
-                      {isEditing ? (
-                        <form onSubmit={handleUpdate}>
-                          <div className="mb-3">
-                            <label htmlFor="username" className="form-label">
-                              Username
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="username"
-                              value={newUsername}
-                              onChange={(e) => setNewUsername(e.target.value)}
-                            />
-                          </div>
-                          <div className="mb-3">
-                            <label htmlFor="email" className="form-label">
-                              Email address
-                            </label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="email"
-                              value={newEmail}
-                              onChange={(e) => setNewEmail(e.target.value)}
-                            />
-                          </div>
-                          <button
-                            type="submit"
-                            className="btn btn-primary me-2"
-                          >
-                            Save
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={() => setIsEditing(false)}
-                          >
-                            Cancel
-                          </button>
-                        </form>
-                      ) : (
+                     
                         <table className="table table-bordered">
                           <tbody>
                             <tr>
@@ -252,7 +189,7 @@ function ProfilePage() {
                             </tr>
                           </tbody>
                         </table>
-                      )}
+                      
                     </div>
                   </div>
                 </div>
