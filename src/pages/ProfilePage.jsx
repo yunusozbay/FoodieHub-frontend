@@ -45,7 +45,6 @@ function ProfilePage() {
     setNewUsername(userData.username);
     setNewEmail(userData.email);
     setShowModal(true);
-    // console.log(profileData.username)
   };
 
   const handleModalClose = () => {
@@ -54,25 +53,8 @@ function ProfilePage() {
 
   const handleSaveClick = (e) => {
     e.preventDefault();
-    // console.log(newUsername, newEmail);
     handleUpdate(newUsername, newEmail);
     setShowModal(false);
-  };
-
-  const fetchData = async () => {
-    const response = await fetch(
-      `http://localhost:5005/users/${userData._id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    let parsed = await response.json();
-    console.log(parsed);
-    setProfileData(parsed.oneUser);
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -98,9 +80,6 @@ function ProfilePage() {
         <h2>Loading...</h2>
       ) : (
         <>
-          {/* {console.log(profileData)} */}
-          {/* <h1>{profileData.username}</h1> */}
-
           <div className="user-profile py-4 mb-4">
             <div className="container">
               <div className="row">
@@ -195,67 +174,25 @@ function ProfilePage() {
                       </Modal>
                     </div>
                     <div className="card-body pt-0">
-                      {isEditing ? (
-                        <form onSubmit={handleUpdate}>
-                          <div className="mb-3">
-                            <label htmlFor="username" className="form-label">
-                              Username
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="username"
-                              value={newUsername}
-                              onChange={(e) => setNewUsername(e.target.value)}
-                            />
-                          </div>
-                          <div className="mb-3">
-                            <label htmlFor="email" className="form-label">
-                              Email address
-                            </label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="email"
-                              value={newEmail}
-                              onChange={(e) => setNewEmail(e.target.value)}
-                            />
-                          </div>
-                          <button
-                            type="submit"
-                            className="btn btn-primary me-2"
-                          >
-                            Save
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={() => setIsEditing(false)}
-                          >
-                            Cancel
-                          </button>
-                        </form>
-                      ) : (
-                        <table className="table table-bordered">
-                          <tbody>
-                            <tr>
-                              <th width="30%">Username: </th>
+                      <table className="table table-bordered">
+                        <tbody>
+                          <tr>
+                            <th width="30%">Username: </th>
 
-                              <td>{userData.username}</td>
-                            </tr>
-                            <tr>
-                              <th width="30%">Email address:</th>
+                            <td>{userData.username}</td>
+                          </tr>
+                          <tr>
+                            <th width="30%">Email address:</th>
 
-                              <td>{userData.email}</td>
-                            </tr>
-                            <tr>
-                              <th width="30%">Joined on: </th>
+                            <td>{userData.email}</td>
+                          </tr>
+                          <tr>
+                            <th width="30%">Joined on: </th>
 
-                              <td>{userData.createdAt.slice(0, 10)}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      )}
+                            <td>{userData.createdAt.slice(0, 10)}</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -276,13 +213,13 @@ function ProfilePage() {
                 <div className="col-lg-8 profile-ctn pt-3">
                   <h4>Upcoming events</h4>
                   <div className="col-lg-4 events-ctn">
-                    <Row xs={1} md={2} lg={2} className="g-4">
+                    <Row xs={1} md={2} lg={3} className="g-4">
                       {userData.events.map((event) => (
                         <Col key={event._id}>
                           <Card className="mt-3 profile-restaurant-card">
                             <Card.Img
                               variant="top"
-                              src="https://source.unsplash.com/600x300/?food"
+                              src="https://source.unsplash.com/600x300/?restaurant"
                               className="card-img"
                             />
 
@@ -344,7 +281,7 @@ function ProfilePage() {
             </Button>
 
             {isShown ? (
-              <Container className="d-flex flex-wrap justify-content-center">
+              <Container>
                 <Row xs={1} md={4} lg={5} className="g-4">
                   {userData.restaurants.map((restaurant) => (
                     <Col key={restaurant._id}>
