@@ -46,8 +46,8 @@ function ProfilePage() {
   };
 
   const handleEditClick = () => {
-    setNewUsername(profileData.username);
-    setNewEmail(profileData.email);
+    setNewUsername(userData.username);
+    setNewEmail(userData.email);
     setShowModal(true);
     // console.log(profileData.username)
   };
@@ -64,21 +64,23 @@ function ProfilePage() {
   };
 
   const fetchData = async () => {
-    const response = await fetch(`${BASE_URL}/users/${userData._id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    let parsed = await response.json();
-    console.log(parsed);
-    setProfileData(parsed.oneUser);
-    setIsLoading(false);
+    // const response = await fetch(`${BASE_URL}/users/${userData._id}`, {
+    //   method: "GET",
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+    // let parsed = await response.json();
+    // console.log(parsed);
+    // refreshData(response.data.oneUser);
+    // setProfileData(parsed.oneUser);
+    // setIsLoading(false);
   };
 
   useEffect(() => {
+    refreshData(userData);
     if (userData && userData.username !== undefined) {
-      fetchData();
+      setIsLoading(false);
     }
   }, [userData]);
 
@@ -107,24 +109,26 @@ function ProfilePage() {
                         src="https://source.unsplash.com/600x300/?food"
                         alt="student dp"
                       />
-                      <h3>Hello, {profileData.username}!</h3>
+                      <h3>Hello, {userData.username}!</h3>
                     </div>
                     <div className="card-body">
                       <p className="mb-0">
-                        <strong className="pr-1">Friends: </strong>3
+                        <strong className="pr-1">Friends: </strong>
+                        {userData.friends.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Favorite restaurants: </strong>
-                        4
+                        <strong className="pr-1">My restaurants: </strong>
+                        {userData.restaurants.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Events organized: </strong>2
+                        <strong className="pr-1">Events: </strong>
+                        {userData.events.length}
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-8">
-                  <div className="card shadow-sm">
+                <div className="col-lg-8 info-card-ctn">
+                  <div className="card shadow-sm info-card">
                     <div className="card-header bg-transparent border-0 d-flex align-items-center justify-content-between">
                       <h3 className="mb-0">
                         <FontAwesomeIcon icon={faCircleInfo} /> General
@@ -234,17 +238,17 @@ function ProfilePage() {
                             <tr>
                               <th width="30%">Username: </th>
 
-                              <td>{profileData.username}</td>
+                              <td>{userData.username}</td>
                             </tr>
                             <tr>
                               <th width="30%">Email address:</th>
 
-                              <td>{profileData.email}</td>
+                              <td>{userData.email}</td>
                             </tr>
                             <tr>
                               <th width="30%">Joined on: </th>
 
-                              <td>{profileData.createdAt.slice(0, 10)}</td>
+                              <td>{userData.createdAt.slice(0, 10)}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -252,8 +256,8 @@ function ProfilePage() {
                     </div>
                   </div>
                 </div>
-                <div>
-                  <ListGroup>
+                <div className="col-lg-4 pt-3">
+                  <ListGroup className="shadow-sm">
                     <ListGroup.Item>
                       <h4>My Foodie Friends</h4>
                     </ListGroup.Item>
@@ -266,81 +270,93 @@ function ProfilePage() {
                     ))}
                   </ListGroup>
                 </div>
-                <div>
+                <div className="col-lg-8 profile-ctn pt-3">
                   <h4>Upcoming events</h4>
-                  {userData.events.map((event) => (
-                    <Card className="mt-3 restaurant-card">
-                      <Card.Img
-                        variant="top"
-                        src={event.restaurant.image_url}
-                        className="card-img"
-                      />
+                  <div className="col-lg-4 events-ctn">
+                    <Row xs={1} md={2} lg={2} className="g-4">
+                      {userData.events.map((event) => (
+                        <Col key={event._id}>
+                          <Card className="mt-3 restaurant-card">
+                            <Card.Img
+                              variant="top"
+                              src="https://source.unsplash.com/600x300/?food"
+                              // src={event.restaurant.image_url}
+                              className="card-img"
+                            />
 
-                      <Card.Body className="card-body">
-                        <Card.Title>
-                          <h2 className="card-title">{event.title}</h2>
-                        </Card.Title>
-                        with{" "}
-                        {event.invited_users.map((friend) => (
-                          <span>{friend.username}</span>
-                        ))}
-                        <h4>Created by: {event.created_by.username}</h4>
-                        <h6>Date: {event.date.slice(0, 10)}</h6>
-                        <h6>Time: {event.time}</h6>
-                        <Card.Text>{event.restaurant.name}</Card.Text>
-                      </Card.Body>
-                      <ListGroup>
-                        <Card.Text>
-                          {event.restaurant.location &&
-                            event.restaurant.location.display_address}
-                        </Card.Text>
-                      </ListGroup>
-                      <Card.Body className="card-btns">
-                        <Button
-                          variant="secondary"
-                          onClick={() =>
-                            navigate(`/restaurants/${event.restaurant.alias}`)
-                          }
-                        >
-                          Restaurant details
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          onClick={() => setIsEditingEvent(true)}
-                        >
-                          Edit
-                        </Button>
-                        <Button variant="danger">Delete</Button>
-                      </Card.Body>
-                    </Card>
-                  ))}
+                            <Card.Body className="card-body">
+                              <Card.Title>
+                                <h2 className="card-title">{event.title}</h2>
+                              </Card.Title>
+                              {/* with{" "}
+                              {event.invited_users.map((friend) => (
+                                <span>{friend.username}</span>
+                              ))}
+                              <h4>Created by: {event.created_by.username}</h4> */}
+                              <h6>Date: {event.date.slice(0, 10)}</h6>
+                              <h6>Time: {event.time}</h6>
+                              <Card.Text>{event.restaurant.name}</Card.Text>
+                            </Card.Body>
+                            <ListGroup>
+                              <Card.Text>
+                                {event.restaurant.location &&
+                                  event.restaurant.location.display_address}
+                              </Card.Text>
+                            </ListGroup>
+                            <Card.Body className="card-btns">
+                              <Button
+                                variant="secondary"
+                                onClick={() =>
+                                  navigate(
+                                    `/restaurants/${event.restaurant.alias}`
+                                  )
+                                }
+                              >
+                                Restaurant details
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                onClick={() => setIsEditingEvent(true)}
+                              >
+                                Edit
+                              </Button>
+                              <Button variant="danger">Delete</Button>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <h6>My favourite restaurants</h6>
-          <Button
-            variant="outline-warning"
-            type="submit"
-            onClick={() => setIsShown(!isShown)}
-            className="ms-2 mb-5"
-          >
-            {isShown ? "Hide list" : "My list"}
-          </Button>
+          <div className="my-restaurants-ctn">
+            <h4>My restaurants</h4>
+            <Button
+              variant="warning"
+              type="submit"
+              onClick={() => setIsShown(!isShown)}
+              className="ms-2 mb-5 mt-3"
+              size="lg"
+            >
+              {isShown ? "Hide list" : "My list"}
+            </Button>
 
-          {isShown ? (
-            <Container className="d-flex flex-wrap justify-content-center">
-              <Row xs={1} md={4} lg={5} className="g-4">
-                {profileData.restaurants.map((restaurant) => (
-                  <Col key={restaurant._id}>
-                    <RestaurantCard restaurant={restaurant} isOwner={true} />
-                  </Col>
-                ))}
-              </Row>
-            </Container>
-          ) : (
-            ""
-          )}
+            {isShown ? (
+              <Container className="d-flex flex-wrap justify-content-center">
+                <Row xs={1} md={4} lg={5} className="g-4">
+                  {userData.restaurants.map((restaurant) => (
+                    <Col key={restaurant._id}>
+                      <RestaurantCard restaurant={restaurant} isOwner={true} />
+                    </Col>
+                  ))}
+                </Row>
+              </Container>
+            ) : (
+              ""
+            )}
+          </div>
         </>
       )}
     </div>
