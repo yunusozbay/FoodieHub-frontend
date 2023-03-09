@@ -21,6 +21,7 @@ function NavBarComp() {
   const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await axios.get(`${BASE_URL}/users`);
@@ -30,6 +31,7 @@ function NavBarComp() {
   useEffect(() => {
     if (userData && userData.username !== undefined) {
       fetchData();
+      setSearchTerm("");
       // setisAuthenticated(true);
     }
     setIsLoading(false);
@@ -77,31 +79,39 @@ function NavBarComp() {
                     </Nav.Link>
                   </>
                 )}
-                <SearchBar
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                />
                 {isAuthenticated && (
-                  <ListGroup style={{ position: "absolute" }}>
-                    {allUsers.map((user) =>
-                      searchTerm &&
-                      user.username !== userData.username &&
-                      user.username
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ? (
-                        <ListGroup.Item variant="secondary">
-                          <Link key={user._id} to={`/users/${user._id}`}>
+                  <div className="search">
+                    <SearchBar
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                    />
+                    <div className="search-results">
+                      {allUsers.map((user) =>
+                        searchTerm &&
+                        user.username !== userData.username &&
+                        user.username
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ? (
+                          <button
+                            onClick={(event) => {
+                              setSearchTerm("");
+                              event.preventDefault();
+                              navigate(`/users/${user._id}`);
+                            }}
+                            key={user._id}
+                            // to={`/users/${user._id}`}
+                          >
                             <div>{user.username}</div>
-                          </Link>
-                        </ListGroup.Item>
-                      ) : null
-                    )}
-                  </ListGroup>
+                          </button>
+                        ) : null
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             </Nav>
           </Navbar.Collapse>
-          <Notifications />
+          {isAuthenticated && <Notifications />}
         </Container>
       )}
     </Navbar>

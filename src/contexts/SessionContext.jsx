@@ -63,7 +63,7 @@ const SessionContextProvider = ({ children }) => {
     navigate("/");
   };
 
-  const refreshData = async (updatedUser) => {
+  const refreshData = (updatedUser) => {
     setUserData(updatedUser);
   };
 

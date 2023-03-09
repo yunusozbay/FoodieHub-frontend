@@ -27,3 +27,13 @@
   max-height: 500px; /* Set a maximum height to the card body */
   
 }
+
+.info-card-ctn .info-card {
+  height: 100%;
+}
+
+.profile-ctn .events-ctn {
+  display: flex;
+  width: 100%;
+  gap: 1rem 
+}
