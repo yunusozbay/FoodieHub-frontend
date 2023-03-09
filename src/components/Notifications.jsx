@@ -25,33 +25,41 @@ function Notifications() {
       {isLoading ? (
         <></>
       ) : (
-        <Popover id="popover-basic">
-          <Popover.Header as="h3">Your pending requests</Popover.Header>
-          <Popover.Body>
-            <ul>
-              {userData &&
-                userData.friend_requests.map((request) => (
-                  <li key={request._id}>
-                    <FriendRequest request={request} isLoading={isLoading} />
-                  </li>
-                ))}
-              {userData &&
-                userData.invitations.map((event) => (
-                  <li key={event._id}>
-                    You've been invited to "{event.title}"
-                    <div>
-                      <Button
-                        variant="primary"
-                        onClick={() => navigate(`/events/${event._id}`)}
-                      >
-                        See details
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-          </Popover.Body>
-        </Popover>
+        <>
+          {userData.friend_requests.length || userData.invitations.length ? (
+            <Popover id="popover-basic">
+              <Popover.Header as="h3">Your pending requests</Popover.Header>
+              <Popover.Body>
+                <ul>
+                  {userData &&
+                    userData.friend_requests.map((request) => (
+                      <li key={request._id}>
+                        <FriendRequest
+                          request={request}
+                          isLoading={isLoading}
+                        />
+                      </li>
+                    ))}
+                  {userData &&
+                    userData.invitations.map((event) => (
+                      <li key={event._id}>
+                        You've been invited to "{event.title}"
+                        <div>
+                          <Button
+                            variant="primary"
+                            onClick={() => navigate(`/events/${event._id}`)}
+                          >
+                            See details
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </Popover.Body>
+            </Popover>
+          ) : null}
+          )
+        </>
       )}
     </div>
   );

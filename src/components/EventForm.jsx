@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 
 function EventForm({
   restaurant,
-  userData,
   event,
   isEditingEvent,
   setIsEditingEvent,
@@ -17,9 +17,10 @@ function EventForm({
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [invited_users, setInvited_users] = useState("");
+  const [invited_users, setInvited_users] = useState([]);
+  const { userData, refreshData } = useContext(SessionContext);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-  
+
   useEffect(() => {
     if (isEditingEvent) {
       setTitle(event.title);
@@ -42,12 +43,26 @@ function EventForm({
       restaurant,
       newEvent: { title, date, time, invited_users },
     });
+    fetchData();
   }
+
+  const fetchData = async () => {
+    const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
+    refreshData(response.data.oneUser);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [userData]);
 
   const handleClose = () => {
     isEditingEvent ? setIsEditingEvent(false) : null;
     isCreatingEvent ? setIsCreatingEvent(false) : null;
     setShow(false);
+  };
+
+  const inviteUsers = (event) => {
+    setInvited_users([event.target.value, ...inviteUsers]);
   };
 
   return (
@@ -90,7 +105,11 @@ function EventForm({
                 <Form.Label>
                   Invite a Foodie Friend
                   <Form.Select
-                    onChange={(event) => setInvited_users(event.target.value)}
+                    name="invited_users"
+                    onChange={(event) =>
+                      setInvited_users([event.target.value, ...invited_users])
+                    }
+                    multiple
                   >
                     {userData &&
                       userData.friends.map((friend) => (
