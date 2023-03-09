@@ -58,7 +58,7 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    refreshData(userData);
+    // refreshData(userData);
     if (userData && userData.username !== undefined) {
       setIsLoading(false);
     }

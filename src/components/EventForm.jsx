@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function EventForm({
   restaurant,
@@ -20,6 +21,7 @@ function EventForm({
   const [invited_users, setInvited_users] = useState([]);
   const { userData, refreshData } = useContext(SessionContext);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isEditingEvent) {
@@ -38,22 +40,23 @@ function EventForm({
         invited_users,
       });
     }
-    await axios.post(`${BASE_URL}/events/new`, {
+    const response = await axios.post(`${BASE_URL}/events/new`, {
       userData,
       restaurant,
       newEvent: { title, date, time, invited_users },
     });
-    fetchData();
+    refreshData(response.data.updatedUser);
+    navigate("/profile");
   }
 
-  const fetchData = async () => {
-    const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
-    refreshData(response.data.oneUser);
-  };
+  // const fetchData = async () => {
+  //   const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
+  //   refreshData(response.data.oneUser);
+  // };
 
-  useEffect(() => {
-    fetchData();
-  }, [userData]);
+  // useEffect(() => {
+  //   fetchData();
+  // }, [userData]);
 
   const handleClose = () => {
     isEditingEvent ? setIsEditingEvent(false) : null;
@@ -61,8 +64,12 @@ function EventForm({
     setShow(false);
   };
 
-  const inviteUsers = (event) => {
-    setInvited_users([event.target.value, ...inviteUsers]);
+  const handleSelect = function (selectedItems) {
+    const invited = [];
+    for (let i = 0; i < selectedItems.length; i++) {
+      invited.push(selectedItems[i].value);
+    }
+    setInvited_users(invited);
   };
 
   return (
@@ -106,9 +113,9 @@ function EventForm({
                   Invite a Foodie Friend
                   <Form.Select
                     name="invited_users"
-                    onChange={(event) =>
-                      setInvited_users([event.target.value, ...invited_users])
-                    }
+                    onChange={(e) => {
+                      handleSelect(e.target.selectedOptions);
+                    }}
                     multiple
                   >
                     {userData &&

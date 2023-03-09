@@ -17,13 +17,13 @@ function RestaurantCard({ restaurant, isOwner }) {
     if (!userData || userData.username === undefined) {
       navigate("/login");
     } else {
-      await axios.post(`${BASE_URL}/restaurants/add`, {
+      const response = await axios.post(`${BASE_URL}/restaurants/add`, {
         userData,
         restaurant,
       });
+      setIsAdded(true);
+      refreshData(response.data.updatedUser);
     }
-    setIsAdded(true);
-    console.log(userData);
   }
 
   const handleDelete = async () => {

@@ -58,7 +58,6 @@ function Notifications() {
               </Popover.Body>
             </Popover>
           ) : null}
-          )
         </>
       )}
     </div>
