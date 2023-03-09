@@ -5,7 +5,7 @@ import axios from "axios";
 import "../styles/ProfilePage.css";
 import { Card, ListGroup, Button, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faUserPen} from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import RestaurantCard from "../components/RestaurantCard";
@@ -21,6 +21,7 @@ function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isEditingEvent, setIsEditingEvent] = useState(false);
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   console.log("this is userdata", userData);
@@ -74,6 +75,24 @@ function ProfilePage() {
       />
     );
   };
+
+  async function uploadPhoto(e) {
+    e.preventDefault();
+    let photo = e.target.userPhotos.files[0];
+    let formData = new FormData();
+    formData.append("userPhotos", photo);
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/users/avatar/${userData._id}/update`,
+        formData
+      );
+      refreshData(response.data.updatedUser);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error, "photo upload failed");
+    }
+  }
+
   return (
     <div className="container">
       {isLoading ? (
@@ -84,13 +103,47 @@ function ProfilePage() {
             <div className="container">
               <div className="row">
                 <div className="col-lg-4">
-                  <div className="card shadow-sm ">
+                  <div className="card shadow-sm ">              
                     <div className="card-header bg-transparent text-center">
                       <img
                         className="profile_img"
-                        src="https://source.unsplash.com/600x300/?food"
+                        src={
+                          userData.image_url
+                            ? userData.image_url
+                            : "https://source.unsplash.com/600x300/?food"
+                        }
                         alt="student dp"
                       />
+                      <div>
+                      <Button variant="outline-warning" onClick={() => setShow(true)} >
+                          <FontAwesomeIcon icon={faUserPen} />
+                      </Button>
+                      <Modal show={show} onHide={() => setShow(false)}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Upload image</Modal.Title>
+                        </Modal.Header>
+                        <form onSubmit={(e) => uploadPhoto(e)}>
+                        <Modal.Body>
+                            <div className="column">
+                              <input
+                                name="userPhotos"
+                                type="file"
+                                accept="image/jpeg, image/png"
+                              />
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button
+                            type="submit"
+                            variant="outline-warning"
+                            onClick={() => setShow(false)}
+                          >
+                            Save Changes
+                          </Button>
+                        </Modal.Footer>
+                        </form>
+                      </Modal>
+                    </div>
                       <h3>Hello, {userData.username}!</h3>
                     </div>
                     <div className="card-body">
@@ -178,7 +231,6 @@ function ProfilePage() {
                         <tbody>
                           <tr>
                             <th width="30%">Username: </th>
-
                             <td>{userData.username}</td>
                           </tr>
                           <tr>
@@ -188,7 +240,6 @@ function ProfilePage() {
                           </tr>
                           <tr>
                             <th width="30%">Joined on: </th>
-
                             <td>{userData.createdAt.slice(0, 10)}</td>
                           </tr>
                         </tbody>
