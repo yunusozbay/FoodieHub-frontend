@@ -9,17 +9,18 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import RestaurantCard from "../components/RestaurantCard";
+import EventForm from "../components/EventForm";
 
 function ProfilePage() {
   const { userData, token, isAuthenticated, refreshData } =
     useContext(SessionContext);
-  const [profileData, setProfileData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isShown, setIsShown] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isEditingEvent, setIsEditingEvent] = useState(false);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   console.log("this is userdata", userData);
@@ -65,7 +66,16 @@ function ProfilePage() {
     }
   }, [userData]);
 
-
+  const handleEditEvent = (oneEvent) => {
+    setIsEditingEvent(true);
+    return (
+      <EventForm
+        event={event}
+        isEditingEvent={isEditingEvent}
+        setIsEditingEvent={setIsEditingEvent}
+      />
+    );
+  };
   return (
     <div className="container">
       {isLoading ? (
@@ -213,11 +223,10 @@ function ProfilePage() {
                     <Row xs={1} md={2} lg={2} className="g-4">
                       {userData.events.map((event) => (
                         <Col key={event._id}>
-                          <Card className="mt-3 restaurant-card">
+                          <Card className="mt-3 profile-restaurant-card">
                             <Card.Img
                               variant="top"
                               src="https://source.unsplash.com/600x300/?food"
-                              // src={event.restaurant.image_url}
                               className="card-img"
                             />
 
@@ -225,11 +234,6 @@ function ProfilePage() {
                               <Card.Title>
                                 <h2 className="card-title">{event.title}</h2>
                               </Card.Title>
-                              {/* with{" "}
-                              {event.invited_users.map((friend) => (
-                                <span>{friend.username}</span>
-                              ))}
-                              <h4>Created by: {event.created_by.username}</h4> */}
                               <h6>Date: {event.date.slice(0, 10)}</h6>
                               <h6>Time: {event.time}</h6>
                               <Card.Text>{event.restaurant.name}</Card.Text>
@@ -243,20 +247,23 @@ function ProfilePage() {
                             <Card.Body className="card-btns">
                               <Button
                                 variant="secondary"
-                                onClick={() =>
-                                  navigate(
-                                    `/restaurants/${event.restaurant.alias}`
-                                  )
-                                }
+                                onClick={() => navigate(`/events/${event._id}`)}
                               >
-                                Restaurant details
+                                Event details
                               </Button>
                               <Button
                                 variant="secondary"
-                                onClick={() => setIsEditingEvent(true)}
+                                onClick={() => handleEditEvent(event)}
                               >
                                 Edit
                               </Button>
+                              {isEditingEvent ? (
+                                <EventForm
+                                  event={event}
+                                  isEditingEvent={isEditingEvent}
+                                  setIsEditingEvent={setIsEditingEvent}
+                                />
+                              ) : null}
                               <Button variant="danger">Delete</Button>
                             </Card.Body>
                           </Card>

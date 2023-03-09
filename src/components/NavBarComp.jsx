@@ -1,12 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Button,
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  ListGroup,
-} from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { SessionContext } from "../contexts/SessionContext";
 import { Link, useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
@@ -32,7 +25,6 @@ function NavBarComp() {
     if (userData && userData.username !== undefined) {
       fetchData();
       setSearchTerm("");
-      // setisAuthenticated(true);
     }
     setIsLoading(false);
   }, [userData]);
@@ -52,9 +44,6 @@ function NavBarComp() {
           <Navbar.Collapse id="navbarScroll">
             <Nav className="me-auto navItems" navbarScroll>
               <div style={{ position: "relative" }}>
-                {/* <Nav.Link as={Link} to="/">
-                  Home
-                </Nav.Link> */}
                 {!isAuthenticated ? (
                   <>
                     <Nav.Link as={Link} to="/signup">
@@ -99,7 +88,6 @@ function NavBarComp() {
                               navigate(`/users/${user._id}`);
                             }}
                             key={user._id}
-                            // to={`/users/${user._id}`}
                           >
                             <div>{user.username}</div>
                           </button>
