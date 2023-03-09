@@ -10,6 +10,7 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
   const { userData } = useContext(SessionContext);
 
   const navigate = useNavigate();
+  console.log("from the restaurantcard restaurant:", restaurant);
 
   async function handlePost() {
     if (!userData || userData.username === undefined) {
@@ -21,7 +22,7 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
       });
     }
     setHidden(true);
-    console.log(userData);
+    
   }
 
   return (

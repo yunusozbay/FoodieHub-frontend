@@ -21,7 +21,7 @@ function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  console.log("this is userdata", userData);
+  // console.log("this is userdata", userData);
 
   const handleUpdate = async (username, email) => {
     try {
@@ -57,7 +57,7 @@ function ProfilePage() {
 
   const handleSaveClick = (e) => {
     e.preventDefault();
-    console.log(newUsername, newEmail);
+    // console.log(newUsername, newEmail);
     handleUpdate(newUsername, newEmail);
     setShowModal(false);
   };
@@ -73,10 +73,12 @@ function ProfilePage() {
       }
     );
     let parsed = await response.json();
-    console.log(parsed);
+    // console.log(parsed);
     setProfileData(parsed.oneUser);
     setIsLoading(false);
   };
+
+  console.log(profileData)
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
@@ -113,14 +115,14 @@ function ProfilePage() {
                     </div>
                     <div className="card-body">
                       <p className="mb-0">
-                        <strong className="pr-1">Friends: </strong>3
+                        <strong className="pr-1">Friends: </strong>{profileData.friends.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Favorite restaurants: </strong>
-                        4
+                        <strong className="pr-1">Saved restaurants: </strong>
+                        {profileData.restaurants.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Events organized: </strong>2
+                        <strong className="pr-1">Events organized: </strong>{profileData.events.length}
                       </p>
                     </div>
                   </div>
