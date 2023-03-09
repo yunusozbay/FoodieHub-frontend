@@ -20,6 +20,9 @@ function ProfileRestaurantDetails() {
 
   async function uploadPhoto(e, id) {
     e.preventDefault();
+    if(!e.target.userPhotos) {
+      return
+    }
     let photo = e.target.userPhotos.files[0];
     let formData = new FormData();
     formData.append("userPhotos", photo);
