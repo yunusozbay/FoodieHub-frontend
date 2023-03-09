@@ -10,9 +10,10 @@ const LoginPage = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const handleSubmit = async () => {
-    const response = await fetch("http://localhost:5005/auth/login", {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -5,55 +5,17 @@ import { SessionContext } from "../contexts/SessionContext";
 import bell from "../assets/bell.png";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import FriendRequest from "./FriendRequest";
 
 function Notifications() {
-  const { userData, refreshData, verifyToken, token } =
-    useContext(SessionContext);
-  const [isReplySent, setIsReplySent] = useState(false);
+  const { userData } = useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState();
-  const [invitations, setInvitations] = useState([]);
-
   const navigate = useNavigate();
 
-  const sendAccept = async (request) => {
-    const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData._id}/update`,
-      {
-        friend_requests: userData.friend_requests.filter(
-          (req) => req._id !== request._id
-        ),
-        friends: [request._id, ...userData.friends],
-      }
-    );
-    const updatedFriend = await axios.post(
-      `http://localhost:5005/users/${request._id}/update`,
-      {
-        friends: [userData._id, ...request.friends],
-      }
-    );
-    refreshData(updatedUser);
-    setIsReplySent(true);
-  };
-  const sendDeleteRequest = async (request) => {
-    const updatedUser = await axios.post(
-      `http://localhost:5005/users/${userData._id}/update`,
-      {
-        friend_requests: userData.friend_requests.filter(
-          (req) => req._id !== request._id
-        ),
-      }
-    );
-    refreshData(updatedUser);
-    setIsReplySent(true);
-  };
-
   useEffect(() => {
+    setIsLoading(true);
     if (userData && userData.username !== undefined) {
-      //   setCurrentUser(userData);
-      //   setInvitations(userData.invitations);
       setIsLoading(false);
     }
   }, [userData]);
@@ -63,51 +25,41 @@ function Notifications() {
       {isLoading ? (
         <></>
       ) : (
-        <Popover id="popover-basic">
-          <Popover.Header as="h3">Your pending requests</Popover.Header>
-          <Popover.Body>
-            <ul>
-              {userData &&
-                userData.friend_requests.map((request) => (
-                  <li key={request._id}>
-                    {request.username} has sent you a friend request
-                    {!isReplySent ? (
-                      <div>
-                        <Button
-                          variant="primary"
-                          onClick={() => sendAccept(request)}
-                        >
-                          Accept
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          onClick={() => sendDeleteRequest(request)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    ) : (
-                      <div>Reply sent</div>
-                    )}
-                  </li>
-                ))}
-              {userData &&
-                userData.invitations.map((event) => (
-                  <li key={event._id}>
-                    You've been invited to "{event.title}"
-                    <div>
-                      <Button
-                        variant="primary"
-                        onClick={() => navigate(`/events/${event._id}`)}
-                      >
-                        See details
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-          </Popover.Body>
-        </Popover>
+        <>
+          {userData.friend_requests.length || userData.invitations.length ? (
+            <Popover id="popover-basic">
+              <Popover.Header as="h3">Your pending requests</Popover.Header>
+              <Popover.Body>
+                <ul>
+                  {userData &&
+                    userData.friend_requests.map((request) => (
+                      <li key={request._id}>
+                        <FriendRequest
+                          request={request}
+                          isLoading={isLoading}
+                        />
+                      </li>
+                    ))}
+                  {userData &&
+                    userData.invitations.map((event) => (
+                      <li key={event._id}>
+                        You've been invited to "{event.title}"
+                        <div>
+                          <Button
+                            variant="primary"
+                            onClick={() => navigate(`/events/${event._id}`)}
+                          >
+                            See details
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </Popover.Body>
+            </Popover>
+          ) : null}
+          )
+        </>
       )}
     </div>
   );
@@ -124,8 +76,8 @@ function Notifications() {
               (userData && userData.invitations.length) ? (
                 <Badge bg="danger">
                   {userData &&
-                    userData.friend_requests.length + userData &&
-                    userData.invitations.length}
+                    userData.friend_requests.length +
+                      userData.invitations.length}
                 </Badge>
               ) : null}
               <span className="visually-hidden">unread messages</span>

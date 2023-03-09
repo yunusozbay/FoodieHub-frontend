@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { SessionContext } from "../contexts/SessionContext";
 import axios from "axios";
 
 function EventForm({
   restaurant,
-  userData,
   event,
   isEditingEvent,
   setIsEditingEvent,
@@ -18,6 +18,8 @@ function EventForm({
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [invited_users, setInvited_users] = useState([]);
+  const { userData, refreshData } = useContext(SessionContext);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (isEditingEvent) {
@@ -29,20 +31,29 @@ function EventForm({
 
   async function handleSubmit() {
     if (isEditingEvent) {
-      await axios.post(`http://localhost:5005/events/${event._id}/edit`, {
+      await axios.post(`${BASE_URL}/events/${event._id}/edit`, {
         title,
         date,
         time,
         invited_users,
       });
     }
-    await axios.post("http://localhost:5005/events/new", {
+    await axios.post(`${BASE_URL}/events/new`, {
       userData,
       restaurant,
       newEvent: { title, date, time, invited_users },
     });
-    console.log(invited_users);
+    fetchData();
   }
+
+  const fetchData = async () => {
+    const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
+    refreshData(response.data.oneUser);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [userData]);
 
   const handleClose = () => {
     isEditingEvent ? setIsEditingEvent(false) : null;
@@ -50,12 +61,8 @@ function EventForm({
     setShow(false);
   };
 
-  const handleSelect = (event) => {
-    const values = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setInvited_users(values);
+  const inviteUsers = (event) => {
+    setInvited_users([event.target.value, ...inviteUsers]);
   };
 
   return (
@@ -94,17 +101,20 @@ function EventForm({
                   onChange={(event) => setTime(event.target.value)}
                 />
               </Form.Label>
-              {userData.friends.length ? (
+              {userData && userData.friends.length ? (
                 <Form.Label>
                   Invite a Foodie Friend
                   <Form.Select
                     name="invited_users"
+                    onChange={(event) =>
+                      setInvited_users([event.target.value, ...invited_users])
+                    }
                     multiple
-                    onChange={(event) => handleSelect(event)}
                   >
-                    {userData.friends.map((friend) => (
-                      <option value={friend._id}>{friend.username}</option>
-                    ))}
+                    {userData &&
+                      userData.friends.map((friend) => (
+                        <option value={friend._id}>{friend.username}</option>
+                      ))}
                   </Form.Select>
                 </Form.Label>
               ) : null}

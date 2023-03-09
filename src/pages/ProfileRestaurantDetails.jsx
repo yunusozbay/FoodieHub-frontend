@@ -7,10 +7,11 @@ function ProfileRestaurantDetails() {
   const [restaurant, setRestaurant] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   async function fetchRestaurant() {
     const response = await axios.get(
-      `http://localhost:5005/restaurants/profile/${id}`
+      `${BASE_URL}/restaurants/profile/${id}`
     );
     console.log(response.data.restaurant);
     setRestaurant(response.data.restaurant);
@@ -24,7 +25,7 @@ function ProfileRestaurantDetails() {
     formData.append("userPhotos", photo);
     try {
       const response = await axios.post(
-        `http://localhost:5005/restaurants/profile/${id}/edit`,
+        `${BASE_URL}/restaurants/profile/${id}/edit`,
         formData,
       );
       setRestaurant(response.data.updatedRestaurant);
@@ -46,6 +47,7 @@ function ProfileRestaurantDetails() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
+        <>
         <Card style={{ width: "100wv", margin: "auto" }}>
           <Card.Img variant="top" src={restaurant.image_url} />
           <Card.Body>
@@ -74,6 +76,16 @@ function ProfileRestaurantDetails() {
             </Button>
           </Card.Body>
         </Card>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly"}}>
+       {restaurant.userPhotos.map((photo) => (
+            <Card style={{ width: "20rem" }}>
+              <Card.Body>
+              <Card.Img  src={photo} />
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+        </>
       )}
     </div>
   );

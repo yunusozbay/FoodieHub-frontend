@@ -11,7 +11,6 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [city, setCity] = useState("");
   const [food, setFood] = useState("");
   const [newPlace, setNewPlace] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const { userData } = useContext(SessionContext);
 
   const submitCallback = (event) => {
@@ -61,19 +60,11 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
                 onChange={(event) => setFood(event.target.value)}
               />
             </Form.Group>
-            {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check
-            type="checkbox"
-            label="Only where I haven't been yet"
-            checked={newPlace}
-            onChange={checkHandler}
-          />
-        </Form.Group> */}
             <Button
               className="mt-3"
               variant="warning"
               type="submit"
-              onClick={() => setHidden(false)}
+              // onClick={() => setHidden(false)}
             >
               Show me a restaurant
             </Button>
@@ -83,14 +74,9 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
         </div>
         {isLoading || isShowingRandom ? (
           <div className="right-ctn">
-            {/* <SpinnerComponent /> */}
             {isLoading ? <SpinnerComponent /> : null}
             {!isLoading && isShowingRandom ? (
-              <RestaurantCard
-                hidden={hidden}
-                setHidden={setHidden}
-                restaurant={randomRest}
-              />
+              <RestaurantCard restaurant={randomRest} />
             ) : null}
           </div>
         ) : null}

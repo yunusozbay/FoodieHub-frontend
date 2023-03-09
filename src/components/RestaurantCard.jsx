@@ -5,25 +5,35 @@ import EventForm from "./EventForm";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
 
-function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
+function RestaurantCard({ restaurant, isOwner }) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
-  const { userData } = useContext(SessionContext);
+  const [isAdded, setIsAdded] = useState(false);
+  const { userData, refreshData } = useContext(SessionContext);
 
   const navigate = useNavigate();
-  console.log("from the restaurantcard restaurant:", restaurant);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   async function handlePost() {
     if (!userData || userData.username === undefined) {
       navigate("/login");
     } else {
-      await axios.post("http://localhost:5005/restaurants/add", {
+      await axios.post(`${BASE_URL}/restaurants/add`, {
         userData,
         restaurant,
       });
     }
-    setHidden(true);
-    
+    setIsAdded(true);
+    console.log(userData);
   }
+
+  const handleDelete = async () => {
+    const response = await axios.post(
+      `${BASE_URL}/restaurants/${restaurant._id}/delete`,
+      { userId: userData._id }
+    );
+    console.log(response);
+    refreshData(response.data.updatedUser);
+  };
 
   return (
     <>
@@ -33,11 +43,20 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
           src={restaurant.image_url}
           className={"card-img"}
         />
-        <button
-          className={!hidden ? "add-to-list" : "added-to-list"}
-          onClick={handlePost}
-        ></button>
-        <div class="hide">Add to my collection</div>
+        {!isOwner ? (
+          <>
+            <button
+              className={!isAdded ? "add-to-list" : "added-to-list"}
+              onClick={handlePost}
+            ></button>
+            <div class="hide hide-add">Add to my collection</div>
+          </>
+        ) : (
+          <>
+            <button className="removeFromList" onClick={handleDelete}></button>
+            <div class="hide hide-remove">Remove from collection</div>
+          </>
+        )}
 
         <Card.Body className={"card-body"}>
           <Card.Title>
@@ -47,7 +66,8 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
             Rating: {restaurant.rating} ({restaurant.review_count} reviews)
           </h6>
           <Card.Text className={"card-address"}>
-            <strong>Address:</strong> {restaurant.location.display_address}
+            <strong>Address:</strong>{" "}
+            {restaurant.location && restaurant.location.display_address}
           </Card.Text>
 
           <Card.Text className={"card-price"}>
@@ -64,15 +84,6 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
             : null}
 
           <div className={"card-btns"}>
-            {/* {!hidden && (
-              <Button
-                onClick={handlePost}
-                variant="outline-secondary"
-                className="list-btn"
-              >
-                Add to list
-              </Button>
-            )} */}
             <Button
               variant="outline-secondary"
               onClick={() => setIsCreatingEvent(true)}
@@ -82,7 +93,11 @@ function RestaurantCard({ restaurant, listView, hidden, setHidden }) {
             </Button>
             <Button
               variant="secondary"
-              onClick={() => navigate(`/restaurants/${restaurant.alias}`)}
+              onClick={() =>
+                isOwner
+                  ? navigate(`/restaurants/profile/${restaurant._id}`)
+                  : navigate(`/restaurants/${restaurant.alias}`)
+              }
               className="details-btn"
             >
               See details

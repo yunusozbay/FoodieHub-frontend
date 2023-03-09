@@ -108,7 +108,8 @@ button:focus-visible {
   height: 15rem;
   object-fit: cover;
 }
-.add-to-list, .added-to-list {
+
+.add-to-list, .added-to-list, .removeFromList {
   position: absolute;
   right: .5rem;
   top: .5rem;
@@ -121,15 +122,23 @@ button:focus-visible {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  background-color: white;
 }
-.add-to-list:hover, .added-to-list:hover {
+.removeFromList {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+.add-to-list:hover, .added-to-list:hover, .removeFromList:hover {
   border: none;
 }
 
 .add-to-list:before, .added-to-list:before {
   content: '\FF0B';
   transform: translate(0, -2px);
+}
+.removeFromList:before {
+  content: "x";
+  transform: translate(0, -4px);
 }
 .added-to-list {
   background-color: #eeb704;
@@ -138,16 +147,21 @@ button:focus-visible {
 .hide {
   display: none;
   position: absolute;
-  right: 4rem;
-  top: 1rem;
+  right: 3.5rem;
+  top: .7rem;
   background-color: white;
   padding: .4rem;
   border-radius: 5px;
   font-size: .9rem;
 }
-.add-to-list:hover + .hide {
+.add-to-list:hover + .hide-add {
   display: block;
 }
+.removeFromList:hover + .hide-remove {
+  display: block;
+}
+
+
 .result-links {
   display: flex;
   justify-content: space-between;
@@ -174,15 +188,6 @@ button:focus-visible {
   justify-content: space-between;
   margin-top: 2rem;
 }
-/* .card-btns-sm {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .2rem;
-}
-.card-btns-sm button {
-  font-size: .8rem;
-  padding: .3rem;
-} */
 .list-btn, .event-btn {
   width: 45%;
 }
@@ -246,6 +251,31 @@ button:focus-visible {
   }
   .result-links {
     margin-bottom: 1rem;
+  }
+  .search {
+    display: flex;
+    flex-direction: column;
+  }
+  .search form {
+    width: 15rem;
+  }
+  .search-results {
+    position: absolute;
+    top: 3rem;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .search-results button {
+    height: 3rem;
+    width: 15rem;
+    background-color: white;
+    padding: 1rem;
+    text-decoration: none;
+    color: #1a1a1a;
+  }
+  .search-results button:hover {
+    border: none;
   }
 }
 

@@ -1,12 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Button,
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  ListGroup,
-} from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { SessionContext } from "../contexts/SessionContext";
 import { Link, useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
@@ -20,16 +13,18 @@ function NavBarComp() {
     useContext(SessionContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const navigate = useNavigate();
 
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5005/users");
+    const response = await axios.get(`${BASE_URL}/users`);
     setAllUsers(response.data.allUsers);
   };
 
   useEffect(() => {
     if (userData && userData.username !== undefined) {
       fetchData();
-      // setisAuthenticated(true);
+      setSearchTerm("");
     }
     setIsLoading(false);
   }, [userData]);
@@ -49,9 +44,6 @@ function NavBarComp() {
           <Navbar.Collapse id="navbarScroll">
             <Nav className="me-auto navItems" navbarScroll>
               <div style={{ position: "relative" }}>
-                {/* <Nav.Link as={Link} to="/">
-                  Home
-                </Nav.Link> */}
                 {!isAuthenticated ? (
                   <>
                     <Nav.Link as={Link} to="/signup">
@@ -76,29 +68,38 @@ function NavBarComp() {
                     </Nav.Link>
                   </>
                 )}
-                <SearchBar
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                />
-                <ListGroup style={{ position: "absolute" }}>
-                  {allUsers.map((user) =>
-                    searchTerm &&
-                    user.username !== userData.username &&
-                    user.username
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase()) ? (
-                      <ListGroup.Item variant="secondary">
-                        <Link key={user._id} to={`/users/${user._id}`}>
-                          <div>{user.username}</div>
-                        </Link>
-                      </ListGroup.Item>
-                    ) : null
-                  )}
-                </ListGroup>
+                {isAuthenticated && (
+                  <div className="search">
+                    <SearchBar
+                      searchTerm={searchTerm}
+                      setSearchTerm={setSearchTerm}
+                    />
+                    <div className="search-results">
+                      {allUsers.map((user) =>
+                        searchTerm &&
+                        user.username !== userData.username &&
+                        user.username
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ? (
+                          <button
+                            onClick={(event) => {
+                              setSearchTerm("");
+                              event.preventDefault();
+                              navigate(`/users/${user._id}`);
+                            }}
+                            key={user._id}
+                          >
+                            <div>{user.username}</div>
+                          </button>
+                        ) : null
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </Nav>
           </Navbar.Collapse>
-          <Notifications />
+          {isAuthenticated && <Notifications />}
         </Container>
       )}
     </Navbar>
