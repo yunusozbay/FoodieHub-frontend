@@ -54,9 +54,25 @@ function ProfilePage() {
 
   const handleSaveClick = (e) => {
     e.preventDefault();
-    console.log(newUsername, newEmail);
+    // console.log(newUsername, newEmail);
     handleUpdate(newUsername, newEmail);
     setShowModal(false);
+  };
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `http://localhost:5005/users/${userData._id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    let parsed = await response.json();
+    console.log(parsed);
+    setProfileData(parsed.oneUser);
+    setIsLoading(false);
   };
 
   useEffect(() => {
