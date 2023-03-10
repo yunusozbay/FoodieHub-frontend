@@ -67,7 +67,7 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
       </Container>
       <Container>
         <Row xs={1} md={3} lg={4} className="g-4">
-          {restaurants.map((restaurant) => (
+          {restaurants && restaurants.map((restaurant) => (
             <Col className="card-col">
               <RestaurantCard restaurant={restaurant} />
             </Col>

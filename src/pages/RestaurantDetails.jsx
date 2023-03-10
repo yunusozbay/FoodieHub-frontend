@@ -13,17 +13,13 @@ function RestaurantDetails() {
   const { userData } = useContext(SessionContext);
   const { alias } = useParams();
 
-  const YELP_TOKEN = import.meta.env.VITE_YELP_TOKEN;
-  const YELP_URL = import.meta.env.VITE_YELP_URL
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   
   const fetchData = async () => {
-    const response = await axios.get(`${YELP_URL}/${alias}`, {
-      headers: {
-        Authorization: `Bearer ${YELP_TOKEN}`,
-        withCredentials: true,
-      },
+
+    const response = await axios.post(`${BASE_URL}/search/restaurant`,  {
+      id: alias
     });
-    console.log(response.data);
     setOneRestaurant(response.data);
     setIsLoading(false);
   };
@@ -56,7 +52,7 @@ function RestaurantDetails() {
             <div>
               {oneRestaurant.photos &&
                 oneRestaurant.photos.map((photo) => (
-                  <img
+                  <img key={photo}
                     src={photo}
                     alt={oneRestaurant.name}
                     className="small-img"
@@ -71,7 +67,7 @@ function RestaurantDetails() {
             <div>
               {oneRestaurant.categories &&
                 oneRestaurant.categories.map((category) => (
-                  <span>{category.title}, </span>
+                  <span key={category.title}>{category.title}, </span>
                 ))}
             </div>
             <h6>{oneRestaurant.price && oneRestaurant.price}</h6>
