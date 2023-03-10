@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import EventForm from "../components/EventForm";
 import { SessionContext } from "../contexts/SessionContext";
 import Map from "../components/Map";
-// import { v4 as uuid } from 'uuid';
+
 
 function RestaurantDetails() {
   const [oneRestaurant, setOneRestaurant] = useState({});
