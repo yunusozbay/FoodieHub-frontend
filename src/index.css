@@ -381,6 +381,8 @@ button:focus-visible {
   margin-top: 10px;
 }
 
+.map-picture{
+  display: flex;
+  justify-content: space-between;
 
-
-
+}

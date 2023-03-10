@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import EventForm from "../components/EventForm";
 import { SessionContext } from "../contexts/SessionContext";
 import Map from "../components/Map";
+// import { v4 as uuid } from 'uuid';
 
 function RestaurantDetails() {
   const [oneRestaurant, setOneRestaurant] = useState({});
@@ -81,7 +82,8 @@ function RestaurantDetails() {
               <div className="photo-grid col-12">
                 {oneRestaurant.photos &&
                   oneRestaurant.photos.map((photo) => (
-                    <div className="grid-photo">
+                    <div className="grid-photo"key={photo}>
+                      {console.log(photo)}
                       <img src={photo} alt={oneRestaurant.name} />
                     </div>
                   ))}
@@ -108,7 +110,7 @@ function RestaurantDetails() {
                           <td>
                             {oneRestaurant.categories &&
                               oneRestaurant.categories.map((category) => (
-                                <span>{category.title}, </span>
+                                <span key={category}>{category.title}, </span>
                               ))}
                           </td>
                         </tr>
