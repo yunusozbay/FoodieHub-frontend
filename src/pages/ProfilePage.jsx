@@ -151,16 +151,14 @@ function ProfilePage() {
                     </div>
                     <div className="card-body">
                       <p className="mb-0">
-                        <strong className="pr-1">Friends: </strong>
-                        {userData.friends.length}
+                        <strong className="pr-1">Friends: </strong>3
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">My restaurants: </strong>
-                        {userData.restaurants.length}
+                        <strong className="pr-1">Favorite restaurants: </strong>
+                        4
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Events: </strong>
-                        {userData.events.length}
+                        <strong className="pr-1">Events organized: </strong>2
                       </p>
                     </div>
                   </div>

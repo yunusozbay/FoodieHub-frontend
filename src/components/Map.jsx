@@ -17,7 +17,7 @@ function Map({latitude, longitude, oneRestaurant}) {
              
             {oneRestaurant.name}<br/>
             {oneRestaurant.location.display_address}
-            {console.log("inside map",oneRestaurant)}
+            
           </Popup>
 
         </Marker>

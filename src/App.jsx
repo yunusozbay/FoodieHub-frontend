@@ -12,6 +12,7 @@ import RestaurantDetails from "./pages/RestaurantDetails";
 import NavBarComp from "./components/NavBarComp";
 import UserDetails from "./pages/UserDetails";
 import ProfileRestaurantDetails from "./pages/ProfileRestaurantDetails";
+import Footer from "./components/Footer";
 
 function App() {
   const [rest, setRest] = useState([]);
@@ -95,6 +96,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer/>
     </div>
   );
 }

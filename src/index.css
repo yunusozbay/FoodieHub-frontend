@@ -224,6 +224,7 @@ button:focus-visible {
 @media only screen and (min-width: 768px)  {
   div .form-ctn {
       width: 30%;
+      height:65vh;
   }
   .randomGen {
     display: flex;
@@ -412,33 +413,8 @@ button:focus-visible {
   margin-top: 10px;
 }
 
-
-/* table {
-  width: 100%;
-}
-
-table td:first-child {
-  width: 30%;
-  font-weight: bold;
-}
-
-.card {
+.map-picture{
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #f5f5f5;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  justify-content: space-between;
+
 }
-
-.card table {
-  margin-bottom: 10px;
-}
-
-.card td {
-  padding: 5px;
-} */
-
