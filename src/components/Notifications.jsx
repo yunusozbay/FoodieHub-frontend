@@ -47,7 +47,10 @@ function Notifications() {
                         <div>
                           <Button
                             variant="primary"
-                            onClick={() => navigate(`/events/${event._id}`)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate(`/events/${event._id}`);
+                            }}
                           >
                             See details
                           </Button>

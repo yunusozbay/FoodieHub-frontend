@@ -21,29 +21,36 @@ function EventCard() {
     try {
       const response = await axios.get(`${BASE_URL}/events/${id}`);
       setEvent(response.data.foundEvent);
-      setIsLoading(false);
+      //   setIsLoading(false);
       response.data.foundEvent.invited_users.map((user) => {
         if (user._id === userData._id) {
           setIsInvited(true);
         }
       });
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (userData && userData.username !== undefined) {
-      fetchEvent();
-    }
+    fetchEvent();
   }, [userData]);
 
-  const handleDelete = async () => {
+  useEffect(() => {
+    if (event && event.title !== undefined) {
+      setIsLoading(false);
+    }
+  }, [event]);
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
     await axios.post(`${BASE_URL}/events/${event._id}/delete`);
     navigate("/profile");
   };
 
-  const handleAccept = async () => {
+  const handleAccept = async (e) => {
+    e.preventDefault();
     const response = await axios.post(
       `${BASE_URL}/users/${userData._id}/update`,
       {
@@ -57,7 +64,8 @@ function EventCard() {
     refreshData(response.data.updatedUser);
     navigate("/profile");
   };
-  const handleDecline = async () => {
+  const handleDecline = async (e) => {
+    e.preventDefault();
     const response = await axios.post(
       `${BASE_URL}/users/${userData._id}/update`,
       {
@@ -81,14 +89,14 @@ function EventCard() {
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (
-        <Card className="mt-3 restaurant-card">
+        <Card className="mt-3 restaurant-card event-card">
           <Card.Img
             variant="top"
             src={event.restaurant.image_url}
-            className="card-img"
+            className="card-img event-card-img"
           />
 
-          <Card.Body className="card-body">
+          <Card.Body className="card-body event-card-body">
             <Card.Title>
               <h2 className="card-title">{event.title}</h2>
             </Card.Title>
@@ -110,12 +118,14 @@ function EventCard() {
           <Card.Body className="card-btns">
             <Button
               variant="secondary"
-              onClick={() => navigate(`/restaurants/${event.restaurant.alias}`)}
+              onClick={() =>
+                navigate(`/restaurants/profile/${event.restaurant._id}`)
+              }
             >
               Restaurant details
             </Button>
             {isInvited && !isReplySent ? (
-              <div>
+              <div className="event-res-btns">
                 <Button variant="warning" onClick={handleAccept}>
                   Accept
                 </Button>

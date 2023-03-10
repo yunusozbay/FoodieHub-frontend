@@ -204,6 +204,22 @@ button:focus-visible {
   justify-content: space-between;
   gap: 1rem;
 }
+.friends-list-item {
+  text-decoration: none;
+  color: #1a1a1a;
+}
+.friends-list-item {
+  display: flex;
+}
+.friends-list-item:hover {
+  color: #eeb704;
+}
+.friends-list-img {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: none;
+  margin: 0 1rem 0 0;
+}
 
 @media only screen and (min-width: 768px)  {
   div .form-ctn {
@@ -265,7 +281,7 @@ button:focus-visible {
   }
   .search-results {
     position: absolute;
-    top: 3rem;
+    top: 100%;
     width: 15rem;
     display: flex;
     flex-direction: column;
@@ -310,6 +326,21 @@ button:focus-visible {
   .subtitle {
     font-size: 1.5rem;
   } 
+  .event-res-btns {
+    display: flex;
+    gap: 1rem;
+  }
+  .event-res-btns button {
+    font-size: 1rem;
+    padding: 0 3rem;
+  }
+  .event-card {
+    width: 50%;
+    margin: 0 auto;
+  }
+  .event-card-img {
+    height: 20rem;
+  }
 }
 
 /* .carousel-img {
