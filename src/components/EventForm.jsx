@@ -47,6 +47,7 @@ function EventForm({
         newEvent: { title, date, time, invited_users },
       });
       refreshData(response.data.updatedUser);
+      handleClose()
     }
     navigate("/profile");
   };

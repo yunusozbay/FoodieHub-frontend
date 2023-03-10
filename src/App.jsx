@@ -19,19 +19,14 @@ function App() {
   const [isShowingRandom, setIsShowingRandom] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const YELP_TOKEN = import.meta.env.VITE_YELP_TOKEN;
-  const YELP_URL = import.meta.env.VITE_YELP_URL
-  
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const fetchRandom = async (result) => {
     setIsLoading(true);
     const random = Math.floor(Math.random() * result.length);
     const randomId = result[random].id;
-    const response = await axios.get(`${YELP_URL}/${randomId}`, {
-      headers: {
-        Authorization: `Bearer ${YELP_TOKEN}`,
-        withCredentials: true,
-      },
+    const response = await axios.post(`${BASE_URL}/search/restaurant`,  {
+      id: randomId
     });
     setRandomRest(response.data);
     setIsLoading(false);
@@ -39,17 +34,12 @@ function App() {
   };
 
   const handleSubmit = async (city, food) => {
-    const allRest = await axios.get(
-      `${YELP_URL}/search?location=${city}&categories=restaurants&term=${food}&limit=20`,
-      {
-        headers: {
-          Authorization: `Bearer ${YELP_TOKEN}`,
-          accept: "application/json",
-        },
-      }
-    );
-    setRest(allRest.data.businesses);
-    const result = allRest.data.businesses;
+    const response = await axios.post(`${BASE_URL}/search/restaurants`, {
+      city, food
+    });
+    console.log(response.data)
+    setRest(response.data.businesses);
+    const result = response.data.businesses;
     fetchRandom(result);
   };
 

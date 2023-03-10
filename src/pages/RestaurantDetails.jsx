@@ -15,17 +15,13 @@ function RestaurantDetails() {
   const { userData, refreshData } = useContext(SessionContext);
   const { alias } = useParams();
 
-  const YELP_TOKEN = import.meta.env.VITE_YELP_TOKEN;
-  const YELP_URL = import.meta.env.VITE_YELP_URL
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   
   const fetchData = async () => {
-    const response = await axios.get(`${YELP_URL}/${alias}`, {
-      headers: {
-        Authorization: `Bearer ${YELP_TOKEN}`,
-        withCredentials: true,
-      },
+
+    const response = await axios.post(`${BASE_URL}/search/restaurant`,  {
+      id: alias
     });
-    console.log(response.data);
     setOneRestaurant(response.data);
     setIsLoading(false);
   };
