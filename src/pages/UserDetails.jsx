@@ -116,8 +116,25 @@ function UserDetails() {
                     {oneUser.friends &&
                       oneUser.friends.map((friend) => (
                         <ListGroup.Item key={friend._id}>
-                          <Link to={`/users/${friend._id}`}>
-                            <h5>{friend.username}</h5>
+                          <Link
+                            className="friends-list-item"
+                            to={`/users/${friend._id}`}
+                          >
+                            <img
+                              className="profile_img friends-list-img"
+                              src={
+                                friend.image_url
+                                  ? friend.image_url
+                                  : "https://source.unsplash.com/600x300/?food"
+                              }
+                              alt="profile dp"
+                            />
+                            <div className="friends-list-info">
+                              <h5 className="friends-list-name mb-0">
+                                {friend.username}
+                              </h5>
+                              <p>{friend.restaurants.length} restaurants</p>
+                            </div>
                           </Link>
                         </ListGroup.Item>
                       ))}
@@ -130,11 +147,16 @@ function UserDetails() {
                 <h4 className="m-3">Restaurants</h4>
                 <Container>
                   <Row xs={1} md={2} lg={3} className="g-4">
-                    {isFriend
-                      ? oneUser.restaurants.map((rest) => (
-                          <RestaurantCard key={rest._id} restaurant={rest} />
-                        ))
-                      : null}
+                    {oneUser.restaurants && oneUser.restaurants.length ? (
+                      oneUser.restaurants.map((rest) => (
+                        <RestaurantCard key={rest._id} restaurant={rest} />
+                      ))
+                    ) : (
+                      <p>
+                        {oneUser.username} hasn't added any restaurants to their
+                        collection yet.
+                      </p>
+                    )}
                   </Row>
                 </Container>
               </div>

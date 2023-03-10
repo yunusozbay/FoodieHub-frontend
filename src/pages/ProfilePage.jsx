@@ -59,14 +59,13 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    // refreshData(userData);
+    refreshData(userData);
     if (userData && userData.username !== undefined) {
       setIsLoading(false);
     }
   }, [userData]);
 
-  const handleEditEvent = (curEvent) => {
-    e.preventDefault();
+  const handleEditEvent = (e, curEvent) => {
     setIsEditingEvent(true);
     return (
       <EventForm
@@ -258,8 +257,28 @@ function ProfilePage() {
                     </ListGroup.Item>
                     {userData.friends.map((friend) => (
                       <ListGroup.Item>
-                        <Link to={`/users/${friend._id}`}>
-                          <h5>{friend.username}</h5>
+                        <Link
+                          className="friends-list-item"
+                          to={`/users/${friend._id}`}
+                        >
+                          <img
+                            className="profile_img friends-list-img"
+                            src={
+                              friend.image_url
+                                ? friend.image_url
+                                : "https://source.unsplash.com/600x300/?food"
+                            }
+                            alt="profile dp"
+                          />
+                          <div className="friends-list-info">
+                            <h5 className="friends-list-name mb-0">
+                              {friend.username}
+                            </h5>
+                            <p>
+                              {friend.restaurants && friend.restaurants.length}{" "}
+                              restaurants
+                            </p>
+                          </div>
                         </Link>
                       </ListGroup.Item>
                     ))}
@@ -269,54 +288,57 @@ function ProfilePage() {
                   <h4>Upcoming events</h4>
                   <div className="col-lg-4 events-ctn">
                     <Row xs={1} md={2} lg={3} className="g-4">
-                      {userData.events.map((event) => (
-                        <Col key={event._id}>
-                          <Card className="mt-3 profile-restaurant-card">
-                            <Card.Img
-                              variant="top"
-                              src="https://source.unsplash.com/600x300/?restaurant"
-                              className="card-img"
-                            />
+                      {userData.events &&
+                        userData.events.map((event) => (
+                          <Col key={event._id}>
+                            <Card className="mt-3 profile-restaurant-card">
+                              <Card.Img
+                                variant="top"
+                                src="https://source.unsplash.com/600x300/?restaurant"
+                                className="card-img"
+                              />
 
-                            <Card.Body className="card-body">
-                              <Card.Title>
-                                <h2 className="card-title">{event.title}</h2>
-                              </Card.Title>
-                              <h6>Date: {event.date.slice(0, 10)}</h6>
-                              <h6>Time: {event.time}</h6>
-                              <Card.Text>{event.restaurant.name}</Card.Text>
-                            </Card.Body>
-                            <ListGroup>
-                              <Card.Text>
-                                {event.restaurant.location &&
-                                  event.restaurant.location.display_address}
-                              </Card.Text>
-                            </ListGroup>
-                            <Card.Body className="card-btns">
-                              <Button
-                                variant="secondary"
-                                onClick={() => navigate(`/events/${event._id}`)}
-                              >
-                                Event details
-                              </Button>
-                              <Button
-                                variant="secondary"
-                                onClick={() => handleEditEvent(event)}
-                              >
-                                Edit
-                              </Button>
-                              {isEditingEvent ? (
-                                <EventForm
-                                  event={event}
-                                  isEditingEvent={isEditingEvent}
-                                  setIsEditingEvent={setIsEditingEvent}
-                                />
-                              ) : null}
-                              <Button variant="danger">Delete</Button>
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      ))}
+                              <Card.Body className="card-body">
+                                <Card.Title>
+                                  <h2 className="card-title">{event.title}</h2>
+                                </Card.Title>
+                                <h6>Date: {event.date.slice(0, 10)}</h6>
+                                <h6>Time: {event.time}</h6>
+                                <Card.Text>{event.restaurant.name}</Card.Text>
+                              </Card.Body>
+                              <ListGroup>
+                                <Card.Text>
+                                  {event.restaurant.location &&
+                                    event.restaurant.location.display_address}
+                                </Card.Text>
+                              </ListGroup>
+                              <Card.Body className="card-btns">
+                                <Button
+                                  variant="secondary"
+                                  onClick={() =>
+                                    navigate(`/events/${event._id}`)
+                                  }
+                                >
+                                  Event details
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => handleEditEvent(event)}
+                                >
+                                  Edit
+                                </Button>
+                                {isEditingEvent ? (
+                                  <EventForm
+                                    event={event}
+                                    isEditingEvent={isEditingEvent}
+                                    setIsEditingEvent={setIsEditingEvent}
+                                  />
+                                ) : null}
+                                <Button variant="danger">Delete</Button>
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        ))}
                     </Row>
                   </div>
                 </div>
@@ -324,7 +346,7 @@ function ProfilePage() {
             </div>
           </div>
           <div className="my-restaurants-ctn">
-            <h4>My restaurants</h4>
+            {/* <h4>My restaurants</h4>
             <Button
               variant="warning"
               type="submit"
@@ -335,19 +357,20 @@ function ProfilePage() {
               {isShown ? "Hide list" : "My list"}
             </Button>
 
-            {isShown ? (
-              <Container>
-                <Row xs={1} md={4} lg={5} className="g-4">
-                  {userData.restaurants.map((restaurant) => (
-                    <Col key={restaurant._id}>
-                      <RestaurantCard restaurant={restaurant} isOwner={true} />
-                    </Col>
-                  ))}
-                </Row>
-              </Container>
-            ) : (
+            {isShown ? ( */}
+            <Container>
+              <h4 className="mb-4">My restaurants</h4>
+              <Row xs={1} md={4} lg={5} className="g-4">
+                {userData.restaurants.map((restaurant) => (
+                  <Col key={restaurant._id}>
+                    <RestaurantCard restaurant={restaurant} isOwner={true} />
+                  </Col>
+                ))}
+              </Row>
+            </Container>
+            {/* ) : (
               ""
-            )}
+            )} */}
           </div>
         </>
       )}

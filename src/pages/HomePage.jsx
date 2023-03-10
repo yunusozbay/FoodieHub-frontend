@@ -18,9 +18,6 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
     handleSubmit(city, food);
   };
 
-  const checkHandler = () => {
-    setNewPlace(!newPlace);
-  };
   return (
     <Container className="homeCtn">
       <div className="stage">
@@ -35,7 +32,7 @@ const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
           We'll help you to find an awesome place!
         </p>
       </div>
-      <div className="randomGen mt-5">
+      <div className="randomGen mt-5 shadow-lg">
         <div className="left-ctn">
           <Form className="restaurant-search-form" onSubmit={submitCallback}>
             <Form.Group
