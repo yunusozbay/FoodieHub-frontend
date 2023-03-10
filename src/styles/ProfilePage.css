@@ -31,6 +31,9 @@
 .info-card-ctn .info-card {
   height: 100%;
 }
+.rest-card-ctn .rest-card {
+  height: 100%;
+}
 
 .profile-ctn .events-ctn {
   display: flex;
@@ -39,4 +42,13 @@
 }
 .profile-restaurant-card {
   width: 15rem;
+}
+
+.profile_img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: 10px auto;
+  border: 10px solid #ccc;
+  border-radius: 50%;
 }

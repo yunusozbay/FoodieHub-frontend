@@ -64,7 +64,9 @@ const SessionContextProvider = ({ children }) => {
   };
 
   const refreshData = (updatedUser) => {
+    console.log(userData);
     setUserData(updatedUser);
+    console.log(userData);
   };
 
   return (

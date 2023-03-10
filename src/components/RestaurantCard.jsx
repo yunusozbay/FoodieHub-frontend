@@ -54,7 +54,7 @@ function RestaurantCard({ restaurant, isOwner }) {
         ) : (
           <>
             <button className="removeFromList" onClick={handleDelete}></button>
-            <div class="hide hide-remove">Remove from collection</div>
+            <div className="hide hide-remove">Remove from collection</div>
           </>
         )}
 

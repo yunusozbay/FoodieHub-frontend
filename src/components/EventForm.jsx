@@ -31,7 +31,8 @@ function EventForm({
     }
   }, []);
 
-  async function handleSubmit() {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (isEditingEvent) {
       await axios.post(`${BASE_URL}/events/${event._id}/edit`, {
         title,
@@ -39,24 +40,17 @@ function EventForm({
         time,
         invited_users,
       });
+    } else {
+      const response = await axios.post(`${BASE_URL}/events/new`, {
+        userData,
+        restaurant,
+        newEvent: { title, date, time, invited_users },
+      });
+      refreshData(response.data.updatedUser);
+      handleClose()
     }
-    const response = await axios.post(`${BASE_URL}/events/new`, {
-      userData,
-      restaurant,
-      newEvent: { title, date, time, invited_users },
-    });
-    refreshData(response.data.updatedUser);
     navigate("/profile");
-  }
-
-  // const fetchData = async () => {
-  //   const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
-  //   refreshData(response.data.oneUser);
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, [userData]);
+  };
 
   const handleClose = () => {
     isEditingEvent ? setIsEditingEvent(false) : null;
