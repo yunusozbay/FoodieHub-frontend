@@ -46,6 +46,8 @@ function EventCard() {
   const handleDelete = async (e) => {
     e.preventDefault();
     await axios.post(`${BASE_URL}/events/${event._id}/delete`);
+    const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
+    refreshData(response.data.oneUser);
     navigate("/profile");
   };
 
