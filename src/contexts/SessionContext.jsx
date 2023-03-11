@@ -28,7 +28,6 @@ const SessionContextProvider = ({ children }) => {
         setIsAuthenticated(true);
         setIsLoading(false);
       } else {
-        console.log(data);
         setIsLoading(false);
         setUserData(null);
         setIsAuthenticated(false);
@@ -41,7 +40,6 @@ const SessionContextProvider = ({ children }) => {
       window.localStorage.removeItem("authToken");
     }
   };
-  console.log(userData);
   useEffect(() => {
     const localToken = window.localStorage.getItem("authToken");
     verifyToken(localToken);
@@ -64,9 +62,7 @@ const SessionContextProvider = ({ children }) => {
   };
 
   const refreshData = (updatedUser) => {
-    console.log(userData);
     setUserData(updatedUser);
-    console.log(userData);
   };
 
   return (

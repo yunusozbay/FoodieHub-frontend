@@ -47,7 +47,7 @@ function EventForm({
         newEvent: { title, date, time, invited_users },
       });
       refreshData(response.data.updatedUser);
-      handleClose()
+      handleClose();
     }
     navigate("/profile");
   };
@@ -114,7 +114,9 @@ function EventForm({
                   >
                     {userData &&
                       userData.friends.map((friend) => (
-                        <option value={friend._id}>{friend.username}</option>
+                        <option key={friend._id} value={friend._id}>
+                          {friend.username}
+                        </option>
                       ))}
                   </Form.Select>
                 </Form.Label>

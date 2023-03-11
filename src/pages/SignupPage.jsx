@@ -19,7 +19,6 @@ const SignupPage = () => {
   }, [isAuthenticated]);
 
   const handleSubmit = async () => {
-    console.log({ username, email, password });
     const response = await fetch(`${BASE_URL}/auth/signup`, {
       method: "POST",
       headers: {

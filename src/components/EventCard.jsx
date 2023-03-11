@@ -21,13 +21,13 @@ function EventCard() {
     try {
       const response = await axios.get(`${BASE_URL}/events/${id}`);
       setEvent(response.data.foundEvent);
-      //   setIsLoading(false);
-      response.data.foundEvent.invited_users.map((user) => {
-        if (user._id === userData._id) {
-          setIsInvited(true);
-        }
-      });
-      console.log(response.data);
+      if (response.data.foundEvent.invited_users) {
+        response.data.foundEvent.invited_users.map((user) => {
+          if (user._id === userData._id) {
+            setIsInvited(true);
+          }
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +60,11 @@ function EventCard() {
         events: [event._id, ...userData.events],
       }
     );
+    await axios.post(`${BASE_URL}/events/${event._id}/edit`, {
+      invited_users: event.invited_users.filter(
+        (req) => req._id !== userData._id
+      ),
+    });
     setIsReplySent(true);
     refreshData(response.data.updatedUser);
     navigate("/profile");
@@ -100,10 +105,6 @@ function EventCard() {
             <Card.Title>
               <h2 className="card-title">{event.title}</h2>
             </Card.Title>
-            with{" "}
-            {event.invited_users.map((friend) => (
-              <span>{friend.username}</span>
-            ))}
             <h4>Created by: {event.created_by.username}</h4>
             <h6>Date: {event.date.slice(0, 10)}</h6>
             <h6>Time: {event.time}</h6>

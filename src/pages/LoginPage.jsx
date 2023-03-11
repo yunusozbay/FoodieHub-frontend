@@ -21,7 +21,6 @@ const LoginPage = () => {
       body: JSON.stringify({ username, password }),
     });
     const parsed = await response.json();
-    console.log(parsed);
     setToken(parsed.token);
     navigate(-1);
   };

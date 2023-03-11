@@ -23,9 +23,6 @@ function FriendRequest({ request, isLoading }) {
       `${BASE_URL}/users/${request._id}/update`,
       {
         friends: [userData._id, ...request.friends],
-        // friend_requests_sent: request.friend_requests_sent.filter(
-        //   (req) => req._id !== request._id
-        // ),
       }
     );
     setIsReplySent(true);

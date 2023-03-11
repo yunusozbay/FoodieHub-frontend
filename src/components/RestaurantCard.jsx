@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Button, Card, ListGroup } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import EventForm from "./EventForm";
 import axios from "axios";
 import { SessionContext } from "../contexts/SessionContext";
@@ -31,7 +31,6 @@ function RestaurantCard({ restaurant, isOwner }) {
       `${BASE_URL}/restaurants/${restaurant._id}/delete`,
       { userId: userData._id }
     );
-    console.log(response);
     refreshData(response.data.updatedUser);
   };
 
@@ -49,7 +48,7 @@ function RestaurantCard({ restaurant, isOwner }) {
               className={!isAdded ? "add-to-list" : "added-to-list"}
               onClick={handlePost}
             ></button>
-            <div class="hide hide-add">Add to my collection</div>
+            <div className="hide hide-add">Add to my collection</div>
           </>
         ) : (
           <>

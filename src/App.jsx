@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -38,7 +38,6 @@ function App() {
     const response = await axios.post(`${BASE_URL}/search/restaurants`, {
       city, food
     });
-    console.log(response.data)
     setRest(response.data.businesses);
     const result = response.data.businesses;
     fetchRandom(result);
