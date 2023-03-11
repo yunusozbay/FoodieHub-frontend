@@ -40,6 +40,8 @@ function EventForm({
         time,
         invited_users,
       });
+      const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
+      refreshData(response.data.oneUser);
     } else {
       const response = await axios.post(`${BASE_URL}/events/new`, {
         userData,
@@ -47,8 +49,8 @@ function EventForm({
         newEvent: { title, date, time, invited_users },
       });
       refreshData(response.data.updatedUser);
-      handleClose();
     }
+    handleClose();
     navigate("/profile");
   };
 
