@@ -30,7 +30,10 @@ function UserDetails() {
       }
     );
     const response = await axios.post(
-      `${BASE_URL}/users/${userData._id}/update`
+      `${BASE_URL}/users/${userData._id}/update`,
+      {
+        friend_requests_sent: [oneUser._id, ...userData.friend_requests_sent],
+      }
     );
     setIsRequestSent(true);
     refreshData(response.data.updatedUser);
@@ -51,6 +54,12 @@ function UserDetails() {
         }
       });
     }
+    userData.friend_requests_sent &&
+      userData.friend_requests_sent.map((req) => {
+        if (req === oneUser._id) {
+          setIsRequestSent(true);
+        }
+      });
   }, [oneUser]);
 
   return (

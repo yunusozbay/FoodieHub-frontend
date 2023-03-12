@@ -23,6 +23,9 @@ function FriendRequest({ request, isLoading }) {
       `${BASE_URL}/users/${request._id}/update`,
       {
         friends: [userData._id, ...request.friends],
+        friend_requests_sent: request.friend_requests_sent.filter((req) => {
+          req !== userData._id;
+        }),
       }
     );
     setIsReplySent(true);
@@ -35,6 +38,14 @@ function FriendRequest({ request, isLoading }) {
         friend_requests: userData.friend_requests.filter(
           (req) => req._id !== request._id
         ),
+      }
+    );
+    const updatedFriend = await axios.post(
+      `${BASE_URL}/users/${request._id}/update`,
+      {
+        friend_requests_sent: request.friend_requests_sent.filter((req) => {
+          req !== userData._id;
+        }),
       }
     );
     setIsReplySent(true);

@@ -146,14 +146,16 @@ function ProfilePage() {
                     </div>
                     <div className="card-body">
                       <p className="mb-0">
-                        <strong className="pr-1">Friends: </strong>3
+                        <strong className="pr-1">Friends: </strong>
+                        {userData.friends.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Favorite restaurants: </strong>
-                        4
+                        <strong className="pr-1">Restaurants: </strong>
+                        {userData.restaurants.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Events organized: </strong>2
+                        <strong className="pr-1">Events: </strong>
+                        {userData.events.length}
                       </p>
                     </div>
                   </div>
@@ -313,18 +315,24 @@ function ProfilePage() {
                                 >
                                   Event details
                                 </Button>
-                                <Button
-                                  variant="secondary"
-                                  onClick={() => handleEditEvent(event)}
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  variant="danger"
-                                  onClick={() => handleDeleteEvent(event._id)}
-                                >
-                                  Delete
-                                </Button>
+                                {event.created_by === userData._id && (
+                                  <>
+                                    <Button
+                                      variant="secondary"
+                                      onClick={() => handleEditEvent(event)}
+                                    >
+                                      Edit
+                                    </Button>
+                                    <Button
+                                      variant="danger"
+                                      onClick={() =>
+                                        handleDeleteEvent(event._id)
+                                      }
+                                    >
+                                      Delete
+                                    </Button>
+                                  </>
+                                )}
                               </Card.Body>
                             </Card>
                           </Col>

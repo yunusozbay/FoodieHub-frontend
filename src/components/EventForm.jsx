@@ -28,6 +28,7 @@ function EventForm({
       setTitle(event.title);
       setDate(event.date.slice(0, 10));
       setTime(event.time);
+      setInvited_users(event.invited_users);
     }
   }, []);
 
@@ -65,6 +66,7 @@ function EventForm({
     for (let i = 0; i < selectedItems.length; i++) {
       invited.push(selectedItems[i].value);
     }
+    console.log(invited);
     setInvited_users(invited);
   };
 
@@ -77,7 +79,7 @@ function EventForm({
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={(e) => handleSubmit(e)}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>
                 Title
@@ -115,11 +117,23 @@ function EventForm({
                     multiple
                   >
                     {userData &&
-                      userData.friends.map((friend) => (
-                        <option key={friend._id} value={friend._id}>
-                          {friend.username}
-                        </option>
-                      ))}
+                      userData.friends.map((friend) => {
+                        let isInvited;
+                        event &&
+                        event.invited_users.length &&
+                        event.invited_users.includes(friend._id)
+                          ? (isInvited = true)
+                          : (isInvited = false);
+                        return (
+                          <option
+                            key={friend._id}
+                            value={friend._id}
+                            selected={isInvited}
+                          >
+                            {friend.username}
+                          </option>
+                        );
+                      })}
                   </Form.Select>
                 </Form.Label>
               ) : null}

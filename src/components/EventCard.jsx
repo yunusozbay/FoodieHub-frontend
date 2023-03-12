@@ -21,13 +21,13 @@ function EventCard() {
     try {
       const response = await axios.get(`${BASE_URL}/events/${id}`);
       setEvent(response.data.foundEvent);
-      if (response.data.foundEvent.invited_users) {
-        response.data.foundEvent.invited_users.map((user) => {
-          if (user._id === userData._id) {
-            setIsInvited(true);
-          }
-        });
-      }
+      //   if (response.data.foundEvent.invited_users) {
+      //     response.data.foundEvent.invited_users.map((user) => {
+      //       if (user._id === userData._id) {
+      //         setIsInvited(true);
+      //       }
+      //     });
+      //   }
     } catch (error) {
       console.log(error);
     }
@@ -41,6 +41,12 @@ function EventCard() {
     if (event && event.title !== undefined) {
       setIsLoading(false);
     }
+    event.invited_users &&
+      event.invited_users.map((user) => {
+        if (user._id === userData._id) {
+          setIsInvited(true);
+        }
+      });
   }, [event]);
 
   const handleDelete = async (e) => {
