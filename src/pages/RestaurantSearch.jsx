@@ -11,15 +11,13 @@ import Row from "react-bootstrap/Row";
 function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
   const [city, setCity] = useState("");
   const [food, setFood] = useState("");
-  const [newPlace, setNewPlace] = useState(false);
 
-  console.log(restaurants);
   const submitCallback = (event) => {
     event.preventDefault();
     handleSubmit(city, food);
   };
   return (
-    <div>
+    <div className="restSearch-ctn">
       <Container>
         <Form className="restaurant-search-form" onSubmit={submitCallback}>
           <Form.Group
@@ -55,11 +53,12 @@ function RestaurantSearch({ restaurants, handleSubmit, isLoading }) {
       </Container>
       <Container>
         <Row xs={1} md={3} lg={4} className="g-4">
-          {restaurants && restaurants.map((restaurant) => (
-            <Col className="card-col">
-              <RestaurantCard restaurant={restaurant} />
-            </Col>
-          ))}
+          {restaurants &&
+            restaurants.map((restaurant) => (
+              <Col key={restaurant.id} className="card-col">
+                <RestaurantCard restaurant={restaurant} />
+              </Col>
+            ))}
         </Row>
       </Container>
     </div>

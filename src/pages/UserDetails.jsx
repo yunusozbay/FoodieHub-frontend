@@ -20,15 +20,9 @@ function UserDetails() {
   const fetchData = async () => {
     const response = await axios.get(`${BASE_URL}/users/${id}/details`);
     setOneUser(response.data.oneUser);
-    // setIsLoading(false);
-
-    // response.data.oneUser.friends.includes(userData._id)
-    //   ? setIsFriend(true)
-    //   : null;
   };
 
   const sendRequest = async () => {
-    console.log(userData);
     const updatedFriend = await axios.post(
       `${BASE_URL}/users/${oneUser._id}/update`,
       {
@@ -36,26 +30,23 @@ function UserDetails() {
       }
     );
     const response = await axios.post(
-      `${BASE_URL}/users/${userData._id}/update`
-      // {
-      //   friend_requests_sent: [oneUser._id, ...userData.friend_requests_sent],
-      // }
+      `${BASE_URL}/users/${userData._id}/update`,
+      {
+        friend_requests_sent: [oneUser._id, ...userData.friend_requests_sent],
+      }
     );
     setIsRequestSent(true);
     refreshData(response.data.updatedUser);
   };
 
   useEffect(() => {
-    // refreshData(userData);
     if (userData && userData.username !== undefined) {
       fetchData();
       setIsLoading(false);
-      // oneUser.friends.includes(userData._id) ? setIsFriend(true) : null;
     }
   }, [userData]);
 
   useEffect(() => {
-    // refreshData(userData);
     if (oneUser && oneUser.username !== undefined) {
       oneUser.friends.map((friend) => {
         if (friend._id === userData._id) {
@@ -63,6 +54,12 @@ function UserDetails() {
         }
       });
     }
+    userData.friend_requests_sent &&
+      userData.friend_requests_sent.map((req) => {
+        if (req === oneUser._id) {
+          setIsRequestSent(true);
+        }
+      });
   }, [oneUser]);
 
   return (

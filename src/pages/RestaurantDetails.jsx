@@ -32,13 +32,11 @@ function RestaurantDetails() {
   }, []);
 
   async function handlePost() {
-    console.log(oneRestaurant);
     if (!userData || userData.username === undefined) {
       navigate("/login");
     } else {
       const response = await axios.post(
         "http://localhost:5005/restaurants/add",
-
         {
           userData,
           restaurant: oneRestaurant,
@@ -47,7 +45,6 @@ function RestaurantDetails() {
       setAddedToList(true);
       refreshData(response.data.updatedUser);
     }
-    console.log(userData);
   }
 
   return (
@@ -79,11 +76,9 @@ function RestaurantDetails() {
                 {oneRestaurant.photos &&
                   oneRestaurant.photos.map((photo) => (
                     <div className="grid-photo"key={photo}>
-                      {console.log(photo)}
                       <img src={photo} alt={oneRestaurant.name} />
                     </div>
                   ))}
-
                 <div className="card col-8 mt-8">
                   <div className="card-body">
                     <table className="table table-bordered">
@@ -151,7 +146,6 @@ function RestaurantDetails() {
                 </div>
               </div>
             </article>
-
             {Object.keys(oneRestaurant).length !== 0 && (
               <Map
                 latitude={oneRestaurant.coordinates.latitude}

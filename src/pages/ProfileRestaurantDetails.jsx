@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
-import { Card, Button, Form, Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import Map from "../components/Map";
 
 function ProfileRestaurantDetails() {
@@ -12,7 +12,6 @@ function ProfileRestaurantDetails() {
 
   async function fetchRestaurant() {
     const response = await axios.get(`${BASE_URL}/restaurants/profile/${id}`);
-    console.log(response.data.restaurant);
     setRestaurant(response.data.restaurant);
     setIsLoading(false);
   }
@@ -31,7 +30,6 @@ function ProfileRestaurantDetails() {
         formData
       );
       setRestaurant(response.data.updatedRestaurant);
-      console.log(response.data);
     } catch (error) {
       console.log(error, "photo upload failed");
     }
@@ -39,9 +37,6 @@ function ProfileRestaurantDetails() {
 
   useEffect(() => {
     fetchRestaurant();
-    if (!isLoading) {
-      console.log(restaurant);
-    }
   }, []);
 
   return (
@@ -55,18 +50,19 @@ function ProfileRestaurantDetails() {
             <h1 className="mt-3 text-uppercase">{restaurant.name}</h1>
             <div className="map-picture">
               <img
-              src={restaurant.image_url}
-              className="mb-4"
-              style={{ width: "500px", height: "500px" }}
-            />
-            {restaurant.coordinates !== undefined}{<Map
-              latitude={restaurant.coordinates.latitude}
-              longitude={restaurant.coordinates.longitude}
-              oneRestaurant={restaurant}
-            />}
+                src={restaurant.image_url}
+                className="mb-4"
+                style={{ width: "500px", height: "500px" }}
+              />
+              {restaurant.coordinates !== undefined}
+              {
+                <Map
+                  latitude={restaurant.coordinates.latitude}
+                  longitude={restaurant.coordinates.longitude}
+                  oneRestaurant={restaurant}
+                />
+              }
             </div>
-            
-
             <div className="card col-8 mt-8">
               <div className="card-body">
                 <table className="table table-bordered">

@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import RestaurantCard from "../components/RestaurantCard";
 import { Link } from "react-router-dom";
 import SpinnerComponent from "../components/Spinner";
@@ -10,7 +10,6 @@ import { SessionContext } from "../contexts/SessionContext";
 const HomePage = ({ handleSubmit, randomRest, isLoading, isShowingRandom }) => {
   const [city, setCity] = useState("");
   const [food, setFood] = useState("");
-  const [newPlace, setNewPlace] = useState(false);
   const { userData } = useContext(SessionContext);
 
   const submitCallback = (event) => {

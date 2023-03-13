@@ -6,10 +6,6 @@ const Footer = () => (
     style={{
       backgroundColor: "#ebecf2",
       marginTop: "40px",
-    //   position: "absolute",
-    //   left: "0",
-    //   right: "0",
-    //   bottom: "0",
     }}
     sticky="bottom"
   >

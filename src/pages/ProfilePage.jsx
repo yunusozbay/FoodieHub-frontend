@@ -6,25 +6,23 @@ import "../styles/ProfilePage.css";
 import { Card, ListGroup, Button, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo, faUserPen } from "@fortawesome/free-solid-svg-icons";
-import { Modal, Form } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import RestaurantCard from "../components/RestaurantCard";
 import EventForm from "../components/EventForm";
 
 function ProfilePage() {
-  const { userData, token, isAuthenticated, refreshData } =
-    useContext(SessionContext);
+  const { userData, isAuthenticated, refreshData } = useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [isShown, setIsShown] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isEditingEvent, setIsEditingEvent] = useState(false);
+  const [curEvent, setCurEvent] = useState({});
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-  console.log("this is userdata", userData);
 
   const handleUpdate = async (username, email) => {
     try {
@@ -59,21 +57,19 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    // refreshData(userData);
     if (userData && userData.username !== undefined) {
       setIsLoading(false);
     }
   }, [userData]);
 
-  const handleEditEvent = (e, curEvent) => {
+  const handleEditEvent = (event) => {
+    setCurEvent(event);
     setIsEditingEvent(true);
-    return (
-      <EventForm
-        event={curEvent}
-        isEditingEvent={isEditingEvent}
-        setIsEditingEvent={setIsEditingEvent}
-      />
-    );
+  };
+  const handleDeleteEvent = async (id) => {
+    await axios.post(`${BASE_URL}/events/${id}/delete`);
+    const response = await axios.get(`${BASE_URL}/users/${userData._id}`);
+    refreshData(response.data.oneUser);
   };
 
   async function uploadPhoto(e) {
@@ -87,7 +83,6 @@ function ProfilePage() {
         formData
       );
       refreshData(response.data.updatedUser);
-      console.log(response.data);
     } catch (error) {
       console.log(error, "photo upload failed");
     }
@@ -151,14 +146,16 @@ function ProfilePage() {
                     </div>
                     <div className="card-body">
                       <p className="mb-0">
-                        <strong className="pr-1">Friends: </strong>3
+                        <strong className="pr-1">Friends: </strong>
+                        {userData.friends.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Favorite restaurants: </strong>
-                        4
+                        <strong className="pr-1">Restaurants: </strong>
+                        {userData.restaurants.length}
                       </p>
                       <p className="mb-0">
-                        <strong className="pr-1">Events organized: </strong>2
+                        <strong className="pr-1">Events: </strong>
+                        {userData.events.length}
                       </p>
                     </div>
                   </div>
@@ -254,7 +251,7 @@ function ProfilePage() {
                       <h4>My Foodie Friends</h4>
                     </ListGroup.Item>
                     {userData.friends.map((friend) => (
-                      <ListGroup.Item>
+                      <ListGroup.Item key={friend._id}>
                         <Link
                           className="friends-list-item"
                           to={`/users/${friend._id}`}
@@ -295,7 +292,6 @@ function ProfilePage() {
                                 src="https://source.unsplash.com/600x300/?restaurant"
                                 className="card-img"
                               />
-
                               <Card.Body className="card-body">
                                 <Card.Title>
                                   <h2 className="card-title">{event.title}</h2>
@@ -319,43 +315,42 @@ function ProfilePage() {
                                 >
                                   Event details
                                 </Button>
-                                <Button
-                                  variant="secondary"
-                                  onClick={() => handleEditEvent(event)}
-                                >
-                                  Edit
-                                </Button>
-                                {isEditingEvent ? (
-                                  <EventForm
-                                    event={event}
-                                    isEditingEvent={isEditingEvent}
-                                    setIsEditingEvent={setIsEditingEvent}
-                                  />
-                                ) : null}
-                                <Button variant="danger">Delete</Button>
+                                {event.created_by === userData._id && (
+                                  <>
+                                    <Button
+                                      variant="secondary"
+                                      onClick={() => handleEditEvent(event)}
+                                    >
+                                      Edit
+                                    </Button>
+                                    <Button
+                                      variant="danger"
+                                      onClick={() =>
+                                        handleDeleteEvent(event._id)
+                                      }
+                                    >
+                                      Delete
+                                    </Button>
+                                  </>
+                                )}
                               </Card.Body>
                             </Card>
                           </Col>
                         ))}
                     </Row>
+                    {isEditingEvent ? (
+                      <EventForm
+                        event={curEvent}
+                        isEditingEvent={isEditingEvent}
+                        setIsEditingEvent={setIsEditingEvent}
+                      />
+                    ) : null}
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="my-restaurants-ctn">
-            {/* <h4>My restaurants</h4>
-            <Button
-              variant="warning"
-              type="submit"
-              onClick={() => setIsShown(!isShown)}
-              className="ms-2 mb-5 mt-3"
-              size="lg"
-            >
-              {isShown ? "Hide list" : "My list"}
-            </Button>
-
-            {isShown ? ( */}
             <Container>
               <h4 className="mb-4">My restaurants</h4>
               <Row xs={1} md={4} lg={5} className="g-4">
@@ -366,9 +361,6 @@ function ProfilePage() {
                 ))}
               </Row>
             </Container>
-            {/* ) : (
-              ""
-            )} */}
           </div>
         </>
       )}
