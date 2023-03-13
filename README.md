@@ -72,9 +72,6 @@ time: String
 Deployed website:
 https://the-foodie-hub.netlify.app/
 
-To test the restaurant search on the deployed website, please get a temporary access to cors-anywhere:
-https://cors-anywhere.herokuapp.com/corsdemo
-
 
 ### Trello
 
