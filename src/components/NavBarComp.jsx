@@ -42,7 +42,7 @@ function NavBarComp() {
           </Nav>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
-            <Nav className="me-auto navItems" navbarScroll>
+            <Nav className="me-auto navItems">
               <div style={{ position: "relative" }}>
                 {!isAuthenticated ? (
                   <>
